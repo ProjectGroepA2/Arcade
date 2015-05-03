@@ -11,7 +11,7 @@ public class Window extends JFrame {
 	public Window()
 	{
 		//Create window
-		super("Arcade");
+		super("Arcade-controls");
 		setSize(500,600);
 		
 		//Set window close listener
@@ -27,7 +27,6 @@ public class Window extends JFrame {
 		setContentPane(panel);
 		
 		//Display
-		pack();
 		setVisible(true);
 	}
 }
