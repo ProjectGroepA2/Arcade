@@ -10,10 +10,10 @@ public class Ledstrip {
     private BufferedReader inp;
     private BufferedWriter out;
     private Process p;
+    
     public Ledstrip(){
-	    String cmd = "sudo python led.py";
 	    try {
-	        p = Runtime.getRuntime().exec(cmd);
+	        p = Runtime.getRuntime().exec("sudo python led.py");
 	        inp = new BufferedReader( new InputStreamReader(p.getInputStream()) );
 	        out = new BufferedWriter( new OutputStreamWriter(p.getOutputStream()) );
 	        
@@ -39,6 +39,15 @@ public class Ledstrip {
         p.destroy();
     }
     
+    
+    /**
+     * Set the color of a specific led
+     * @param Pixel number of the led
+     * @param Red value
+     * @param Green value
+     * @param Blue value
+     * Remember: Button leds are GRB, normal ledstrip is RGB
+     */
     public void setLed(int led, int r, int g, int b) {
 	    try {
 	        out.write( "1|" + led + "|" + r + "|" + g + "|" + b + "\n" );
@@ -49,6 +58,9 @@ public class Ledstrip {
 	    }
     }
 
+    /**
+     * Shows the (new) colors 
+     */
     public void show(){
 	    try {
 	        out.write( "0\n" );
