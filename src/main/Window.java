@@ -13,6 +13,9 @@ import control.button.ButtonHandler;
 import control.joystick.JoystickHandler;
 
 public class Window extends JFrame {
+	
+	public static boolean ON_RASP = false;
+	
 	public Window()
 	{
 		//Create window
@@ -32,9 +35,15 @@ public class Window extends JFrame {
 		setUndecorated(true);
 		
 		//Create Events
-		LedHandler led = new LedHandler();
+		LedHandler led = null;
+		
+		if(Window.ON_RASP) //TODO REMOVE
+		{
+			led = new LedHandler();
+		}
+		
 		ButtonHandler bth = new ButtonHandler(led);
-		JoystickHandler jsh = new JoystickHandler(led);
+		JoystickHandler jsh = new JoystickHandler();
 		
 		//Create Instances
 		GameView view = new GameView(led);
@@ -46,7 +55,7 @@ public class Window extends JFrame {
 		addKeyListener(bth);
 		addKeyListener(jsh);
 		bth.addButtonListener(control);
-		jsh.addJoyStickListener(control);
+		jsh.addJoystickListener(control);
 		
 		//Display
 		pack();

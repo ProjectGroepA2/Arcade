@@ -2,6 +2,7 @@ package control.button;
 
 import java.awt.Color;
 
+import main.Window;
 import control.LedHandler;
 
 public class Button {
@@ -22,8 +23,11 @@ public class Button {
 	
 	private void setLed()
 	{
-		led.setLed(ledID, color.getGreen(), color.getRed(), color.getBlue());
-		led.show();
+		if(Window.ON_RASP)
+		{
+			led.setLed(ledID, color.getGreen(), color.getRed(), color.getBlue());
+			led.show();
+		}
 	}
 	
 	public void setColor(Color newColor)

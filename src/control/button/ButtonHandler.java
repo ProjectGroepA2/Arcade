@@ -5,6 +5,7 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.Window;
 import control.LedHandler;
 
 public class ButtonHandler implements KeyListener{
@@ -70,6 +71,10 @@ public class ButtonHandler implements KeyListener{
 			break;
 		case KeyEvent.VK_6:
 			buttonPress(buttons.get(6));
+			break;
+		case KeyEvent.VK_ESCAPE:
+			if(!Window.ON_RASP)
+				System.exit(0);
 			break;
 		}
 	}
