@@ -1,5 +1,6 @@
 package control.button;
 
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -22,12 +23,17 @@ public class ButtonHandler implements KeyListener{
 		buttons = new ArrayList<Button>();
 		
 		buttons.add(new Button(0, -1, led));
-		buttons.add(new Button(1, 5, led)); //TODO change to real ID's;
+		buttons.add(new Button(1, 5, led));
 		buttons.add(new Button(2, 4, led));
 		buttons.add(new Button(3, 3, led));
 		buttons.add(new Button(4, 2, led));
 		buttons.add(new Button(5, 1, led));
 		buttons.add(new Button(6, 0, led));
+		
+		for(Button b : buttons)
+		{
+			b.setColor(new Color((int)(Math.random()*254+1),(int)(Math.random()*254+1),(int)(Math.random()*254+1)));
+		}
 	}
 
 	public void addButtonListener(ButtonListener toAdd) {

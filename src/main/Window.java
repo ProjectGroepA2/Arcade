@@ -14,13 +14,15 @@ import control.joystick.JoystickHandler;
 
 public class Window extends JFrame {
 	
-	public static boolean ON_RASP = false;
+	public static boolean ON_RASP;
 	
-	public Window()
+	public Window(boolean ON_RASP)
 	{
 		//Create window
 		super("Arcade");
 		setSize(1280, 1024);
+		
+		this.ON_RASP = ON_RASP;
 		
 		//Set window close listener
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
