@@ -5,14 +5,19 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
-import view.Panel;
+import model.GameModel;
+import view.GameView;
+import control.GameControl;
+import control.LedHandler;
+import control.button.ButtonHandler;
+import control.joystick.JoystickHandler;
 
 public class Window extends JFrame {
 	public Window()
 	{
 		//Create window
-		super("Arcade-controls");
-		setSize(500,600);
+		super("Arcade");
+		setSize(1280, 1024);
 		
 		//Set window close listener
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -22,11 +27,29 @@ public class Window extends JFrame {
 			}
 		});
 		
+		//Set window to fullscreen
+		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
+		setUndecorated(true);
+		
+		//Create Events
+		LedHandler led = new LedHandler();
+		ButtonHandler bth = new ButtonHandler(led);
+		JoystickHandler jsh = new JoystickHandler(led);
+		
 		//Create Instances
-		Panel panel = new Panel();
-		setContentPane(panel);
+		GameView view = new GameView(led);
+		GameModel model = new GameModel(view);
+		GameControl control = new GameControl(model, view);
+		setContentPane(view);
+		
+		//Create EventListeners
+		addKeyListener(bth);
+		addKeyListener(jsh);
+		bth.addButtonListener(control);
+		jsh.addJoyStickListener(control);
 		
 		//Display
+		pack();
 		setVisible(true);
 	}
 }
