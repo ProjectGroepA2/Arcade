@@ -9,19 +9,23 @@ import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import main.Window;
 import control.LedHandler;
 
 public class GameView extends JPanel implements ActionListener{
 	
 	Timer t;
 	Color c;
+	String str;
 	LedHandler led;
+	
 	public GameView(LedHandler led)
 	{
 		this.led=led;
 		t = new Timer(1000/30, this);
 		t.start();
 		c = new Color(100,100,100);
+		str = "CENTER";
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
@@ -36,14 +40,24 @@ public class GameView extends JPanel implements ActionListener{
 		
 		g2d.setPaint(c);
 		g2d.fillRect(0, 0, getWidth(), getHeight());
+		
+		g2d.setPaint(Color.WHITE);
+		g2d.drawString(str, 100, 100);
 	}
 	
 	public void setColor(Color c)
 	{
 		this.c = c;
-		for(int i =6; i < 55; i++){
-			led.setLed(i, c.getRed(), c.getGreen(), c.getBlue());
+		if(Window.ON_RASP)
+		{
+			for(int i =6; i < 55; i++){
+				led.setLed(i, c.getRed(), c.getGreen(), c.getBlue());
+			}
+			led.show();
 		}
-		led.show();
+	}
+
+	public void setString(String str) {
+		this.str = str;
 	}
 }
