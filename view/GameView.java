@@ -8,9 +8,16 @@ import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import model.Player;
+
 public class GameView extends JPanel implements ActionListener{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1939480784205689618L;
 	Timer t;
+	Player player;
 	
 	public GameView()
 	{
@@ -26,5 +33,12 @@ public class GameView extends JPanel implements ActionListener{
 	{
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
+		
+		if(player != null)
+		player.draw(g2d);
+	}
+	
+	public void setPlayer(Player player){
+		this.player = player;
 	}
 }
