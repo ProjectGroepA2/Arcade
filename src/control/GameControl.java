@@ -20,18 +20,17 @@ public class GameControl implements JoystickListener, ButtonListener{
 
 	@Override
 	public void buttonPressed(ButtonEvent e) {
-		view.setColor(e.getButton().getColor());
+		if(e.getButton().getButtonID()>0)
+		{
+			view.setColor(e.getButton().getColor());
+		}
 	}
 
 	@Override
-	public void buttonReleased(ButtonEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void buttonReleased(ButtonEvent e) {}
 
 	@Override
-	public void onJoyStickMoved(JoystickEvent e) {
-		// TODO Auto-generated method stub
-		
+	public void onJoystickMoved(JoystickEvent e) {
+		view.setString(e.getJoystick().getPos().name());
 	}
 }

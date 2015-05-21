@@ -49,10 +49,8 @@ public class LedHandler {
      * Remember: Button leds are GRB, normal ledstrip is RGB
      */
     public void setLed(int led, int r, int g, int b) {
-	    if(led==-1)
-	    {
+	    if(led<0)
 	    	return;
-	    }
     	try {
     		System.out.println("Set the led with " + r);
 	        out.write( "1|" + led + "|" + r + "|" + g + "|" + b + "\n" );
