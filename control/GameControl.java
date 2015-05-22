@@ -1,7 +1,5 @@
 package control;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -9,23 +7,20 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 
-import javax.swing.Timer;
-
 import model.GameModel;
 import view.GameView;
 
-public class GameControl implements MouseListener, KeyListener, WindowFocusListener, ActionListener{
+public class GameControl implements MouseListener, KeyListener, WindowFocusListener{
 	
 	GameModel model;
 	GameView view;
-	Timer update;
+	
 	
 	public GameControl(GameModel model, GameView view)
 	{
 		this.model = model;
 		this.view = view;
-		update = new Timer(1000/10, this);
-		update.start();
+		
 	}
 
 	public void keyPressed(KeyEvent e) {}
@@ -53,8 +48,5 @@ public class GameControl implements MouseListener, KeyListener, WindowFocusListe
 
 	public void windowLostFocus(WindowEvent e) {}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		model.update();		
-	}
+	
 }
