@@ -15,10 +15,12 @@ public class GameControl implements MouseListener, KeyListener, WindowFocusListe
 	GameModel model;
 	GameView view;
 	
+	
 	public GameControl(GameModel model, GameView view)
 	{
 		this.model = model;
 		this.view = view;
+		
 	}
 
 	public void keyPressed(KeyEvent e) {}
@@ -45,4 +47,6 @@ public class GameControl implements MouseListener, KeyListener, WindowFocusListe
 	public void windowGainedFocus(WindowEvent e) {}
 
 	public void windowLostFocus(WindowEvent e) {}
+
+	
 }

@@ -10,6 +10,11 @@ import view.GameView;
 import control.GameControl;
 
 public class Window extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public Window()
 	{
 		//Create window
