@@ -23,12 +23,12 @@ public class ButtonHandler implements KeyListener{
 		buttons = new ArrayList<Button>();
 		
 		buttons.add(new Button(0, -1, led));
-		buttons.add(new Button(1, 5, led));
-		buttons.add(new Button(2, 4, led));
-		buttons.add(new Button(3, 3, led));
-		buttons.add(new Button(4, 2, led));
-		buttons.add(new Button(5, 1, led));
-		buttons.add(new Button(6, 0, led));
+		buttons.add(new Button(1, 2, led));
+		buttons.add(new Button(2, 1, led));
+		buttons.add(new Button(3, 0, led));
+		buttons.add(new Button(4, 3, led));
+		buttons.add(new Button(5, 4, led));
+		buttons.add(new Button(6, 5, led));
 		
 		for(Button b : buttons)
 		{

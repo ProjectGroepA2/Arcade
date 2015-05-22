@@ -23,6 +23,7 @@ public class Window extends JFrame {
 		setSize(1280, 1024);
 		
 		this.ON_RASP = ON_RASP;
+		System.out.println(ON_RASP);
 		
 		//Set window close listener
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -39,7 +40,7 @@ public class Window extends JFrame {
 		//Create Events
 		LedHandler led = null;
 		
-		if(Window.ON_RASP) //TODO REMOVE
+		if(ON_RASP) //TODO REMOVE
 		{
 			led = new LedHandler();
 		}

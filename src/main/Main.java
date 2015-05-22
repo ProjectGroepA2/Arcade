@@ -9,7 +9,7 @@ public class Main {
 		}
 		else
 		{
-			new Window(Boolean.getBoolean(args[0].toLowerCase()));
+			new Window(true);
 		}
 	}
 

@@ -76,10 +76,11 @@ public class JoystickHandler implements KeyListener{
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		System.out.println("Test " + e.getKeyCode());
 		if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_RIGHT)
 		{
 			Set<Integer> keysCopy = new HashSet<Integer>(keys);
-			
+			System.out.println("YES!");
 			keys.add(e.getKeyCode());
 			updateJoystickPosition();
 			
