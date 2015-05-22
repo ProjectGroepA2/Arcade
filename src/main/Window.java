@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 
 import model.GameModel;
 import view.GameView;
+import control.GPIOListener;
 import control.GameControl;
 import control.LedHandler;
 import control.button.ButtonHandler;
@@ -55,7 +56,7 @@ public class Window extends JFrame {
 		setContentPane(view);
 		
 		//Create EventListeners
-		addKeyListener(bth);
+		new GPIOListener();
 		addKeyListener(jsh);
 		bth.addButtonListener(control);
 		jsh.addJoystickListener(control);
