@@ -17,7 +17,7 @@ import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 import main.Window;
 import control.LedHandler;
 
-public class ButtonHandler{
+public class ButtonHandler implements KeyListener{
 
 	List<ButtonListener> listeners;
 	static List<Button> buttons;
@@ -42,8 +42,13 @@ public class ButtonHandler{
 		{
 			b.setColor(new Color((int)(Math.random()*254+1),(int)(Math.random()*254+1),(int)(Math.random()*254+1)));
 		}
+		System.out.println(Window.ON_RASP);
+		if (Window.ON_RASP)
+			addGpioListeners();
 		
-		// create gpio controller
+	}
+	
+	private void addGpioListeners(){
 		ArrayList<GpioPinDigitalInput> inputpins = new ArrayList<GpioPinDigitalInput>();
         final GpioController gpio = GpioFactory.getInstance();
         
@@ -61,10 +66,10 @@ public class ButtonHandler{
                   @Override
                   public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent e) {
                 	  if(e.getState() == PinState.HIGH){
-                		  buttonPress(buttons.get(Integer.parseInt(e.getPin().getName())));
+                		  buttonRelease(buttons.get(Integer.parseInt(e.getPin().getName())));
                 		  System.out.println(e.getPin().getName() + " Released");
                 	  }else{
-                		  buttonRelease(buttons.get(Integer.parseInt(e.getPin().getName())));
+                		  buttonPress(buttons.get(Integer.parseInt(e.getPin().getName())));
                 		  System.out.println(e.getPin().getName() + " Pressed");
                 	  }
                   }                  
@@ -89,41 +94,41 @@ public class ButtonHandler{
 	}
 
 	
-//	@Override
-//	public void keyPressed(KeyEvent e) {
-//		switch(e.getKeyCode())
-//		{
-//		case KeyEvent.VK_0:
-//			buttonPress(buttons.get(0));
-//			break;
-//		case KeyEvent.VK_1:
-//			buttonPress(buttons.get(1));
-//			break;
-//		case KeyEvent.VK_2:
-//			buttonPress(buttons.get(2));
-//			break;
-//		case KeyEvent.VK_3:
-//			buttonPress(buttons.get(3));
-//			break;
-//		case KeyEvent.VK_4:
-//			buttonPress(buttons.get(4));
-//			break;
-//		case KeyEvent.VK_5:
-//			buttonPress(buttons.get(5));
-//			break;
-//		case KeyEvent.VK_6:
-//			buttonPress(buttons.get(6));
-//			break;
-//		case KeyEvent.VK_ESCAPE:
-//			if(!Window.ON_RASP)
-//				System.exit(0);
-//			break;
-//		}
-//	}
-//
-//	public void keyReleased(KeyEvent arg0) {}
-//	public void keyTyped(KeyEvent arg0) {}
-//	
+	@Override
+	public void keyPressed(KeyEvent e) {
+		switch(e.getKeyCode())
+		{
+		case KeyEvent.VK_0:
+			buttonPress(buttons.get(0));
+			break;
+		case KeyEvent.VK_1:
+			buttonPress(buttons.get(1));
+			break;
+		case KeyEvent.VK_2:
+			buttonPress(buttons.get(2));
+			break;
+		case KeyEvent.VK_3:
+			buttonPress(buttons.get(3));
+			break;
+		case KeyEvent.VK_4:
+			buttonPress(buttons.get(4));
+			break;
+		case KeyEvent.VK_5:
+			buttonPress(buttons.get(5));
+			break;
+		case KeyEvent.VK_6:
+			buttonPress(buttons.get(6));
+			break;
+		case KeyEvent.VK_ESCAPE:
+			if(!Window.ON_RASP)
+				System.exit(0);
+			break;
+		}
+	}
+
+	public void keyReleased(KeyEvent arg0) {}
+	public void keyTyped(KeyEvent arg0) {}
+	
 	public static List<Button> getButtons()
 	{
 		return buttons;
