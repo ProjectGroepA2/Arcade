@@ -7,6 +7,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import main.Window;
+
+import com.pi4j.component.Component;
+import com.pi4j.io.gpio.GpioController;
+import com.pi4j.io.gpio.GpioFactory;
+import com.pi4j.io.gpio.GpioPinDigitalInput;
+import com.pi4j.io.gpio.PinState;
+import com.pi4j.io.gpio.RaspiPin;
+import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
+import com.pi4j.io.gpio.event.GpioPinListenerDigital;
+
 import control.joystick.Joystick.Position;
 
 public class JoystickHandler implements KeyListener{
@@ -20,6 +31,48 @@ public class JoystickHandler implements KeyListener{
 		listeners = new ArrayList<JoystickListener>();
 		keys = new HashSet<Integer>();
 		j = new Joystick();
+		if(Window.ON_RASP)
+			addGpioListeners();
+	}
+	
+	private void addGpioListeners(){
+		ArrayList<GpioPinDigitalInput> inputpins = new ArrayList<GpioPinDigitalInput>();
+        final GpioController gpio = GpioFactory.getInstance();
+        
+        inputpins.add(gpio.provisionDigitalInputPin(RaspiPin.GPIO_04, "UP")); //button 1 to 6 + start button
+        inputpins.add(gpio.provisionDigitalInputPin(RaspiPin.GPIO_05, "LEFT"));
+        inputpins.add(gpio.provisionDigitalInputPin(RaspiPin.GPIO_11, "RIGHT"));
+        inputpins.add(gpio.provisionDigitalInputPin(RaspiPin.GPIO_10, "DOWN"));
+
+        
+        for(GpioPinDigitalInput p:inputpins){
+        	  p.addListener(new GpioPinListenerDigital() {
+                  @Override
+                  public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent e) {
+                	  if(e.getState() == PinState.HIGH){
+                		  keyReleased(new KeyEvent(
+                				  		new java.awt.Component(){}, 
+                				  		KeyEvent.KEY_RELEASED, 
+                				  		System.nanoTime(), 
+                				  		0, 
+                				  		stringToKeyevent(e.getPin().getName()), 
+                				  		KeyEvent.CHAR_UNDEFINED)
+                				  );
+                		  System.out.println(e.getPin().getName() + " Released");
+                	  }else{
+                		  keyPressed(new KeyEvent(
+          				  		new java.awt.Component(){}, 
+          				  		KeyEvent.KEY_PRESSED, 
+          				  		System.nanoTime(), 
+          				  		0, 
+          				  		stringToKeyevent(e.getPin().getName()), 
+          				  		KeyEvent.CHAR_UNDEFINED)
+          				  );
+                		  System.out.println(e.getPin().getName() + " Pressed");
+                	  }
+                  }                  
+              });
+        }
 	}
 
 	public void addJoystickListener(JoystickListener toAdd) {
@@ -73,14 +126,26 @@ public class JoystickHandler implements KeyListener{
 			j.setPosition(Position.CENTER);
 		}
 	}
-
+	
+	private int stringToKeyevent(String s){
+		switch(s){
+		case "UP":
+			return KeyEvent.VK_UP;
+		case "DOWN":
+			return KeyEvent.VK_DOWN;
+		case "LEFT":
+			return KeyEvent.VK_LEFT;
+		case "RIGHT":
+			return KeyEvent.VK_RIGHT;
+		}
+		return -1;
+	}
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
-		System.out.println("Test " + e.getKeyCode());
 		if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_RIGHT)
 		{
 			Set<Integer> keysCopy = new HashSet<Integer>(keys);
-			System.out.println("YES!");
 			keys.add(e.getKeyCode());
 			updateJoystickPosition();
 			

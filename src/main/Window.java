@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 
 import model.GameModel;
 import view.GameView;
+import control.GPIOListener;
 import control.GameControl;
 import control.LedHandler;
 import control.button.ButtonHandler;
@@ -22,7 +23,7 @@ public class Window extends JFrame {
 		super("Arcade");
 		setSize(1280, 1024);
 		
-		this.ON_RASP = ON_RASP;
+		Window.ON_RASP = ON_RASP;
 		System.out.println(ON_RASP);
 		
 		//Set window close listener
@@ -55,8 +56,10 @@ public class Window extends JFrame {
 		setContentPane(view);
 		
 		//Create EventListeners
-		addKeyListener(bth);
-		addKeyListener(jsh);
+		if(!Window.ON_RASP){
+			addKeyListener(bth);
+			addKeyListener(jsh);
+		}
 		bth.addButtonListener(control);
 		jsh.addJoystickListener(control);
 		

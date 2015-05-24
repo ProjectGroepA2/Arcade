@@ -6,6 +6,14 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.pi4j.io.gpio.GpioController;
+import com.pi4j.io.gpio.GpioFactory;
+import com.pi4j.io.gpio.GpioPinDigitalInput;
+import com.pi4j.io.gpio.PinState;
+import com.pi4j.io.gpio.RaspiPin;
+import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
+import com.pi4j.io.gpio.event.GpioPinListenerDigital;
+
 import main.Window;
 import control.LedHandler;
 
@@ -34,6 +42,39 @@ public class ButtonHandler implements KeyListener{
 		{
 			b.setColor(new Color((int)(Math.random()*254+1),(int)(Math.random()*254+1),(int)(Math.random()*254+1)));
 		}
+		System.out.println(Window.ON_RASP);
+		if (Window.ON_RASP)
+			addGpioListeners();
+		
+	}
+	
+	private void addGpioListeners(){
+		ArrayList<GpioPinDigitalInput> inputpins = new ArrayList<GpioPinDigitalInput>();
+        final GpioController gpio = GpioFactory.getInstance();
+        
+        inputpins.add(gpio.provisionDigitalInputPin(RaspiPin.GPIO_02, "1")); //button 1 to 6 + start button
+        inputpins.add(gpio.provisionDigitalInputPin(RaspiPin.GPIO_03, "2"));
+        inputpins.add(gpio.provisionDigitalInputPin(RaspiPin.GPIO_13, "3"));
+        inputpins.add(gpio.provisionDigitalInputPin(RaspiPin.GPIO_14, "4"));
+        inputpins.add(gpio.provisionDigitalInputPin(RaspiPin.GPIO_00, "5"));
+        inputpins.add(gpio.provisionDigitalInputPin(RaspiPin.GPIO_12, "6"));
+        inputpins.add(gpio.provisionDigitalInputPin(RaspiPin.GPIO_06, "0"));
+
+        
+        for(GpioPinDigitalInput p:inputpins){
+        	  p.addListener(new GpioPinListenerDigital() {
+                  @Override
+                  public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent e) {
+                	  if(e.getState() == PinState.HIGH){
+                		  buttonRelease(buttons.get(Integer.parseInt(e.getPin().getName())));
+                		  System.out.println(e.getPin().getName() + " Released");
+                	  }else{
+                		  buttonPress(buttons.get(Integer.parseInt(e.getPin().getName())));
+                		  System.out.println(e.getPin().getName() + " Pressed");
+                	  }
+                  }                  
+              });
+        }
 	}
 
 	public void addButtonListener(ButtonListener toAdd) {
