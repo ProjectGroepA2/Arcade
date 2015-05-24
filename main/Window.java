@@ -8,18 +8,22 @@ import javax.swing.JFrame;
 import model.GameModel;
 import view.GameView;
 import control.GameControl;
+import control.LedHandler;
+import control.button.ButtonHandler;
+import control.joystick.JoystickHandler;
 
 public class Window extends JFrame {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	public Window()
+	
+	public static boolean ON_RASP;
+	
+	public Window(boolean ON_RASP)
 	{
 		//Create window
 		super("Arcade");
-		setSize(500,600);
+		setSize(1280, 1024);
+		
+		Window.ON_RASP = ON_RASP;
+		System.out.println(ON_RASP);
 		
 		//Set window close listener
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -33,15 +37,30 @@ public class Window extends JFrame {
 		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		setUndecorated(true);
 		
+		//Create Events
+		LedHandler led = null;
+		
+		if(ON_RASP) //TODO REMOVE
+		{
+			led = new LedHandler();
+		}
+		
+		ButtonHandler bth = new ButtonHandler(led);
+		JoystickHandler jsh = new JoystickHandler();
+		
 		//Create Instances
-		GameView view = new GameView();
+		GameView view = new GameView(led);
 		GameModel model = new GameModel(view);
 		GameControl control = new GameControl(model, view);
 		setContentPane(view);
 		
-		addKeyListener(control);
-		addMouseListener(control);
-		addWindowFocusListener(control);
+		//Create EventListeners
+		if(!Window.ON_RASP){
+			addKeyListener(bth);
+			addKeyListener(jsh);
+		}
+		bth.addButtonListener(control);
+		jsh.addJoystickListener(control);
 		
 		//Display
 		pack();
