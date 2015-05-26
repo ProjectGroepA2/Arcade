@@ -1,52 +1,33 @@
 package control;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
-
 import model.GameModel;
 import view.GameView;
+import control.button.ButtonEvent;
+import control.button.ButtonListener;
+import control.joystick.JoystickEvent;
+import control.joystick.JoystickListener;
 
-public class GameControl implements MouseListener, KeyListener, WindowFocusListener{
+public class GameControl implements JoystickListener, ButtonListener{
 	
 	GameModel model;
 	GameView view;
-	
 	
 	public GameControl(GameModel model, GameView view)
 	{
 		this.model = model;
 		this.view = view;
-		
 	}
 
-	public void keyPressed(KeyEvent e) {}
+	@Override
+	public void buttonPressed(ButtonEvent e) {
 
-	public void keyReleased(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
-		{
-			System.exit(0);
-		}
 	}
 
-	public void keyTyped(KeyEvent e) {}
+	@Override
+	public void buttonReleased(ButtonEvent e) {}
 
-	public void mouseClicked(MouseEvent e) {}
+	@Override
+	public void onJoystickMoved(JoystickEvent e) {
 
-	public void mouseEntered(MouseEvent e) {}
-
-	public void mouseExited(MouseEvent e) {}
-
-	public void mousePressed(MouseEvent e) {}
-
-	public void mouseReleased(MouseEvent e) {}
-
-	public void windowGainedFocus(WindowEvent e) {}
-
-	public void windowLostFocus(WindowEvent e) {}
-
-	
+	}
 }
