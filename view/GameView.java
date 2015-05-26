@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import model.Player;
+import control.GameStateManager;
 import control.LedHandler;
 
 public class GameView extends JPanel implements ActionListener{
@@ -18,13 +18,15 @@ public class GameView extends JPanel implements ActionListener{
 	 * 
 	 */
 	private static final long serialVersionUID = 1939480784205689618L;
-	Timer t;
-	Player player;
-	LedHandler led;
 	
-	public GameView(LedHandler led)
+	Timer t;	
+	LedHandler led;
+	GameStateManager gsm;
+	
+	public GameView(LedHandler led,GameStateManager gsm)
 	{
 		this.led=led;
+		this.gsm = gsm;		
 		t = new Timer(1000/30, this);
 		t.start();
 		setPreferredSize(new Dimension(1280,1024));
@@ -40,11 +42,6 @@ public class GameView extends JPanel implements ActionListener{
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
 		
-		if(player != null)
-		player.draw(g2d);
-	}
-	
-	public void setPlayer(Player player){
-		this.player = player;
-	}
+		gsm.currentState.draw(g2d);		
+	}	
 }

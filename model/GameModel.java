@@ -6,29 +6,25 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 import view.GameView;
+import control.GameStateManager;
 
 public class GameModel implements ActionListener{
 	
 	GameView view;
 	Timer update;
-	Player player;
 	
+	GameStateManager gsm;
 	
-	public GameModel(GameView view)
+	public GameModel(GameView view,GameStateManager gsm)
 	{
-		this.view = view;
-		player = new Player(1920/2, 1080/2);
-		update = new Timer(1000/10, this);
+		this.view = view;	
+		this.gsm = gsm;
+		update = new Timer(1000/30, this);
 		update.start();
-	}
-	
-	public void update(){
-		player.update();
-		view.setPlayer(player);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		update();		
+		gsm.update();		
 	}
 }

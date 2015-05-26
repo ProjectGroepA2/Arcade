@@ -23,10 +23,10 @@ public class GameStateManager {
 	public void next() {
 		index++;
 		index %= gamestates.size();
+		currentState = gamestates.get(index);
 	}
 	
-	public void update(){
-		currentState = gamestates.get(index);
+	public void update(){		
 		currentState.update();
 	}
 }
