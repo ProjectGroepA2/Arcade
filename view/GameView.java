@@ -1,6 +1,6 @@
 package view;
 
-import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -27,6 +27,7 @@ public class GameView extends JPanel implements ActionListener{
 		this.led=led;
 		t = new Timer(1000/30, this);
 		t.start();
+		setPreferredSize(new Dimension(1280,1024));
 	}
 
 	public void actionPerformed(ActionEvent arg0) {

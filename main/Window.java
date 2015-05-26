@@ -34,7 +34,7 @@ public class Window extends JFrame {
 		});
 		
 		//Set window to fullscreen
-		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
+//		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		setUndecorated(true);
 		
 		//Create Events
