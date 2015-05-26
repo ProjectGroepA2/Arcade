@@ -1,5 +1,7 @@
 package main;
 
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -34,9 +36,16 @@ public class Window extends JFrame {
 		});
 		
 		//Set window to fullscreen
-//		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
-		setUndecorated(true);
-		
+		//		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
+		//	setUndecorated(true);
+
+		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	    GraphicsDevice[] devices =  graphicsEnvironment.getScreenDevices();
+        if (!devices[0].isFullScreenSupported ())
+        {
+            throw new UnsupportedOperationException ("Fullscreen mode is unsupported.");
+        }
+        devices[0].setFullScreenWindow(this);
 		//Create Events
 		LedHandler led = null;
 		
