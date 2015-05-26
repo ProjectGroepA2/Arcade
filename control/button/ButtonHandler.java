@@ -126,7 +126,32 @@ public class ButtonHandler implements KeyListener{
 		}
 	}
 
-	public void keyReleased(KeyEvent arg0) {}
+	public void keyReleased(KeyEvent e) {
+		switch(e.getKeyCode())
+		{
+		case KeyEvent.VK_0:
+			buttonRelease(buttons.get(0));
+			break;
+		case KeyEvent.VK_1:
+			buttonRelease(buttons.get(1));
+			break;
+		case KeyEvent.VK_2:
+			buttonRelease(buttons.get(2));
+			break;
+		case KeyEvent.VK_3:
+			buttonRelease(buttons.get(3));
+			break;
+		case KeyEvent.VK_4:
+			buttonRelease(buttons.get(4));
+			break;
+		case KeyEvent.VK_5:
+			buttonRelease(buttons.get(5));
+			break;
+		case KeyEvent.VK_6:
+			buttonRelease(buttons.get(6));
+			break;
+		}
+	}
 	public void keyTyped(KeyEvent arg0) {}
 	
 	public static List<Button> getButtons()

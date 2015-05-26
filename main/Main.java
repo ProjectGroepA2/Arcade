@@ -11,6 +11,8 @@ public class Main {
 		{
 			new Window(true);
 		}
+		
+		
 	}
 
 }

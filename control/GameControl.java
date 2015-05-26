@@ -20,7 +20,7 @@ public class GameControl implements JoystickListener, ButtonListener{
 
 	@Override
 	public void buttonPressed(ButtonEvent e) {
-
+		System.out.println(e.getButton().getButtonID());
 	}
 
 	@Override
