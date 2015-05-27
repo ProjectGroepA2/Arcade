@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class PlayState extends GameState{
 		super(gsm);
 		area = new PlayArea((int) borderRect.getX(),1024,1024,100);
 		infoPanel = new InfoPanel(0, 0);
-		enemys = new ArrayList<Enemy>();
+		enemys = Collections.synchronizedList(new ArrayList<Enemy>());
 		player = new Player(1280-1024+1024/2, 1024/2,area);
 		for(int i = 0; i < 8; i++){
 			Line2D line = area.getLine(i);
@@ -53,9 +54,12 @@ public class PlayState extends GameState{
 			Enemy e = enemyIterator.next();
 			Iterator<Bullet> bulletIterator = player.bullets.iterator();
 			while(bulletIterator.hasNext()){
-				if(e.hit(bulletIterator.next())){
-					enemyIterator.remove();
+				Bullet b = bulletIterator.next();
+				if(e.bulletHitMe(b)){		//kijkt of de enemy een bullet tegen komt, zoja verwijder de bullet.
 					bulletIterator.remove();
+					if(e.ColorHitMe(b)){		//kijkt of de bullet die de enemy heeft gehit, ook dezelfde kleur heeft als de enemy, zoja verwijder de enemy
+						enemyIterator.remove();
+					}					
 				}
 			}
 			if(area.octagon.intersects(e.getCircle().getBounds2D())){

@@ -72,8 +72,25 @@ public class Enemy extends Person{
 		this.circle = circle;
 	}
 	
-	public boolean hit(Bullet bullet){
-		if(color.equals(bullet.getColor()) && circle.getBounds2D().intersectsLine(bullet.bullet)){
+	/**
+	 * Deze methode kijkt of de enemy is geraakt door een bullet
+	 * @param bullet, een kogel om te kijken of hij deze enemy heeft geraakt
+	 * @return, true = raakt, false = mis
+	 */
+	public boolean bulletHitMe(Bullet bullet){
+		if(circle.getBounds2D().intersectsLine(bullet.bullet)){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Hier kijk je of de bullet de juiste kleur heeft, om de enemy te vermoorden
+	 * @param bullet, de kogel om te kije of hij de zelfde kleur heeft als deze enemy
+	 * @return,true = zelfde kleur, false = andere kleur
+	 */
+	public boolean ColorHitMe(Bullet bullet){
+		if(this.color.equals(bullet.getColor())){
 			return true;
 		}
 		return false;

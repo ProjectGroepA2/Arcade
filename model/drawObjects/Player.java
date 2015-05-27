@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class Player extends Person {
 		img = Images.getImage(Images.ImageType.player2);	
 		width = img.getWidth();
 		height = img.getHeight();
-		bullets = new ArrayList<Bullet>();
+		bullets = Collections.synchronizedList(new ArrayList<Bullet>());
 	}
 	
 	public void draw(Graphics2D g2){//		
