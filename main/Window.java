@@ -1,9 +1,13 @@
 package main;
 
+import java.awt.Cursor;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
@@ -52,6 +56,10 @@ public class Window extends JFrame {
 		if(ON_RASP) //TODO REMOVE
 		{
 			led = new LedHandler();
+			//dissapear cursor
+			BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+			Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
+			this.setCursor(blankCursor);
 		}
 		
 		ButtonHandler bth = new ButtonHandler(led);
