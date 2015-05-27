@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import model.GameModel;
 import model.drawObjects.Bullet;
 import model.drawObjects.Enemy;
 import model.drawObjects.Player;
@@ -23,8 +24,7 @@ public class PlayState extends GameState{
 	private PlayArea area;
 	private InfoPanel infoPanel;
 	private Player player;
-	private List<Enemy> enemys;
-	private Color[] colors = {Color.MAGENTA,Color.RED,Color.GREEN,Color.YELLOW,Color.CYAN};
+	private List<Enemy> enemys;	
 
 	
 	public PlayState(GameStateManager gsm) {
@@ -35,7 +35,7 @@ public class PlayState extends GameState{
 		player = new Player(1280-1024+1024/2, 1024/2,area);
 		for(int i = 0; i < 8; i++){
 			Line2D line = area.getLine(i);
-			addEnemy(line, Color.BLUE, 100);
+			addEnemy(line, Color.BLUE, 200);
 		}
 	}
 
@@ -66,10 +66,9 @@ public class PlayState extends GameState{
 		}		
 		while(enemys.size() < 8){
 			int index = (int)(Math.random()*8);
-			int speed = (int)(Math.random()*1000);
-			int color = (int)(Math.random()*colors.length);
+			int color = (int)(Math.random()*GameModel.colors.length);
 			Line2D line = area.getLine(index);
-			addEnemy(line,colors[color],speed);
+			addEnemy(line,GameModel.colors[color],200);
 		}		
 	}
 
@@ -98,25 +97,25 @@ public class PlayState extends GameState{
 
 	@Override
 	public void buttonPressed(ButtonEvent e) {	
-		System.out.println("Playstate button pressed: "+e.getButton().getButtonID());
+//		System.out.println("Playstate button pressed: "+e.getButton().getButtonID());
 		switch(e.getButton().getButtonID()){
 			case 1:
-				player.addBullet(Color.RED);
+				player.addBullet(GameModel.colors[0]);
 				break;
 			case 2:
-				player.addBullet(Color.BLUE);
+				player.addBullet(GameModel.colors[1]);
 				break;
 			case 3:
-				player.addBullet(Color.GREEN);
+				player.addBullet(GameModel.colors[2]);
 				break;
 			case 4:
-				player.addBullet(Color.YELLOW);
+				player.addBullet(GameModel.colors[3]);
 				break;
 			case 5:
-				player.addBullet(Color.MAGENTA);
+				player.addBullet(GameModel.colors[4]);
 				break;
 			case 6:
-				player.addBullet(Color.CYAN);
+				player.addBullet(GameModel.colors[5]);
 				break;
 		}
 	}

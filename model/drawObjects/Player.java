@@ -54,7 +54,7 @@ public class Player extends Person {
 	}
 	
 	public void addBullet(Color c){	
-		System.out.println(index);
+//		System.out.println(index);
 		bullets.add(new Bullet(10, c, 10, index,path.paths.get(index)));		
 	}
 	
