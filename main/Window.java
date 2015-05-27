@@ -1,5 +1,7 @@
 package main;
 
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -48,6 +50,13 @@ public class Window extends JFrame {
 		if(ON_RASP) //TODO REMOVE
 		{
 			led = new LedHandler();
+			GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			GraphicsDevice[] devices =  graphicsEnvironment.getScreenDevices();
+			if (!devices[0].isFullScreenSupported ())
+			{
+			     throw new UnsupportedOperationException ("Fullscreen mode is unsupported.");
+			}
+			devices[0].setFullScreenWindow(this);
 		}
 		
 		ButtonHandler bth = new ButtonHandler(led);
