@@ -32,6 +32,8 @@ public class PlayState extends GameState{
 	private Iterator<Enemy> enemyIterator;
 	private Iterator<Bullet> bulletIterator;
 
+	public static int currentScore = 0; 
+	public static int lifePoints = 100;
 	
 	public PlayState(GameStateManager gsm) {
 		super(gsm);
@@ -76,6 +78,11 @@ public class PlayState extends GameState{
 			e.update();
 			//als de enemy de octagon raakt verwijder hem
 			if(area.octagon.intersects(e.getCircle().getBounds2D())){
+				lifePoints -= 5;
+				
+				if(lifePoints < 10){
+					lifePoints += 10;	//Dit is voor te testen.
+				}
 				enemyIterator.remove();
 			}
 			
@@ -87,17 +94,23 @@ public class PlayState extends GameState{
 					Bullet b = bulletIterator.next();
 					
 					//kijkt of de enemy een bullet tegen komt, zoja verwijder de bullet, zoniet update de enemy.
-					if(e.bulletHitMe(b)){		
+					if(e.bulletHitMe(b)){											
 						bulletIterator.remove();
 						
 						//kijkt of de bullet die de enemy heeft gehit, ook dezelfde kleur heeft als de enemy, zoja verwijder de enemy
-						if(e.ColorHitMe(b)){		
+						if(e.ColorHitMe(b)){
+							
+						currentScore += 100;
+						if(lifePoints < 100) {
+							lifePoints += 5;
+						}							
 							enemyIterator.remove();
 							break;
 						}					
 					}							
 				}				
-			}						
+			}
+			infoPanel.updateIPanel();
 		}	
 		
 
