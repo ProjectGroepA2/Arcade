@@ -15,11 +15,15 @@ public class GameModel implements ActionListener{
 	private Timer update;
 	public static Color[] colors = {Color.MAGENTA,Color.RED,Color.GREEN,Color.YELLOW,Color.CYAN,Color.WHITE};
 	private GameStateManager gsm;
+	private SongHandler sh;
 	
 	public GameModel(GameStateManager gsm)
 	{
 			
 		this.gsm = gsm;
+		
+		sh = new SongHandler();
+		
 		update = new Timer(1000/30, this);
 		update.start();
 		

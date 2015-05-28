@@ -1,13 +1,15 @@
 package audio;
 
-import java.awt.Color;
+import control.button.Button;
+import control.button.ButtonHandler;
 
 public class ObjectInstance {
 	
 	private long time;
 	private int direction;
 	
-	private Color color;
+	private int buttonID;
+	private Button button;
 	
 	private boolean hold;
 	private long length;
@@ -17,7 +19,8 @@ public class ObjectInstance {
 		time = 0;
 		direction = 0;
 		
-		color = null;
+		buttonID = 0;
+		button = null;
 		
 		hold = false;
 		length = 0;
@@ -39,12 +42,20 @@ public class ObjectInstance {
 		this.direction = direction;
 	}
 
-	public Color getColor() {
-		return color;
+	public int getButtonID() {
+		return buttonID;
 	}
 
-	public void setColor(Color color) {
-		this.color = color;
+	public void setButtonID(int buttonID) {
+		if(buttonID < ButtonHandler.getButtons().size() - 1)
+		{
+			this.buttonID = buttonID;
+			this.button = ButtonHandler.getButton(buttonID);
+		}
+	}
+
+	public Button getButton() {
+		return button;
 	}
 
 	public boolean isHold() {
@@ -62,8 +73,4 @@ public class ObjectInstance {
 	public void setLength(long length) {
 		this.length = length;
 	}
-	
-	
-	
-	
 }

@@ -6,13 +6,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
+import model.GameModel;
+import audio.ButtonInstance;
 import audio.ObjectInstance;
 import audio.Song;
 import audio.SongInstance;
@@ -31,6 +32,7 @@ public class JSONReader {
 		JsonReader rdr = Json.createReader(is);
 		JsonObject obj = rdr.readObject();
 		rdr.close();
+		is.close();
 		
 		if(!obj.containsKey("meta") || !obj.containsKey("file") || !obj.containsKey("data"))
 			throw new IOException("Corrupt CSF File");
@@ -44,25 +46,25 @@ public class JSONReader {
 		s.setTitle(meta.getString("title"));
 		s.setSubtitle(meta.getString("subtitle"));
 		s.setAuthor(meta.getString("author"));
-		s.setCreator(meta.getString("creator"));
+		s.setSampleStart(meta.getInt("sample_start"));
 		s.setBPM(meta.getInt("BPM"));
 		
 		//Read FILE data
 		JsonObject file = obj.getJsonObject("file");
 		
-		File audio = new File(file.getString("audio"));
+		File audio = new File(f.getParent() + File.separator + file.getString("audio"));
 		if(!audio.exists() || !audio.getName().endsWith(".mp3"))
-			throw new FileNotFoundException("Audio file does not exist");
+			throw new FileNotFoundException("Audio file does not exist: " + audio.getPath());
 		s.setAudio(audio);
 		
-		File background = new File(file.getString("background"));
+		File background = new File(f.getParent() + File.separator + file.getString("background"));
 		if(!background.exists() || !(background.getName().endsWith(".jpg") || background.getName().endsWith(".png")))
-			throw new FileNotFoundException("Background image does not exist");
+			throw new FileNotFoundException("Background image does not exist: " + background.getPath());
 		s.setBackground(background);
 
-		File banner = new File(file.getString("banner"));
+		File banner = new File(f.getParent() + File.separator + file.getString("banner"));
 		if(!banner.exists() || !(banner.getName().endsWith(".jpg") || banner.getName().endsWith(".png")))
-			throw new FileNotFoundException("Banner image does not exist");
+			throw new FileNotFoundException("Banner image does not exist: " + banner.getPath());
 		s.setBanner(banner);
 		
 		s.setFile(f);
@@ -87,24 +89,22 @@ public class JSONReader {
 			si.addObjectInstance( readObjectInstance(object.getJsonObject(i)) );
 		}
 		
+		JsonArray button = obj.getJsonArray("button");
+		for(int i = 0; i < button.size(); i++)
+		{
+			si.addButtonInstance( readButtonInstance(button.getJsonObject(i)) );
+		}
+		
 		return si;
 	}
-	
-	private static ObjectInstance readObjectInstance(JsonObject obj) throws IOException
+
+	private static ObjectInstance readObjectInstance(JsonObject obj)
 	{
 		ObjectInstance oi = new ObjectInstance();
 		
 		oi.setTime(obj.getInt("time"));
 		oi.setDirection(obj.getInt("direction"));
-		
-		Color color;
-		try {
-		    Field field = Color.class.getField(obj.getString("color").toLowerCase());
-		    color = (Color)field.get(null);
-		} catch (Exception e) {
-		    throw new IOException("Cannot read property color from " + obj);
-		}
-		oi.setColor(color);
+		oi.setButtonID(obj.getInt("button"));
 		
 		if(obj.containsKey("hold") && obj.getBoolean("hold"))
 		{
@@ -113,5 +113,18 @@ public class JSONReader {
 		}
 		
 		return oi;
+	}
+	
+	private static ButtonInstance readButtonInstance(JsonObject obj)
+	{
+		ButtonInstance bi = new ButtonInstance();
+		
+		bi.setTime(obj.getInt("time"));
+		bi.setButtonID(obj.getInt("button"));
+		
+		Color color = GameModel.colors[obj.getInt("color") % GameModel.colors.length];
+		bi.setColor(color);
+		
+		return bi;
 	}
 }

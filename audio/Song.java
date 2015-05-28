@@ -9,7 +9,7 @@ public class Song {
 	private String title;
 	private String subtitle;
 	private String author;
-	private String creator;
+	private double sample_start;
 	private double BPM;
 	
 	private File audio;
@@ -24,7 +24,7 @@ public class Song {
 		title = "";
 		subtitle = "";
 		author = "";
-		creator = "";
+		sample_start = 0;
 		BPM = 0.0;
 		
 		audio = null;
@@ -64,12 +64,12 @@ public class Song {
 		this.author = author;
 	}
 
-	public String getCreator() {
-		return creator;
+	public double getSampleStart() {
+		return sample_start;
 	}
 
-	public void setCreator(String creator) {
-		this.creator = creator;
+	public void setSampleStart(double sample_start) {
+		this.sample_start = sample_start;
 	}
 
 	public double getBPM() {

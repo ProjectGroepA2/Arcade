@@ -6,6 +6,8 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.Window;
+
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinDigitalInput;
@@ -14,7 +16,6 @@ import com.pi4j.io.gpio.RaspiPin;
 import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 
-import main.Window;
 import control.LedHandler;
 
 public class ButtonHandler implements KeyListener{
@@ -37,12 +38,7 @@ public class ButtonHandler implements KeyListener{
 		buttons.add(new Button(4, 3, led));
 		buttons.add(new Button(5, 4, led));
 		buttons.add(new Button(6, 5, led));
-		
-		for(Button b : buttons)
-		{
-			b.setColor(new Color((int)(Math.random()*254+1),(int)(Math.random()*254+1),(int)(Math.random()*254+1)));
-		}
-		System.out.println(Window.ON_RASP);
+	
 		if (Window.ON_RASP)
 			addGpioListeners();
 		
@@ -157,5 +153,17 @@ public class ButtonHandler implements KeyListener{
 	public static List<Button> getButtons()
 	{
 		return buttons;
+	}
+	
+	public static Button getButton(int id)
+	{
+		for(Button b : buttons)
+		{
+			if(b.getButtonID() == id)
+			{
+				return b;
+			}
+		}
+		return null;
 	}
 }
