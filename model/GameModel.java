@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
-import view.GameView;
 import control.GameStateManager;
 import control.button.ButtonHandler;
 
