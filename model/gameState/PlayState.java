@@ -115,25 +115,27 @@ public class PlayState extends GameState{
 
 	@Override
 	public void draw(Graphics2D g2) {	
-		infoPanel.draw(g2);
-		g2.setClip(borderRect);	
-		area.draw(g2);		
-		
-		if(enemys != null){
-			if(!enemys.isEmpty()){
-				for(Enemy enemy : enemys){
-					enemy.draw(g2);
+		try{
+			infoPanel.draw(g2);
+			g2.setClip(borderRect);	
+			area.draw(g2);		
+			
+			if(enemys != null){
+				if(!enemys.isEmpty()){
+					for(Enemy enemy : enemys){
+						enemy.draw(g2);
+					}
 				}
+			}		
+
+			g2.setStroke(new BasicStroke(5));
+			for(Bullet b : bullets){
+				b.draw(g2);
 			}
-		}		
 
-		g2.setStroke(new BasicStroke(5));
-		for(Bullet b : bullets){
-			b.draw(g2);
-		}
-
-		if(player != null)
-			player.draw(g2);
+			if(player != null)
+				player.draw(g2);
+		}catch(Exception e){};
 		
 	}
 	
