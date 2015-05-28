@@ -78,7 +78,7 @@ public class Enemy extends Person{
 	 * @return, true = raakt, false = mis
 	 */
 	public boolean bulletHitMe(Bullet bullet){
-		if(circle.getBounds2D().intersectsLine(bullet.bullet)){
+		if(circle.getBounds2D().intersectsLine(bullet.getBullet())){
 			return true;
 		}
 		return false;

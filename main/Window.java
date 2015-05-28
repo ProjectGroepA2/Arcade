@@ -1,15 +1,11 @@
 package main;
 
 
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-
 import java.awt.Cursor;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Toolkit;
-
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -24,11 +20,7 @@ import control.LedHandler;
 import control.button.ButtonHandler;
 import control.joystick.JoystickHandler;
 
-public class Window extends JFrame {
-	
-	/**
-	 * 
-	 */
+public class Window extends JFrame {	
 	private static final long serialVersionUID = -9222956702898533696L;
 	public static boolean ON_RASP;
 	
@@ -37,10 +29,7 @@ public class Window extends JFrame {
 		//Create window
 		super("Arcade");
 		setSize(1280, 1024);
-		
-		Window.ON_RASP = ON_RASP;
-//		System.out.println(ON_RASP);
-		
+				
 		//Set window close listener
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter(){
@@ -49,28 +38,24 @@ public class Window extends JFrame {
 			}
 		});
 		
-
 		//Create Events
 		LedHandler led = null;
+		Window.ON_RASP = ON_RASP;
 		
-		if(ON_RASP)
-		{
+		if(ON_RASP){ //Only on the raspberry pi
 			led = new LedHandler();
 			GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			GraphicsDevice[] devices =  graphicsEnvironment.getScreenDevices();
 
-			if (!devices[0].isFullScreenSupported ())
-			{
+			if (!devices[0].isFullScreenSupported ()){
 			     throw new UnsupportedOperationException ("Fullscreen mode is unsupported.");
-			}
-			devices[0].setFullScreenWindow(this);
-
-			
-			//dissapear cursor
+			}else{
+				devices[0].setFullScreenWindow(this);
+			}			
+			//Remove cursor
 			BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 			Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
 			this.setCursor(blankCursor);
-
 		}
 		
 		ButtonHandler bth = new ButtonHandler(led);

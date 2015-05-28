@@ -37,8 +37,8 @@ public class PlayState extends GameState{
 		super(gsm);
 		area = new PlayArea((int) borderRect.getX(),1024,1024,100);
 		infoPanel = new InfoPanel(0, 0);
-		enemys = Collections.synchronizedList(new ArrayList<Enemy>());
-		bullets = Collections.synchronizedList(new ArrayList<Bullet>());
+		enemys = new ArrayList<Enemy>();
+		bullets =new ArrayList<Bullet>();
 		player = new Player(1280-1024+1024/2, 1024/2);
 		for(int i = 0; i < 8; i++){
 			Line2D line = area.getLine(i);
@@ -56,19 +56,15 @@ public class PlayState extends GameState{
 	@Override
 	public void update() {		
 		player.update();	
-
-		
 		bulletIterator = bullets.iterator();
 		while(bulletIterator.hasNext()){
 			Bullet b = bulletIterator.next();
 
 			//als de bullet de border raakt verwijder hem, anders update je hem
-			if(!borderRect.intersectsLine(b.bullet)){
+			if(!borderRect.intersectsLine(b.getBullet())){
 				bulletIterator.remove();
 				break;
-			}
-			
-			else{
+			}else{
 				b.update();
 			}
 		}
@@ -121,10 +117,8 @@ public class PlayState extends GameState{
 			area.draw(g2);		
 			
 			if(enemys != null){
-				if(!enemys.isEmpty()){
-					for(Enemy enemy : enemys){
-						enemy.draw(g2);
-					}
+				for(Enemy enemy : enemys){
+					enemy.draw(g2);
 				}
 			}		
 
@@ -150,7 +144,6 @@ public class PlayState extends GameState{
 
 	@Override
 	public void buttonReleased(ButtonEvent e) {		
-//		System.out.println("Playstate button released: "+e.getButton().getButtonID());
 	}
 
 	@Override

@@ -12,10 +12,10 @@ import control.button.ButtonHandler;
 
 public class GameModel implements ActionListener{
 	
-	GameView view;
-	Timer update;
+	private GameView view;
+	private Timer update;
 	public static Color[] colors = {Color.MAGENTA,Color.RED,Color.GREEN,Color.YELLOW,Color.CYAN,Color.BLUE};
-	GameStateManager gsm;
+	private GameStateManager gsm;
 	
 	public GameModel(GameView view,GameStateManager gsm)
 	{

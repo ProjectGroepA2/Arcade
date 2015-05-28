@@ -7,8 +7,7 @@ import java.awt.geom.Line2D;
 public class Bullet extends DrawObject {
 
 	private double speed,lengthOfBullet;
-	
-	public Line2D bullet;
+	private Line2D bullet;
 	private Color c;
 	
 	public Bullet(double speed,Color c,double lengthOfBullet,int index,Line2D path) {
@@ -16,12 +15,11 @@ public class Bullet extends DrawObject {
 		this.speed = speed;
 		this.lengthOfBullet = lengthOfBullet;
 		this.c = c;
-		double beginX,beginY,endX,endY;
 		
-		beginX = path.getX2();
-		beginY = path.getY2();
-		endX = beginX;
-		endY = beginY;
+		double beginX = path.getX2();
+		double beginY = path.getY2();
+		double endX = beginX;
+		double endY = beginY;
 		
 		//the 8 richtingen van de octagon
 		switch(index){
@@ -55,9 +53,6 @@ public class Bullet extends DrawObject {
 			break;		
 		}
 		bullet = new Line2D.Double(beginX, beginY, endX, endY);
-//		System.out.println("Index: "+index);
-//		System.out.println("X difference: "+(bullet.getX2()-bullet.getX1()));
-//		System.out.println("Y difference: "+(bullet.getY2()-bullet.getY1()));
 	}
 
 	@Override
@@ -68,13 +63,12 @@ public class Bullet extends DrawObject {
 
 	@Override
 	public void update() {		
-		double x1,x2,y1,y2,yDifference,xDifference;
-		x1 = bullet.getX1();
-		x2 = bullet.getX2();
-		y1 = bullet.getY1();
-		y2 = bullet.getY2();
-		yDifference = y2 - y1;
-		xDifference = x2 - x1;		
+		double x1 = bullet.getX1();
+		double x2 = bullet.getX2();
+		double y1 = bullet.getY1();
+		double y2 = bullet.getY2();
+		double yDifference = y2 - y1;
+		double xDifference = x2 - x1;		
 				
 		if(yDifference < 0.0){			
 			y1 -= speed;
@@ -91,7 +85,6 @@ public class Bullet extends DrawObject {
 			x1 += speed;
 			x2 = x1+lengthOfBullet;
 		}		
-		
 		bullet.setLine(x1, y1, x2, y2);
 	}
 
@@ -101,7 +94,13 @@ public class Bullet extends DrawObject {
 
 	public void setColor(Color c) {
 		this.c = c;
-	}	
-	
-	
+	}
+
+	public Line2D getBullet() {
+		return bullet;
+	}
+
+	public void setBullet(Line2D bullet) {
+		this.bullet = bullet;
+	}		
 }
