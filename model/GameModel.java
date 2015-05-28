@@ -12,14 +12,14 @@ import control.button.ButtonHandler;
 
 public class GameModel implements ActionListener{
 	
-	private GameView view;
+	
 	private Timer update;
-	public static Color[] colors = {Color.MAGENTA,Color.RED,Color.GREEN,Color.YELLOW,Color.CYAN,Color.BLUE};
+	public static Color[] colors = {Color.MAGENTA,Color.RED,Color.GREEN,Color.YELLOW,Color.CYAN,Color.WHITE};
 	private GameStateManager gsm;
 	
-	public GameModel(GameView view,GameStateManager gsm)
+	public GameModel(GameStateManager gsm)
 	{
-		this.view = view;	
+			
 		this.gsm = gsm;
 		update = new Timer(1000/30, this);
 		update.start();

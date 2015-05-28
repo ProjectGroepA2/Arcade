@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -44,7 +43,7 @@ public class PlayState extends GameState{
 		player = new Player(1280-1024+1024/2, 1024/2);
 		for(int i = 0; i < 8; i++){
 			Line2D line = area.getLine(i);
-			addEnemy(line, Color.BLUE, 200);
+			addEnemy(line, Color.RED, 200);
 		}
 		
 	}
@@ -100,7 +99,7 @@ public class PlayState extends GameState{
 						//kijkt of de bullet die de enemy heeft gehit, ook dezelfde kleur heeft als de enemy, zoja verwijder de enemy
 						if(e.ColorHitMe(b)){
 							
-						currentScore += 100;
+						currentScore += 1;
 						if(lifePoints < 100) {
 							lifePoints += 5;
 						}							

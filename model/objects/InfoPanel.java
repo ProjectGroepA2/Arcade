@@ -8,8 +8,9 @@ import model.gameState.PlayState;
 
 public class InfoPanel {
 	
-	public String totalHighscore = "XXXXXX";
-	private String totalLifePoints = "";
+	private String totalHighscore = "XXXXXX";
+	private int lifePercent;
+	private int upgradeScore = 0;
 	private int x, y;
 	
 	public InfoPanel(int x, int y){
@@ -20,7 +21,16 @@ public class InfoPanel {
 	
 	public void updateIPanel() {		
 		totalHighscore  = "Score: " + PlayState.currentScore;
-		totalLifePoints = "Hp:    " + PlayState.lifePoints;
+		
+		
+		lifePercent =+ PlayState.lifePoints;
+		
+		if(0 <= PlayState.currentScore && PlayState.currentScore <=100) {			
+			upgradeScore = PlayState.currentScore;
+		}
+		
+		if(PlayState.currentScore == 100) {
+		}
 	}
 	
 	public void draw(Graphics2D g2){
@@ -28,9 +38,18 @@ public class InfoPanel {
 		Font scoreFont = new Font("OCR A Extended", Font.BOLD, 30);
 		g2.setFont(scoreFont);
 		g2.setColor(Color.ORANGE);
-		g2.drawString(totalHighscore, 25, 150);
-		g2.drawString(totalLifePoints, 25, 190);
+		g2.drawString(totalHighscore, 25, 75);
+		g2.drawRect(25, 100, 200, 30);
+		g2.drawRect(25, 300, 200, 700);
+		g2.setColor(Color.GREEN);
+		g2.fillRect(25, 100, 2 * lifePercent, 30);
+		
+		g2.setColor(Color.YELLOW);		
+		g2.fillRect(25, 1000 - 7 * upgradeScore, 200, 0 + 7 * upgradeScore);
+		
 		g2.setColor(Color.BLACK);
+	
+		
 		
 		
 	}
