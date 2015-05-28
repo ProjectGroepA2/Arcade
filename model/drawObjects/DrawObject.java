@@ -2,17 +2,23 @@ package model.drawObjects;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
 
 public abstract class DrawObject {
 
-	protected Point2D middlePoint;
-	protected AffineTransform transform;
-	protected int index = 0,width,height;
 	
-	public DrawObject(int x, int y) {
-		middlePoint = new Point2D.Double(x, y);
+	protected AffineTransform transform;
+	protected double width,height;
+	protected int index = 0;
+	public DrawObject() {	
 		transform = new AffineTransform();
+	}	
+
+	public int getIndex(){
+		return index;
+	}
+	
+	public void setIndex(int index){
+		this.index = index;
 	}
 	
 	public abstract void draw(Graphics2D g2);

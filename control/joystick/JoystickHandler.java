@@ -50,7 +50,12 @@ public class JoystickHandler implements KeyListener{
                   public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent e) {
                 	  if(e.getState() == PinState.HIGH){
                 		  keyReleased(new KeyEvent(
-                				  		new java.awt.Component(){}, 
+                				  		new java.awt.Component(){
+
+											/**
+											 * 
+											 */
+											private static final long serialVersionUID = 1L;}, 
                 				  		KeyEvent.KEY_RELEASED, 
                 				  		System.nanoTime(), 
                 				  		0, 
@@ -60,7 +65,12 @@ public class JoystickHandler implements KeyListener{
                 		  System.out.println(e.getPin().getName() + " Released");
                 	  }else{
                 		  keyPressed(new KeyEvent(
-          				  		new java.awt.Component(){}, 
+          				  		new java.awt.Component(){
+
+									/**
+									 * 
+									 */
+									private static final long serialVersionUID = 1L;}, 
           				  		KeyEvent.KEY_PRESSED, 
           				  		System.nanoTime(), 
           				  		0, 

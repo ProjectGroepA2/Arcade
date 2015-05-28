@@ -12,6 +12,6 @@ public class InfoPanel {
 	}
 	
 	public void draw(Graphics2D g2){
-		g2.drawRect(x, y, 256, 1024);
+		g2.fillRect(x, y, 256, 1024);
 	}
 }
