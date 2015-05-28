@@ -143,26 +143,8 @@ public class PlayState extends GameState{
 
 	@Override
 	public void buttonPressed(ButtonEvent e) {	
-
-		switch(e.getButton().getButtonID()){
-			case 1:
-				addBullet(GameModel.colors[0],player.getIndex());
-				break;
-			case 2:
-				addBullet(GameModel.colors[1],player.getIndex());
-				break;
-			case 3:
-				addBullet(GameModel.colors[2],player.getIndex());
-				break;
-			case 4:
-				addBullet(GameModel.colors[3],player.getIndex());
-				break;
-			case 5:
-				addBullet(GameModel.colors[4],player.getIndex());
-				break;
-			case 6:
-				addBullet(GameModel.colors[5],player.getIndex());
-				break;
+		if(e.getButton().getButtonID() != 0){
+			addBullet(GameModel.colors[e.getButton().getButtonID()-1],player.getIndex());
 		}
 	}
 
@@ -172,7 +154,7 @@ public class PlayState extends GameState{
 	}
 
 	@Override
-	public void onJoystickMoved(JoystickEvent e) {		
+	public void onJoystickMoved(JoystickEvent e) {	
 		switch(e.getJoystick().getPos()){
 		case CENTER:
 			break;
