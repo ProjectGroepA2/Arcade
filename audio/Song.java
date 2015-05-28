@@ -4,39 +4,39 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.scene.media.Media;
+
 public class Song {
-	
+
 	private String title;
 	private String subtitle;
 	private String author;
 	private double sample_start;
 	private double BPM;
-	
+
 	private File audio;
 	private File background;
 	private File banner;
 	private File file;
-	
+
 	private List<SongInstance> songs;
-	
-	public Song()
-	{
+
+	public Song() {
 		title = "";
 		subtitle = "";
 		author = "";
 		sample_start = 0;
 		BPM = 0.0;
-		
+
 		audio = null;
 		background = null;
 		banner = null;
 		file = null;
-		
+
 		songs = new ArrayList<SongInstance>();
 	}
-	
-	public void addSongInstance(SongInstance s)
-	{
+
+	public void addSongInstance(SongInstance s) {
 		songs.add(s);
 	}
 

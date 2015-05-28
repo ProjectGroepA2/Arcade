@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javazoom.jl.player.Player;
 import main.Window;
 import audio.Song;
 import audio.io.DirScanner;
@@ -16,7 +17,7 @@ public class SongHandler {
 	private int currentIndex;
 	
 	private File dir;
-	
+
 	public SongHandler()
 	{
 		songs = new ArrayList<Song>();
@@ -32,11 +33,6 @@ public class SongHandler {
 		songs = DirScanner.scanDirectories(dir);
 		
 		currentSong = songs.get(currentIndex);
-		
-		for(Song s : songs)
-		{
-			System.out.println(s.getTitle());
-		}
 	}
 	
 	public void next()
@@ -44,11 +40,18 @@ public class SongHandler {
 		currentIndex++;
 		currentIndex%=songs.size();
 		currentSong = songs.get(currentIndex);
+		updatePlayer();
 	}
 	public void previous()
 	{
 		currentIndex--;
 		currentIndex%=songs.size();
 		currentSong = songs.get(currentIndex);
+		updatePlayer();
+	}
+	
+	private void updatePlayer()
+	{
+		
 	}
 }

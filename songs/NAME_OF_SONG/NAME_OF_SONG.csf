@@ -1,0 +1,72 @@
+{
+	"meta": {
+		"title": "title of song",
+		"subtitle": "subtitle of song",
+		"author": "author of song",
+		"sample_start": 12.00,
+		"BPM": 0
+	},
+	"file": {
+		"audio": "NAME_OF_SONG.mp3",
+		"background": "background.png",
+		"banner": "banner.png"
+	},
+	"data": [
+		{
+			"difficulty": "easy",
+			"objects": [
+				{ 
+					"time": 1,
+					"direction": 1,
+					"button": 0,
+					"hold": true,
+					"length": 1000 
+				},
+				{
+					"time": 16,
+					"direction": 6,
+					"button": 1
+				}
+			],
+			"button": [
+				{
+					"time": 0,
+					"button": 0,
+					"color": 0
+				},
+				{
+					"time": 20,
+					"button": 6,
+					"color": 1
+				}
+			]
+		},
+		{
+			"difficulty": "medium",
+			"objects": [
+				{
+					"time": 4,
+					"direction": 3,
+					"button": 3
+				},
+				{
+					"time": 12,
+					"direction": 5,
+					"button": 2
+				}
+			],
+			"button": [
+				{
+					"time": 0,
+					"button": 0,
+					"color": 0
+				},
+				{
+					"time": 20,
+					"button": 6,
+					"color": 1
+				}
+			]
+		}
+	]
+}
