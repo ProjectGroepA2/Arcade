@@ -1,9 +1,10 @@
 package model.gameState;
 
 import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
 
 import control.GameStateManager;
+import control.button.ButtonEvent;
+import control.joystick.JoystickEvent;
 
 public class MenuState extends GameState {
 
@@ -24,22 +25,29 @@ public class MenuState extends GameState {
 
 	@Override
 	public void draw(Graphics2D g2) {
-		g2.fillRect(10, 10, 100, 10);
+		g2.drawString("Press 0 to start the game", 1280/2, 1024/2);
 
 	}
-
+	
 	@Override
-	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_Q){
+	public void buttonPressed(ButtonEvent e) {
+		
+		switch(e.getButton().getButtonID()){
+		case 0:
 			gsm.next();
+			break;
 		}
-
+		
+		
 	}
-
 	@Override
-	public void keyReleased(KeyEvent e) {
+	public void buttonReleased(ButtonEvent e) {
+		
+	}
+	@Override
+	public void onJoystickMoved(JoystickEvent e) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 }

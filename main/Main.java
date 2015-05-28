@@ -10,9 +10,7 @@ public class Main {
 		else
 		{
 			new Window(true);
-		}
-		
-		
+		}		
 	}
 
 }
