@@ -21,9 +21,6 @@ public abstract class DrawObject {
 		this.index = index;
 	}
 	
-	public void setIndex(int index){
-		this.index = index;
-	}
 	
 	public abstract void draw(Graphics2D g2);
 	public abstract void update();
