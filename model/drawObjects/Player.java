@@ -18,13 +18,14 @@ public class Player extends Person {
 	}
 	
 	public void draw(Graphics2D g2){//		
-		g2.drawImage(img, transform, null);			
+		g2.drawImage(img, transform, null);		
+		
 	}
 	
 	public void update(){
 		transform = new AffineTransform();
 		transform.rotate(Math.toRadians(index*45),middlePoint.getX(),middlePoint.getY());
-		transform.translate(middlePoint.getX() - width/2, middlePoint.getY() - height);		
+		transform.translate(middlePoint.getX() - width/2, middlePoint.getY() - height);	
 	}
 }
 	

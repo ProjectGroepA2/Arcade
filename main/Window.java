@@ -1,9 +1,18 @@
 package main;
 
+
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+
+import java.awt.Cursor;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Point;
+import java.awt.Toolkit;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
@@ -40,26 +49,28 @@ public class Window extends JFrame {
 			}
 		});
 		
-		//Set window to fullscreen
-//		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
-//		setUndecorated(true);
-		
+
 		//Create Events
 		LedHandler led = null;
 		
-		if(ON_RASP) //TODO REMOVE
+		if(ON_RASP)
 		{
 			led = new LedHandler();
 			GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			GraphicsDevice[] devices =  graphicsEnvironment.getScreenDevices();
-			for(GraphicsDevice divice : devices){
-				System.out.println(divice);
-			}
+
 			if (!devices[0].isFullScreenSupported ())
 			{
 			     throw new UnsupportedOperationException ("Fullscreen mode is unsupported.");
 			}
 			devices[0].setFullScreenWindow(this);
+
+			
+			//dissapear cursor
+			BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+			Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
+			this.setCursor(blankCursor);
+
 		}
 		
 		ButtonHandler bth = new ButtonHandler(led);

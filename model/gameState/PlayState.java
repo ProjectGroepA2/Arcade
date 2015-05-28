@@ -1,5 +1,6 @@
 package model.gameState;
 
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -30,6 +31,7 @@ public class PlayState extends GameState{
 	private List<Bullet> bullets;
 	private Iterator<Enemy> enemyIterator;
 	private Iterator<Bullet> bulletIterator;
+
 	
 	public PlayState(GameStateManager gsm) {
 		super(gsm);
@@ -41,7 +43,8 @@ public class PlayState extends GameState{
 		for(int i = 0; i < 8; i++){
 			Line2D line = area.getLine(i);
 			addEnemy(line, Color.BLUE, 200);
-		}		
+		}
+		
 	}
 
 	@Override
@@ -53,6 +56,7 @@ public class PlayState extends GameState{
 	@Override
 	public void update() {		
 		player.update();	
+
 		
 		bulletIterator = bullets.iterator();
 		while(bulletIterator.hasNext()){
@@ -100,6 +104,7 @@ public class PlayState extends GameState{
 			}						
 		}	
 		
+
 		while(enemys.size() < 8){
 			int index = (int)(Math.random()*8);
 			int color = (int)(Math.random()*GameModel.colors.length);
@@ -121,22 +126,22 @@ public class PlayState extends GameState{
 				}
 			}
 		}		
+
 		g2.setStroke(new BasicStroke(5));
 		for(Bullet b : bullets){
 			b.draw(g2);
 		}
+
 		if(player != null)
 			player.draw(g2);
 		
 	}
 	
-	public void addEnemy(Line2D path,Color c,double speed){		
-		enemys.add(new Enemy(path,c,20,speed));	
-	}
+	
 
 	@Override
 	public void buttonPressed(ButtonEvent e) {	
-//		System.out.println("Playstate button pressed: "+e.getButton().getButtonID());
+
 		switch(e.getButton().getButtonID()){
 			case 1:
 				addBullet(GameModel.colors[0],player.getIndex());
@@ -197,6 +202,11 @@ public class PlayState extends GameState{
 			break;
 		}
 	}
+
+	public void addEnemy(Line2D path,Color c,double speed){		
+		enemys.add(new Enemy(path,c,20,speed));	
+	}
+	
 	public void addBullet(Color c,int index){		;
 		bullets.add(new Bullet(10, c, 10, index,area.paths.get(index)));		
 	}
@@ -204,4 +214,5 @@ public class PlayState extends GameState{
 	public void removeBullet(Bullet bullet){
 		bullets.remove(bullet);
 	}
+
 }
