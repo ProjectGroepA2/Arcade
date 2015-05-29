@@ -20,7 +20,8 @@ public class Images{
 		  try{
 		   images.add(ImageIO.read(Main.class.getResource("/image/player.png"))); 
 		   images.add(ImageIO.read(Main.class.getResource("/image/player2.png"))); 
-		  
+		   images.add(ImageIO.read(Main.class.getResource("/image/pressstart.png"))); 
+		   
 		  }catch(IOException e){
 		   e.printStackTrace();
 		  }
@@ -33,6 +34,6 @@ public class Images{
 
 	 public enum ImageType
 	 {
-	  player,player2	 
+	  player,player2, pressstart
 	 }
 }
