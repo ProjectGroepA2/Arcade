@@ -40,12 +40,12 @@ public class DirScanner {
 		{
 			for(File file2 : file.listFiles(csf))
 			{
-				try {
-					Song s = JSONReader.readSong(file2);
-					songs.add(s);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+					try {
+						Song s = JSONReader.readSong(file2);
+						songs.add(s);
+					} catch (IOException e1) {
+					}
+					
 			}
 		}
 		

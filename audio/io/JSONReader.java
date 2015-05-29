@@ -10,7 +10,6 @@ import java.io.InputStream;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 
 import model.GameModel;
@@ -54,17 +53,17 @@ public class JSONReader {
 		JsonObject file = obj.getJsonObject("file");
 		
 		File audio = new File(f.getParent() + File.separator + file.getString("audio"));
-		if(!audio.exists() || !audio.getName().endsWith(".mp3"))
+		if(!audio.exists() || !audio.getName().toLowerCase().endsWith(".mp3"))
 			throw new FileNotFoundException("Audio file does not exist: " + audio.getPath());
 		s.setAudio(audio);
 		
 		File background = new File(f.getParent() + File.separator + file.getString("background"));
-		if(!background.exists() || !(background.getName().endsWith(".jpg") || background.getName().endsWith(".png")))
+		if(!background.exists() || !(background.getName().toLowerCase().endsWith(".jpg") || background.getName().toLowerCase().endsWith(".png")))
 			throw new FileNotFoundException("Background image does not exist: " + background.getPath());
 		s.setBackground(background);
 
 		File banner = new File(f.getParent() + File.separator + file.getString("banner"));
-		if(!banner.exists() || !(banner.getName().endsWith(".jpg") || banner.getName().endsWith(".png")))
+		if(!banner.exists() || !(banner.getName().toLowerCase().endsWith(".jpg") || banner.getName().toLowerCase().endsWith(".png")))
 			throw new FileNotFoundException("Banner image does not exist: " + banner.getPath());
 		s.setBanner(banner);
 		
@@ -90,10 +89,10 @@ public class JSONReader {
 			si.addObjectInstance( readObjectInstance(object.getJsonObject(i)) );
 		}
 		
-		JsonArray button = obj.getJsonArray("button");
-		for(int i = 0; i < button.size(); i++)
+		JsonArray buttons = obj.getJsonArray("buttons");
+		for(int i = 0; i < buttons.size(); i++)
 		{
-			si.addButtonInstance( readButtonInstance(button.getJsonObject(i)) );
+			si.addButtonInstance( readButtonInstance(buttons.getJsonObject(i)) );
 		}
 		
 		return si;

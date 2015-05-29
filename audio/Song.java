@@ -1,10 +1,16 @@
 package audio;
 
+import image.Images;
+
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.scene.media.Media;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Song {
 
@@ -18,6 +24,10 @@ public class Song {
 	private File background;
 	private File banner;
 	private File file;
+	
+	private BufferedImage backgroundImage;
+	private BufferedImage bannerImage;
+	private AudioInputStream audioStream;
 
 	private List<SongInstance> songs;
 
@@ -32,6 +42,10 @@ public class Song {
 		background = null;
 		banner = null;
 		file = null;
+		
+		backgroundImage = null;
+		bannerImage = null;
+		audioStream = null;
 
 		songs = new ArrayList<SongInstance>();
 	}
@@ -83,6 +97,27 @@ public class Song {
 	public File getAudio() {
 		return audio;
 	}
+	
+	public AudioInputStream getAudioStream()
+	{
+		if(audioStream == null)
+		{
+			try {
+				this.audioStream = AudioSystem.getAudioInputStream(audio);
+			} catch (UnsupportedAudioFileException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		try {
+			audioStream.reset();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return audioStream;
+	}
 
 	public void setAudio(File audio) {
 		this.audio = audio;
@@ -94,10 +129,29 @@ public class Song {
 
 	public void setBackground(File background) {
 		this.background = background;
+		
+	}
+	
+	public BufferedImage getBackgroundImage()
+	{
+		if(backgroundImage == null)
+		{
+			this.backgroundImage = Images.readImage(background);
+		}
+		return backgroundImage;
 	}
 
 	public File getBanner() {
 		return banner;
+	}
+	
+	public BufferedImage getBannerImage()
+	{
+		if(bannerImage == null)
+		{
+			this.bannerImage = Images.readImage(banner);
+		}
+		return bannerImage;
 	}
 
 	public void setBanner(File banner) {
@@ -114,5 +168,16 @@ public class Song {
 
 	public List<SongInstance> getSongs() {
 		return songs;
+	}
+	
+	public void close()
+	{
+		if(audioStream != null)
+		{
+			try {
+				audioStream.close();
+			} catch (IOException e) {
+			}
+		}
 	}
 }
