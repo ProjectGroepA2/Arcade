@@ -14,7 +14,9 @@ import control.joystick.JoystickEvent;
 
 public class MenuState extends GameState {
 
-    BufferedImage PressStart = Images.getImage(ImageType.pressstart);
+    BufferedImage pressStart = Images.getImage(ImageType.pressstart);
+    BufferedImage colorStrike = Images.getImage(ImageType.colorstrike);
+    
     int index = 0;
     int varx = 0;
     int x,y,frame = 0,maxFrames = 5;
@@ -53,8 +55,11 @@ public class MenuState extends GameState {
 		
 		g2.translate(1280/2, 1024/2);               
 	        
-	    BufferedImage subImg = PressStart.getSubimage(x, y, 49, 26);
+	    BufferedImage subImg = pressStart.getSubimage(x, y, 49, 26);
 	    g2.drawImage(subImg, varx - 26*5, 0 - 20*5, 49*5, 26*5, null);
+	    
+	    BufferedImage subImg2 = colorStrike;
+	    g2.drawImage(subImg2,  0 -27*8 , 0 -300, 54*8, 18*8, null);
 	
 	    varx+=0;
 
@@ -63,10 +68,6 @@ public class MenuState extends GameState {
 		g2.setColor(Color.WHITE);
 		g2.drawString("Copyright 2015 by Daniel Compagner", -180, 500);
 		
-		Font cSFont = new Font("OCR A Extended", Font.BOLD, 100);
-		g2.setFont(cSFont);
-		g2.setColor(Color.GREEN);
-		g2.drawString("Color     Strike", -500, 0);
 	}
 	
 	@Override
