@@ -1,25 +1,22 @@
 package model.gameState;
 
-import image.Images;
-import image.Images.ImageType;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
+import java.awt.Polygon;
 
 import control.GameStateManager;
 import control.button.ButtonEvent;
 import control.joystick.JoystickEvent;
 
-public class MenuState extends GameState {
 
-    BufferedImage pressStart = Images.getImage(ImageType.pressstart);
-    BufferedImage colorStrike = Images.getImage(ImageType.colorstrike);
+
+public class MenuState extends GameState {
     
-    int index = 0;
-    int varx = 0;
-    int x,y,frame = 0,maxFrames = 5;
+	public Polygon triangle;
+	
+	int page;
+    int x,y;
 
 	public MenuState(GameStateManager gsm) {
 		super(gsm);
@@ -32,42 +29,39 @@ public class MenuState extends GameState {
 
 	@Override
 	public void update() {
-		if(frame == maxFrames-1){
-			 x = (index % 6)*49;
-	         y = 0;
-	
-	         index++;
-	         index %= 6;
-		}
-         frame++;
-         frame %= (maxFrames);
+
 	}
 
 	@Override
 	public void draw(Graphics2D g2) {
 		
-	    g2.setColor(Color.BLACK);    
-		g2.fillRect(0, 0, 1280, 1024);
+	    g2.setColor(Color.BLACK);
+	    g2.fillRect(0, 0, 1280, 1024);
 		
-		g2.setColor(Color.ORANGE);
-		g2.fillRect(1280/2 -120, 1024/2 - 80, 225, 90);
-		g2.drawRect(1280/2 -122, 1024/2 - 82, 228, 93);
-		
-		g2.translate(1280/2, 1024/2);               
-	        
-	    BufferedImage subImg = pressStart.getSubimage(x, y, 49, 26);
-	    g2.drawImage(subImg, varx - 26*5, 0 - 20*5, 49*5, 26*5, null);
+	    g2.setColor(Color.ORANGE);
+	    triangle = new Polygon();
+	    triangle.addPoint(0, 0);
+	    triangle.addPoint(0, 1024/4);
+	    triangle.addPoint(1280/2, 0);	    
+	    g2.fillPolygon(triangle);
 	    
-	    BufferedImage subImg2 = colorStrike;
-	    g2.drawImage(subImg2,  0 -27*8 , 0 -300, 54*8, 18*8, null);
-	
-	    varx+=0;
-
-		Font textFont = new Font("OCR A Extended", Font.BOLD, 15);
+	    for(int i = 1; i <= 4; i++){
+	    	g2.fillRect(780, 1124 - 240*i, 500, 100);
+	    }
+	    
+		Font textFont = new Font("OCR A Extended", Font.BOLD, 60);
 		g2.setFont(textFont);
-		g2.setColor(Color.WHITE);
-		g2.drawString("Copyright 2015 by Daniel Compagner", -180, 500);
-		
+		g2.setColor(Color.BLACK);
+	    
+	    if(page ==  0){
+			g2.drawString("Main Menu", 50, 50);
+	    }
+	    if(page ==  1){
+			g2.drawString("Most Played", 50, 50);
+	    }
+	    if(page ==  2){
+			g2.drawString("Genre", 50, 50);
+	    }
 	}
 	
 	@Override
