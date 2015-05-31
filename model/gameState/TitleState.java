@@ -54,9 +54,6 @@ public class TitleState extends GameState {
 	@Override
 	public void draw(Graphics2D g2) {
 		
-//	    g2.setColor(Color.BLACK);    
-//		g2.fillRect(0, 0, 1280, 1024);
-		
 		g2.drawImage(background, x1, y1, null);
 		
 		g2.setColor(Color.ORANGE);
@@ -69,8 +66,6 @@ public class TitleState extends GameState {
 	    g2.drawImage(subImg, varx - 26*5, 0 - 20*5, 49*5, 26*5, null);
 	    
 	    BufferedImage subImg2 = colorStrike.getSubimage(x3, y3, 92, 29);
-//	    g2.drawImage(subImg2,  0 -27*8 , 0 -300, 54*8, 18*8, null);
-//	    g2.drawImage(subImg2,  0 -27*8 , 0 -300, 92*8, 24*8, null);
 	    g2.drawImage(subImg2,  0 -27*8 , 0 -300, 92*8, 29*8, null);
 	
 	    varx+=0;
@@ -78,7 +73,7 @@ public class TitleState extends GameState {
 		Font textFont = new Font("OCR A Extended", Font.BOLD, 15);
 		g2.setFont(textFont);
 		g2.setColor(Color.WHITE);
-		g2.drawString("Copyright 2015 by Daniel Compagner", -180, 500);
+		g2.drawString("©2015 Team Hamtaro", -100, 500);
 		
 	}
 	
