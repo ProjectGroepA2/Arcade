@@ -20,7 +20,8 @@ public class TitleState extends GameState {
     
     int index = 0;
     int varx = 0;
-    int x1,y1,x2,y2,x3,y3, frame = 0,maxFrames = 5;
+    int frame = 0;
+    int maxFrames = 2560;
 
 	public TitleState(GameStateManager gsm) {
 		super(gsm);
@@ -33,47 +34,36 @@ public class TitleState extends GameState {
 
 	@Override
 	public void update() {
-		if(frame == maxFrames-1){
-			
-			x1 = -100*index;
-			y1 = 0;
-			
-			x2 = (index % 6)*49;
-	        y2 = 0;
-	
-	        x3 = (index %6)*92;
-	        y3 = 0;
-	        
-	        index++;
-	        index %= 6;
-		}
+
         frame++;
-        frame %= (maxFrames);
 	}
 
 	@Override
 	public void draw(Graphics2D g2) {
 		
-		g2.drawImage(background, x1, y1, null);
+		g2.setColor(Color.WHITE);
+		g2.fillRect(0,0,1280,1024);
 		
-		g2.setColor(Color.ORANGE);
-		g2.fillRect(1280/2 -120, 1024/2 - 80, 225, 90);
-		g2.drawRect(1280/2 -122, 1024/2 - 82, 228, 93);
-		
-		g2.translate(1280/2, 1024/2);               
-	        
-	    BufferedImage subImg = pressStart.getSubimage(x2, y2, 49, 26);
-	    g2.drawImage(subImg, varx - 26*5, 0 - 20*5, 49*5, 26*5, null);
+		g2.translate(640, 512);
 	    
-	    BufferedImage subImg2 = colorStrike.getSubimage(x3, y3, 92, 29);
-	    g2.drawImage(subImg2,  0 -27*8 , 0 -300, 92*8, 29*8, null);
-	
-	    varx+=0;
+		BufferedImage subImg2 = background.getSubimage(0, 0, 5120, 1024);
+	    g2.drawImage(subImg2, -640 -((frame * 4) % maxFrames), -512, 5120, 1024, null);
+//		
+//		g2.setColor(Color.ORANGE);
+//		g2.fillRect( -25*5 -1, - 18*5 -1, 49*5 + 1, 26*5 + 1);
+//		g2.drawRect( -25*5 -3, - 18*5 -3, 49*5 + 4, 26*5 + 4);
 
+		int image_x = ((frame / 6) % 6) * 49;
+	    BufferedImage subImg = pressStart.getSubimage(image_x, 0, 49, 26);
+	    g2.drawImage(subImg, - 25*5, - 18*5, 49*5, 26*5, null);
+	    
+	    g2.drawImage(colorStrike, -27*8 , -300, 54*8, 18*8, null);
+
+	
 		Font textFont = new Font("OCR A Extended", Font.BOLD, 15);
 		g2.setFont(textFont);
 		g2.setColor(Color.WHITE);
-		g2.drawString("©2015 Team Hamtaro", -100, 500);
+		g2.drawString("©2015 Team Hamtaro", - 18*5, 500);
 		
 	}
 	
