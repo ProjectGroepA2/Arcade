@@ -23,7 +23,7 @@ public class MenuButton {
 	private boolean selected; 
 	private int fadecounter;
 	
-	public MenuButton(int x, int y, double scale, String text, int rounding, Color color){
+	public MenuButton(int x, int y, double scale, String text, int rounding, Color c0){
 		this.x = x;
 		this.y = y;
 		this.scalefactor = scale;
@@ -31,29 +31,28 @@ public class MenuButton {
 		this.rounding = rounding;
 		calculateButton();
 		
-		line = arrayToGeneralpath(new int[][]{{-11,55},{-40,60},{-38,78},{-358,170-rounding*3},{-358,174-rounding*3},{-37,87},{-35,102},{-5,95}});
-		gradient = new LinearGradientPaint(
-							new Point2D.Double((-358+x)*scalefactor,(167+y)*scalefactor), 
-							new Point2D.Double((-7+x)*scalefactor,(70+y)*scalefactor), 
-							new float[]{0.0f, 1.0f}, 
-							new Color[]{new Color(color.getRed(), color.getGreen(), color.getBlue(), 10), color});
-
-		
 		colors = new ArrayList<Color>();
-//		colors.add(new Color(47,153,21,255));
-//		colors.add(new Color(36,120,16,255));
-//		colors.add(new Color(48,154,22,255));
-//		colors.add(new Color(77,254,41,255));
-//		colors.add(new Color(61,201,32,255));
-//		colors.add(new Color(77,254,41,255));
 		
+		Color c1 = c0.darker();
+		Color c2 = c0.darker().darker();
+		Color c3 = c0.darker().darker().darker();
 		
-		colors.add(color.darker().darker());
-		colors.add(color.darker().darker().darker());
-		colors.add(color.darker().darker());
-		colors.add(color);
-		colors.add(color.darker());
-		colors.add(color);
+		c1 = new Color((int)(c1.getRed()*0.8), (int)(c1.getGreen()*0.8),(int)(c1.getBlue()*0.8));
+		c2 = new Color((int)(c2.getRed()*0.8), (int)(c2.getGreen()*0.8),(int)(c2.getBlue()*0.8));
+		c3 = new Color((int)(c3.getRed()*0.8), (int)(c3.getGreen()*0.8),(int)(c3.getBlue()*0.8));
+		
+		colors.add(c2);
+		colors.add(c3);
+		colors.add(c2);
+		colors.add(c0);
+		colors.add(c1);
+		colors.add(c0);
+		
+		gradient = new LinearGradientPaint(
+							new Point2D.Double((-100)*scalefactor,(512)*scalefactor), 
+							new Point2D.Double((600)*scalefactor,(512)*scalefactor), 
+							new float[]{0.0f, 1.0f}, 
+							new Color[]{new Color(c1.getRed(), c1.getGreen(), c1.getBlue(), 10), c0});
 	}
 	
 	public void calculateButton(){
@@ -66,6 +65,7 @@ public class MenuButton {
 		buttonparts.add(arrayToGeneralpath(new int[][]{{78, 25+rounding}, {82, 73+rounding},{15, 88+(int)(rounding*0.5)}, {10, 43+(int)(rounding*0.5)}}));	//foreground left
 	
 		border = arrayToGeneralpath(new int[][]{{449,15}, {114,48},{78,25+rounding},{10,43+(int)(rounding*0.5)},{15,88+(int)(rounding*0.5)},{82,73+rounding},{118,88},{449,54}});
+		line = arrayToGeneralpath(new int[][]{{-11,55},{-40,60},{-38,78},{-358,170-rounding*3},{-358,174-rounding*3},{-37,87},{-35,102},{-5,95}});
 	}
 	
 	public GeneralPath arrayToGeneralpath(int block[][]){
@@ -79,7 +79,7 @@ public class MenuButton {
 	}
 
 	public void draw(Graphics2D g2d){
-		for(int i = 0; i < buttonparts.size(); i++){ //fill every button part
+		for(int i = 0; i < buttonparts.size(); i++){ //fill every part of the button with a specific color
 			g2d.setColor(colors.get(i));
 			g2d.fill((buttonparts.get(i)));
 		}
@@ -119,11 +119,18 @@ public class MenuButton {
 		}
 	}
 	
-	public boolean isSelected() {
-		return selected;
-	}
-
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
+	
+	public void setX(int x){
+		this.x = x;
+		calculateButton();
+	}
+
+	public int getX() {
+		return x;
+	}
+	
+	
 }
