@@ -2,48 +2,96 @@ package model.objects;
 
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.awt.Shape;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
+
+import model.gameState.PlayState;
 
 public class PlayArea {
 
 	public List<Line2D> paths;
-	public Polygon octagon;
+	private Polygon octagon,hitArea;	
+	public Rectangle2D[] hitAreas; //de area voor elk path die de enemy moet raken
 	
-	
-	public PlayArea(int xToRight,int heightOfGameScreen,int widthOfGameScreen, int sizeOctagon) {
+	public PlayArea(double xToRight,double heightOfGameScreen,double widthOfGameScreen, int sizeOctagon) {
 		super();
-		paths = new ArrayList<Line2D>();
-		int middlePointX = widthOfGameScreen/2+xToRight;
-		int middlePointY = heightOfGameScreen/2;
+		paths = new ArrayList<Line2D>();		
+		
 		int amountOfAngles = 8;
+		double middlePointX = widthOfGameScreen/2+xToRight;
+		double middlePointY = heightOfGameScreen/2;
 		
 		octagon = new Polygon();		
 		for(int i = 0; i < amountOfAngles; i++){
 			octagon.addPoint((int)(middlePointX+sizeOctagon*Math.cos(i*Math.PI/(amountOfAngles/2))), 
+							 (int)(middlePointY+sizeOctagon*Math.sin(i*Math.PI/(amountOfAngles/2))));			
+		}
+		
+		hitArea = new Polygon();
+		sizeOctagon += PlayState.sizeOfEnemy;		
+		for(int i = 0; i < amountOfAngles; i++){
+			hitArea.addPoint((int)(middlePointX+sizeOctagon*Math.cos(i*Math.PI/(amountOfAngles/2))), 
 							 (int)(middlePointY+sizeOctagon*Math.sin(i*Math.PI/(amountOfAngles/2))));
 		}
 		
-		widthOfGameScreen += xToRight;	
+		hitAreas = new Rectangle2D[amountOfAngles];
+		int newIndex;
+		Point2D beginPoint,endPoint;
+		for(int index = 0; index < hitAreas.length; index++){
+			//in het polygon staat de cooridinaten van de top niet als eerste in de array, maar op index 6.n
+			newIndex = (index+6+8)%8;	
+			hitAreas[index] = new Rectangle2D.Double();
+			beginPoint = new Point2D.Double(octagon.xpoints[newIndex], octagon.ypoints[newIndex]);
+			endPoint = new Point2D.Double(hitArea.xpoints[newIndex], hitArea.ypoints[newIndex]);			
+			hitAreas[index].setFrameFromDiagonal(beginPoint,endPoint);			
+		}
 		
 		
-		paths.add(new Line2D.Double(middlePointX,0						,octagon.xpoints[6],octagon.ypoints[6]));//top
-		paths.add(new Line2D.Double(widthOfGameScreen,0					,octagon.xpoints[7],octagon.ypoints[7]));//right 	-top
-		paths.add(new Line2D.Double(widthOfGameScreen,middlePointY		,octagon.xpoints[0],octagon.ypoints[0]));//right
-		paths.add(new Line2D.Double(widthOfGameScreen,heightOfGameScreen,octagon.xpoints[1],octagon.ypoints[1]));//right	-down
-		paths.add(new Line2D.Double(middlePointX,heightOfGameScreen		,octagon.xpoints[2],octagon.ypoints[2]));//down
-		paths.add(new Line2D.Double(xToRight,heightOfGameScreen			,octagon.xpoints[3],octagon.ypoints[3]));//left		-down
-		paths.add(new Line2D.Double(xToRight,middlePointY				,octagon.xpoints[4],octagon.ypoints[4]));//left
-		paths.add(new Line2D.Double(xToRight,0							,octagon.xpoints[5],octagon.ypoints[5]));//left	 	-top		
+		Rectangle2D cr = null;//cr --> current rectangle
+		double size = hitAreas[1].getWidth();//dit is de grootte van een zijde als die van de oorspronklijke 0 was.
+		
+		cr = hitAreas[0];
+		hitAreas[0].setFrame(cr.getX()-size/2, cr.getY()+1, size, cr.getHeight());
+		
+		cr = hitAreas[2];
+		hitAreas[2].setFrame(cr.getX()-1, cr.getY()-size/2, cr.getWidth(), size);
+		
+		cr = hitAreas[4];
+		hitAreas[4].setFrame(cr.getX()-size/2, cr.getY()-1, size, cr.getHeight());
+		
+		cr = hitAreas[6];
+		hitAreas[6].setFrame(cr.getX()+1, cr.getY()-size/2, cr.getWidth(), size);
+		
+		widthOfGameScreen += xToRight;			
+		
+		paths.add(new Line2D.Double(middlePointX,0						,hitArea.xpoints[6],hitArea.ypoints[6]));//top
+		paths.add(new Line2D.Double(widthOfGameScreen,0					,hitArea.xpoints[7],hitArea.ypoints[7]));//right 	-top
+		paths.add(new Line2D.Double(widthOfGameScreen,middlePointY		,hitArea.xpoints[0],hitArea.ypoints[0]));//right
+		paths.add(new Line2D.Double(widthOfGameScreen,heightOfGameScreen,hitArea.xpoints[1],hitArea.ypoints[1]));//right	-down
+		paths.add(new Line2D.Double(middlePointX,heightOfGameScreen		,hitArea.xpoints[2],hitArea.ypoints[2]));//down
+		paths.add(new Line2D.Double(xToRight,heightOfGameScreen			,hitArea.xpoints[3],hitArea.ypoints[3]));//left		-down
+		paths.add(new Line2D.Double(xToRight,middlePointY				,hitArea.xpoints[4],hitArea.ypoints[4]));//left
+		paths.add(new Line2D.Double(xToRight,0							,hitArea.xpoints[5],hitArea.ypoints[5]));//left	 	-top
+		
+		
 	}	
 	
 	public void draw(Graphics2D g2){
-		for(Shape s : paths){
-			g2.draw(s);
+		Line2D current;
+		int index;
+		for(int i = 0; i < paths.size(); i++){
+			current = paths.get(i);
+			index = (i+14)%8;
+			g2.drawLine((int)current.getX1(), (int)current.getY1(), octagon.xpoints[index],octagon.ypoints[index]);
 		}
 		g2.draw(octagon);
+		g2.draw(hitArea);	
+//		for(Rectangle2D hit : hitAreas){
+//			g2.fill(hit);
+//		}
 	}
 	
 	public Line2D getLine(int index){
