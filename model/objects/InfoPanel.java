@@ -34,7 +34,6 @@ public class InfoPanel {
 	}
 	
 	public void draw(Graphics2D g2){
-		g2.setColor(Color.BLACK);
 		g2.fillRect(x, y, 256, 1024);
 		Font scoreFont = new Font("OCR A Extended", Font.BOLD, 30);
 		g2.setFont(scoreFont);

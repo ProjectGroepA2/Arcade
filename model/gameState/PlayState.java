@@ -1,19 +1,21 @@
+
 package model.gameState;
 
 
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import model.GameModel;
-import model.drawObjects.Bullet;
-import model.drawObjects.Enemy;
 import model.drawObjects.Player;
+import model.drawObjects.enemy.Enemy;
 import model.objects.InfoPanel;
 import model.objects.PlayArea;
 import control.GameStateManager;
@@ -26,26 +28,27 @@ public class PlayState extends GameState{
 	private PlayArea area;
 	private InfoPanel infoPanel;
 	private Player player;
-	private List<Enemy> enemys;	
-	private List<Bullet> bullets;
-	private Iterator<Enemy> enemyIterator;
-	private Iterator<Bullet> bulletIterator;
-
+	private List<Enemy> enemys;		
+	private Stroke stroke;
+	private Iterator<Enemy> enemyIterator;	
+	
+	public static int sizeOfEnemy = 40;
 	public static int currentScore = 0; 
 	public static int lifePoints = 100;
 	
 	public PlayState(GameStateManager gsm) {
 		super(gsm);
-		area = new PlayArea((int) borderRect.getX(),1024,1024,100);
+		area = new PlayArea(borderRect.getX(),1024,1024,150);
 		infoPanel = new InfoPanel(0, 0);
-		enemys = new ArrayList<Enemy>();
-		bullets =new ArrayList<Bullet>();
-		player = new Player(1280-1024+1024/2, 1024/2);
-		for(int i = 0; i < 8; i++){
-			Line2D line = area.getLine(i);
-			addEnemy(line, Color.RED, 200);
+		enemys = new ArrayList<Enemy>();		
+		
+		for(int index = 0; index < 2; index++){
+			Line2D path = area.paths.get(index);			
+			addEnemy(index, GameModel.colors[index % 6], path.getP1(),path.getP2());
 		}
 		
+		player = new Player(1280-1024+1024/2, 1024/2);		
+		stroke = new BasicStroke(sizeOfEnemy,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND);
 	}
 
 	@Override
@@ -56,88 +59,40 @@ public class PlayState extends GameState{
 
 	@Override
 	public void update() {		
-		player.update();	
-		bulletIterator = bullets.iterator();
-		while(bulletIterator.hasNext()){
-			Bullet b = bulletIterator.next();
-
-			//als de bullet de border raakt verwijder hem, anders update je hem
-			if(!borderRect.intersectsLine(b.getBullet())){
-				bulletIterator.remove();
-				break;
-			}else{
-				b.update();
-			}
-		}
-		
+		player.update();		
 		enemyIterator = enemys.iterator();
-		while(enemyIterator.hasNext()){
-			
+		while(enemyIterator.hasNext()){			
 			Enemy e = enemyIterator.next();
-			e.update();
-			//als de enemy de octagon raakt verwijder hem
-			if(area.octagon.intersects(e.getCircle().getBounds2D())){
-				lifePoints -= 5;
-				
-				if(lifePoints < 10){
-					lifePoints += 10;	//Dit is voor te testen.
-				}
+			Rectangle2D hitArea = area.hitAreas[e.getIndex()];
+			if(e.finised()){
 				enemyIterator.remove();
+			}			
+			if(hitArea.intersectsLine(e.enemy) && !e.isClickable()){
+				e.clickable();
 			}
-			
-			//nu kijken of je de enemy  raakt met een bullet
-			else{				
-				bulletIterator = bullets.iterator();
+			if(e.isClickable()){
 				
-				while(bulletIterator.hasNext()){
-					Bullet b = bulletIterator.next();
-					
-					//kijkt of de enemy een bullet tegen komt, zoja verwijder de bullet, zoniet update de enemy.
-					if(e.bulletHitMe(b)){											
-						bulletIterator.remove();
-						
-						//kijkt of de bullet die de enemy heeft gehit, ook dezelfde kleur heeft als de enemy, zoja verwijder de enemy
-						if(e.ColorHitMe(b)){
-							
-						currentScore += 1;
-						if(lifePoints < 100) {
-							lifePoints += 5;
-						}							
-							enemyIterator.remove();
-							break;
-						}					
-					}							
-				}				
 			}
+//			System.out.println(e.enemy.getP1().distance(hitArea.getCenterX(), hitArea.getCenterY()));
+			e.update();				
+		}
 			infoPanel.updateIPanel();
-		}	
-		
-
-		while(enemys.size() < 8){
-			int index = (int)(Math.random()*8);
-			int color = (int)(Math.random()*GameModel.colors.length);
-			Line2D line = area.getLine(index);
-			addEnemy(line,GameModel.colors[color],200);
-		}		
 	}
+	
 
 	@Override
-	public void draw(Graphics2D g2) {	
-		try{
+	public void draw(Graphics2D g2) {			
+		try{			
 			infoPanel.draw(g2);
 			g2.setClip(borderRect);	
-			area.draw(g2);		
+			area.draw(g2);
 			
+			g2.setStroke(stroke);
 			if(enemys != null){
 				for(Enemy enemy : enemys){
 					enemy.draw(g2);
 				}
-			}		
-
-			g2.setStroke(new BasicStroke(5));
-			for(Bullet b : bullets){
-				b.draw(g2);
-			}
+			}			
 
 			if(player != null)
 				player.draw(g2);
@@ -148,10 +103,19 @@ public class PlayState extends GameState{
 	
 
 	@Override
-	public void buttonPressed(ButtonEvent e) {	
-		if(e.getButton().getButtonID() != 0){
-			addBullet(GameModel.colors[e.getButton().getButtonID()-1],player.getIndex());
-		}
+	public void buttonPressed(ButtonEvent e) {			
+		enemyIterator = enemys.iterator();
+		while(enemyIterator.hasNext()){			
+			Enemy enemy = enemyIterator.next();
+			if(enemy.isClickable()){
+				if(enemy.getIndex() == player.getIndex()){
+					if(enemy.getColor().equals(e.getButton().getColor())){
+						enemyIterator.remove();
+						currentScore += enemy.getTimeLeftToClick();
+					}
+				}
+			}
+		}	
 	}
 
 	@Override
@@ -192,16 +156,7 @@ public class PlayState extends GameState{
 		}
 	}
 
-	public void addEnemy(Line2D path,Color c,double speed){		
-		enemys.add(new Enemy(path,c,20,speed));	
-	}
-	
-	public void addBullet(Color c,int index){		;
-		bullets.add(new Bullet(10, c, 10, index,area.paths.get(index)));		
-	}
-	
-	public void removeBullet(Bullet bullet){
-		bullets.remove(bullet);
-	}
-
+	public void addEnemy(int pathID,Color color,Point2D beginPoint,Point2D endPoint){		
+		enemys.add(new Enemy(pathID,1,color,100,beginPoint, endPoint));	
+	}		
 }

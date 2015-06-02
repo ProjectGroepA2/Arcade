@@ -5,7 +5,6 @@ import java.util.List;
 
 import model.gameState.GameState;
 import model.gameState.MenuState;
-import model.gameState.TitleState;
 import model.gameState.PlayState;
 
 public class GameStateManager {
@@ -16,7 +15,6 @@ public class GameStateManager {
 	
 	public GameStateManager(){
 		gamestates = new ArrayList<GameState>();
-		gamestates.add(new TitleState(this));
 		gamestates.add(new MenuState(this));
 		gamestates.add(new PlayState(this));
 		currentState = gamestates.get(0);

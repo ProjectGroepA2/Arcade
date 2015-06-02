@@ -64,7 +64,7 @@ public class Window extends JFrame {
 		//Create Instances
 		GameStateManager gsm = new GameStateManager();
 		GameView view = new GameView(led,gsm);
-		GameModel model = new GameModel(gsm);
+		GameModel model = new GameModel(view,gsm);
 		GameControl control = new GameControl(model, view,gsm);
 		setContentPane(view);
 		
