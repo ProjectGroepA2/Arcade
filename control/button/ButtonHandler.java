@@ -42,7 +42,7 @@ public class ButtonHandler implements KeyListener{
 		{
 			b.setColor(new Color((int)(Math.random()*254+1),(int)(Math.random()*254+1),(int)(Math.random()*254+1)));
 		}
-//		System.out.println(Window.ON_RASP);
+		System.out.println(Window.ON_RASP);
 		if (Window.ON_RASP)
 			addGpioListeners();
 		

@@ -6,23 +6,21 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
-import view.GameView;
 import control.GameStateManager;
 import control.button.ButtonHandler;
 
 public class GameModel implements ActionListener{
 	
 	
-	public static double framePerSecondUpdate = 1000/30;
-	private  Timer update;
+	private Timer update;
 	public static Color[] colors = {Color.MAGENTA,Color.RED,Color.GREEN,Color.YELLOW,Color.CYAN,Color.WHITE};
 	private GameStateManager gsm;
 	
-	public GameModel(GameView view,GameStateManager gsm)
+	public GameModel(GameStateManager gsm)
 	{
 			
 		this.gsm = gsm;
-		update = new Timer((int) framePerSecondUpdate, this);
+		update = new Timer(1000/30, this);
 		update.start();
 		
 		for(int i = 1; i < ButtonHandler.getButtons().size(); i++){

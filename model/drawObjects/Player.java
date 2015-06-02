@@ -4,20 +4,17 @@ import image.Images;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
-public class Player extends DrawObject {
+public class Player extends Person {
 	
 	private BufferedImage img;	
 	private AffineTransform transform;
 	private int lastindex;
-	private Point2D middlePoint;
 	
 	public Player(int x, int y){
-		super();		
-		img = Images.getImage(Images.ImageType.player2);
-		middlePoint = new Point2D.Double(x, y);		
+		super(x,y);		
+		img = Images.getImage(Images.ImageType.player2);	
 		width = img.getWidth();
 		height = img.getHeight();	
 		lastindex = -10;
