@@ -6,6 +6,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
+import java.awt.geom.Area;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -14,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import model.GameModel;
+import model.SongHandler;
 import model.drawObjects.Player;
 import model.drawObjects.enemy.Enemy;
 import model.objects.InfoPanel;
@@ -36,12 +38,11 @@ public class PlayState extends GameState{
 	public static int currentScore = 0; 
 	public static int lifePoints = 100;
 	
-	public PlayState(GameStateManager gsm) {
-		super(gsm);
-		area = new PlayArea(borderRect.getX(),1024,1024,150);
+	public PlayState(GameStateManager gsm, SongHandler sh) {
+		super(gsm,sh);
 		infoPanel = new InfoPanel(0, 0);
 		enemys = new ArrayList<Enemy>();		
-		
+		area = new PlayArea(256, 1024, 1024, 100);
 		for(int index = 0; index < 2; index++){
 			Line2D path = area.paths.get(index);			
 			addEnemy(index, GameModel.colors[index % 6], path.getP1(),path.getP2());

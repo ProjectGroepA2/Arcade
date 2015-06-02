@@ -1,5 +1,9 @@
 package model.gameState;
 
+import image.Images;
+import image.Images.ImageType;
+
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
@@ -8,6 +12,7 @@ import model.objects.MenuButton;
 import control.GameStateManager;
 import control.GameStateManager.State;
 import control.button.ButtonEvent;
+import control.joystick.Joystick;
 import control.joystick.JoystickEvent;
 
 public class MenuState extends GameState {
@@ -15,7 +20,10 @@ public class MenuState extends GameState {
     int frame = 0;
     int maxFrames = 2560;
     int animationcounter;
-	
+    
+    ArrayList<MenuButton> buttons;
+	int selected;
+    
 	public MenuState(GameStateManager gsm, SongHandler sh) {	
 		super(gsm, sh);
 		buttons = new ArrayList<MenuButton>();
