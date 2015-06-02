@@ -5,6 +5,7 @@ import image.Images.ImageType;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -20,6 +21,7 @@ import control.joystick.JoystickEvent;
 public class MenuState extends GameState {
 	private ArrayList<MenuButton> buttons;
 	private int selected;
+	private Polygon triangle;
 
     int frame = 0;
     int maxFrames = 2560;
@@ -48,11 +50,18 @@ public class MenuState extends GameState {
 
 	@Override
 	public void draw(Graphics2D g2) {
-	    g2.drawImage(Images.getImage(ImageType.background), -640 -((frame * 4) % maxFrames), 0, 5120, 1024, null); 
-		for(MenuButton b:buttons){
+//	    g2.drawImage(Images.getImage(ImageType.background), -640 -((frame * 4) % maxFrames), 0, 5120, 1024, null); 
+	    
+	    for(MenuButton b:buttons){
 	    	 b.draw(g2);
-	     }	   
-			
+	     }
+	    
+	    g2.setColor(Color.ORANGE);
+	    triangle = new Polygon();
+	    triangle.addPoint(0, 0);
+	    triangle.addPoint(0, 1024/4);
+	    triangle.addPoint(1280/2, 0);	    
+	    g2.fillPolygon(triangle);
 	}
 	
 	@Override
