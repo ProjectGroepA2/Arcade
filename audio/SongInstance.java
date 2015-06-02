@@ -42,4 +42,22 @@ public class SongInstance {
 	public void setDifficulty(String difficulty) {
 		this.difficulty = difficulty;
 	}
+
+	public List<ObjectInstance> getBetween(long oldProgress, long progress) {
+		List<ObjectInstance> b = new ArrayList<ObjectInstance>();
+		
+		for(ObjectInstance i : objects)
+		{
+			if(i.getTime() > progress)
+			{
+				return b;
+			}
+			if(i.getTime() > oldProgress && i.getTime() <= progress)
+			{
+				b.add(i);
+			}
+		}
+		
+		return b;
+	}
 }

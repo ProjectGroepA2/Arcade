@@ -43,4 +43,8 @@ public class Button {
 	{
 		return buttonID;
 	}
+	public int getLedID()
+	{
+		return ledID;
+	}
 }

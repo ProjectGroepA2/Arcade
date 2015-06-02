@@ -1,5 +1,7 @@
 package audio;
 
+import java.awt.Color;
+
 import control.button.Button;
 import control.button.ButtonHandler;
 
@@ -53,6 +55,11 @@ public class ObjectInstance {
 			this.button = ButtonHandler.getButton(buttonID);
 		}
 	}
+	
+	public Color getColor()
+	{
+		return button.getColor();
+	}
 
 	public Button getButton() {
 		return button;
@@ -67,7 +74,10 @@ public class ObjectInstance {
 	}
 
 	public long getLength() {
-		return length;
+		if(hold)
+			return length;
+		else
+			return 1;
 	}
 
 	public void setLength(long length) {

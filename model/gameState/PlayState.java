@@ -16,6 +16,7 @@ import model.drawObjects.enemy.Enemy;
 import model.objects.InfoPanel;
 import model.objects.Path;
 import model.objects.PlayArea;
+import audio.ObjectInstance;
 import control.GameStateManager;
 import control.button.ButtonEvent;
 import control.joystick.JoystickEvent;
@@ -32,13 +33,15 @@ public class PlayState extends GameState{
 	public static int currentScore = 0; 
 	public static int lifePoints = 100;
 	
+	private long oldProgress = 0;
+	
 	public PlayState(GameStateManager gsm, SongHandler sh) {
 		super(gsm,sh);
 		infoPanel = new InfoPanel(0, 0);			
 		area = new PlayArea(256, 1024, 1024, 100);
-		for(int index = 0; index < 8; index++){						
-			addEnemy(index, GameModel.colors[index % 6]);
-		}
+//		for(int index = 0; index < 8; index++){						
+//			addEnemy(index, GameModel.colors[index % 6]);
+//		}
 		
 		player = new Player(1280-1024+1024/2, 1024/2);		
 		stroke = new BasicStroke(sizeOfEnemy,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND);
@@ -46,15 +49,17 @@ public class PlayState extends GameState{
 
 	@Override
 	public void init() {
+		sh.stop();
+		sh.play();
 		
-		
+		System.out.println("Diff" + sh.getCurrentSongInstance().getDifficulty());
 	}
 
 	@Override
 	public void update() {		
 		player.update();		
 		for(Path path : area.paths){						
-		enemyIterator = enemys.iterator();
+		Iterator<Enemy>enemyIterator = path.getEnemysInPath().iterator();
 		while(enemyIterator.hasNext()){			
 			Enemy e = enemyIterator.next();
 			Rectangle2D hitArea = area.hitAreas[e.getIndex()];
@@ -67,7 +72,18 @@ public class PlayState extends GameState{
 				e.update();				
 			}
 		}		
-			infoPanel.updateIPanel();			
+		
+		infoPanel.updateIPanel();		
+		
+		long progress = sh.getProgress() / 1000;
+
+		for(ObjectInstance ob : sh.getCurrentSongInstance().getBetween(oldProgress, progress))
+		{
+			Path p = area.paths.get(ob.getDirection());
+			p.addEnemy(ob.getColor(), ob.getDirection(), (int) ob.getLength());
+		}
+			
+		oldProgress = progress;
 	}
 	
 
@@ -97,13 +113,15 @@ public class PlayState extends GameState{
 
 	@Override
 	public void buttonPressed(ButtonEvent e) {			
-//		int index = player.getIndex();
+//		int index = player.getIndex();		
 		Path currentPath = area.paths.get(player.getIndex());
-		Enemy ce = currentPath.getEnemysInPath().getFirst();
-		if(ce.isClickable()){
-			if(ce.getColor().equals(e.getButton().getColor())){
-				currentScore += ce.getTimeLeftToClick();
-				currentPath.getEnemysInPath().remove(ce);
+		if (!currentPath.getEnemysInPath().isEmpty()) {
+			Enemy ce = currentPath.getEnemysInPath().getFirst();
+			if (ce.isClickable()) {
+				if (ce.getColor().equals(e.getButton().getColor())) {
+					currentScore += ce.getTimeLeftToClick();
+					currentPath.getEnemysInPath().remove(ce);
+				}
 			}
 		}
 	}

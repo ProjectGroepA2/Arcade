@@ -44,6 +44,7 @@ public class DirScanner {
 						Song s = JSONReader.readSong(file2);
 						songs.add(s);
 					} catch (IOException e1) {
+						e1.printStackTrace();
 					}
 					
 			}

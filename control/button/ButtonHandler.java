@@ -78,12 +78,23 @@ public class ButtonHandler implements KeyListener{
 	}
 	
 	public void buttonPress(Button b) {
+		if(Window.ON_RASP)
+		{
+			Color c = b.getColor().brighter().brighter();
+			led.setLed(b.getLedID(), c.getGreen(), c.getRed(), c.getBlue());
+			led.show();
+		}
 		ButtonEvent e = new ButtonEvent(b, System.currentTimeMillis());
 	    for (ButtonListener bt : listeners)
 	        bt.buttonPressed(e);
 	}
 	 
 	public void buttonRelease(Button b) {
+		if(Window.ON_RASP)
+		{
+			led.setLed(b.getLedID(), b.getColor().getGreen(), b.getColor().getRed(), b.getColor().getBlue());
+			led.show();
+		}
 		ButtonEvent e = new ButtonEvent(b, System.currentTimeMillis());
 	    for (ButtonListener bt : listeners)
 	        bt.buttonReleased(e);

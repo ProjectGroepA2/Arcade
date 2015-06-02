@@ -1,5 +1,6 @@
 package model.objects;
 
+import java.awt.Color;
 import java.awt.geom.Line2D;
 import java.util.ArrayDeque;
 
@@ -25,4 +26,9 @@ public class Path extends Line2D.Double {
 	public void setEnemysInPath(ArrayDeque<Enemy> enemysInPath) {
 		this.enemysInPath = enemysInPath;
 	}	
+	
+	public void addEnemy(Color c, int pathID, int length)
+	{
+		enemysInPath.addLast(new Enemy(pathID, length, c, 100, getP1(), getP2()));
+	}
 }
