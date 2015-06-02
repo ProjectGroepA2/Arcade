@@ -12,13 +12,13 @@ import model.gameState.PlayState;
 
 public class PlayArea {
 
-	public List<Line2D> paths;
+	public List<Path> paths;
 	private Polygon octagon,hitArea;	
 	public Rectangle2D[] hitAreas; //de area voor elk path die de enemy moet raken
 	
 	public PlayArea(double xToRight,double heightOfGameScreen,double widthOfGameScreen, int sizeOctagon) {
 		super();
-		paths = new ArrayList<Line2D>();		
+		paths = new ArrayList<Path>();		
 		
 		int amountOfAngles = 8;
 		double middlePointX = widthOfGameScreen/2+xToRight;
@@ -51,7 +51,7 @@ public class PlayArea {
 		
 		
 		Rectangle2D cr = null;//cr --> current rectangle
-		double size = hitAreas[1].getWidth();//dit is de grootte van een zijde als die van de oorspronklijke 0 was.
+		double size = (hitAreas[1].getWidth() - 10)/2;//dit is de grootte van een zijde als die van de oorspronklijke 0 was.
 		
 		cr = hitAreas[0];
 		hitAreas[0].setFrame(cr.getX()-size/2, cr.getY()+1, size, cr.getHeight());
@@ -67,14 +67,14 @@ public class PlayArea {
 		
 		widthOfGameScreen += xToRight;			
 		
-		paths.add(new Line2D.Double(middlePointX,0						,hitArea.xpoints[6],hitArea.ypoints[6]));//top
-		paths.add(new Line2D.Double(widthOfGameScreen,0					,hitArea.xpoints[7],hitArea.ypoints[7]));//right 	-top
-		paths.add(new Line2D.Double(widthOfGameScreen,middlePointY		,hitArea.xpoints[0],hitArea.ypoints[0]));//right
-		paths.add(new Line2D.Double(widthOfGameScreen,heightOfGameScreen,hitArea.xpoints[1],hitArea.ypoints[1]));//right	-down
-		paths.add(new Line2D.Double(middlePointX,heightOfGameScreen		,hitArea.xpoints[2],hitArea.ypoints[2]));//down
-		paths.add(new Line2D.Double(xToRight,heightOfGameScreen			,hitArea.xpoints[3],hitArea.ypoints[3]));//left		-down
-		paths.add(new Line2D.Double(xToRight,middlePointY				,hitArea.xpoints[4],hitArea.ypoints[4]));//left
-		paths.add(new Line2D.Double(xToRight,0							,hitArea.xpoints[5],hitArea.ypoints[5]));//left	 	-top
+		paths.add(new Path(middlePointX,0						,hitArea.xpoints[6],hitArea.ypoints[6]));//top
+		paths.add(new Path(widthOfGameScreen,0					,hitArea.xpoints[7],hitArea.ypoints[7]));//right 	-top
+		paths.add(new Path(widthOfGameScreen,middlePointY		,hitArea.xpoints[0],hitArea.ypoints[0]));//right
+		paths.add(new Path(widthOfGameScreen,heightOfGameScreen,hitArea.xpoints[1],hitArea.ypoints[1]));//right	-down
+		paths.add(new Path(middlePointX,heightOfGameScreen		,hitArea.xpoints[2],hitArea.ypoints[2]));//down
+		paths.add(new Path(xToRight,heightOfGameScreen			,hitArea.xpoints[3],hitArea.ypoints[3]));//left		-down
+		paths.add(new Path(xToRight,middlePointY				,hitArea.xpoints[4],hitArea.ypoints[4]));//left
+		paths.add(new Path(xToRight,0							,hitArea.xpoints[5],hitArea.ypoints[5]));//left	 	-top
 		
 		
 	}	

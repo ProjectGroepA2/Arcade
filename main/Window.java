@@ -58,7 +58,7 @@ public class Window extends JFrame {
 		JoystickHandler jsh = new JoystickHandler();
 		
 		//Create Instances
-		SongHandler sh = new SongHandler();
+		SongHandler sh =  null; //new SongHandler();
 		GameStateManager gsm = new GameStateManager(sh);
 		GameView view = new GameView(led,gsm);
 		GameModel model = new GameModel(sh, gsm);
@@ -69,7 +69,7 @@ public class Window extends JFrame {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter(){
 			public void windowClosing(WindowEvent e) {
-				sh.close();
+//				sh.close();
 				System.exit(0);
 			}
 		});

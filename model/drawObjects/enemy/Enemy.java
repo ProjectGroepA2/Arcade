@@ -10,7 +10,7 @@ import model.drawObjects.DrawObject;
 public class Enemy extends DrawObject {
 
 	
-	private int length,timeToClick = 5,currentTimeToClick;	
+	private int length,timeToClick = 10,currentTimeToClick;	
 	private double speedX,speedY,lengthOf1Side;//lengthOf1Side wordt alleen gebruikt als de lijn een schuine lijn is.
 	public Line2D enemy;
 	private Color c;	
