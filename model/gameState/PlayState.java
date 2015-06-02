@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import model.GameModel;
+import model.SongHandler;
 import model.drawObjects.Bullet;
 import model.drawObjects.Enemy;
 import model.drawObjects.Player;
@@ -34,8 +35,8 @@ public class PlayState extends GameState{
 	public static int currentScore = 0; 
 	public static int lifePoints = 100;
 	
-	public PlayState(GameStateManager gsm) {
-		super(gsm);
+	public PlayState(GameStateManager gsm, SongHandler sh) {
+		super(gsm, sh);
 		area = new PlayArea((int) borderRect.getX(),1024,1024,100);
 		infoPanel = new InfoPanel(0, 0);
 		enemys = new ArrayList<Enemy>();

@@ -122,7 +122,10 @@ public class MenuButton {
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
-	
+
+	public boolean isSelected(){
+		return selected;
+	}
 	public void setX(int x){
 		this.x = x;
 		calculateButton();

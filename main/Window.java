@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 
 import model.GameModel;
+import model.SongHandler;
 import view.GameView;
 import control.GameControl;
 import control.GameStateManager;
@@ -24,19 +25,14 @@ public class Window extends JFrame {
 	private static final long serialVersionUID = -9222956702898533696L;
 	public static boolean ON_RASP;
 	
+	public final static int WIDTH = 1280;
+	public final static int HEIGHT = 1024;
+	
 	public Window(boolean ON_RASP)
 	{
 		//Create window
 		super("Arcade");
-		setSize(1280, 1024);
-				
-		//Set window close listener
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		addWindowListener(new WindowAdapter(){
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
-			}
-		});
+		setSize(WIDTH, HEIGHT);
 		
 		//Create Events
 		LedHandler led = null;
@@ -62,11 +58,21 @@ public class Window extends JFrame {
 		JoystickHandler jsh = new JoystickHandler();
 		
 		//Create Instances
-		GameStateManager gsm = new GameStateManager();
+		SongHandler sh = new SongHandler();
+		GameStateManager gsm = new GameStateManager(sh);
 		GameView view = new GameView(led,gsm);
-		GameModel model = new GameModel(gsm);
+		GameModel model = new GameModel(sh, gsm);
 		GameControl control = new GameControl(model, view,gsm);
 		setContentPane(view);
+		
+		//Set window close listener
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter(){
+			public void windowClosing(WindowEvent e) {
+				sh.close();
+				System.exit(0);
+			}
+		});
 		
 		//Create EventListeners
 		if(!Window.ON_RASP){

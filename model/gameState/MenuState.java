@@ -5,12 +5,12 @@ import image.Images.ImageType;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import model.SongHandler;
 import model.objects.MenuButton;
 import control.GameStateManager;
-import control.button.Button;
+import control.GameStateManager.State;
 import control.button.ButtonEvent;
 import control.joystick.Joystick;
 import control.joystick.JoystickEvent;
@@ -25,11 +25,11 @@ public class MenuState extends GameState {
     int maxFrames = 2560;
     int animationcounter;
 	
-	public MenuState(GameStateManager gsm) {	
-		super(gsm);
+	public MenuState(GameStateManager gsm, SongHandler sh) {	
+		super(gsm, sh);
 		buttons = new ArrayList<MenuButton>();
-		buttons.add(new MenuButton(-600, 50,1.7,"Genre", 0, Color.green));
-		buttons.add(new MenuButton(-600, 150, 1.7, "Most played", 10, new Color(60,60,255)));
+		buttons.add(new MenuButton(-600, 50,1.7,	"Quick play", 0, Color.green));
+		buttons.add(new MenuButton(-600, 150, 1.7, "Pick song", 10, new Color(60,60,255)));
 		buttons.add(new MenuButton(-600, 250, 1.7, "Best played", 20, Color.red));
 		buttons.add(new MenuButton(-600, 350, 1.7, "Last played", 30, Color.yellow));
 	}
@@ -57,6 +57,13 @@ public class MenuState extends GameState {
 	
 	@Override
 	public void buttonPressed(ButtonEvent e) {
+		if(e.getButton().getButtonID() == 1){
+			for(MenuButton b:buttons){
+				if(b.isSelected()){
+					gsm.setState(State.PLAY_STATE);
+				}
+			}
+		}
 	}
 	@Override
 	public void buttonReleased(ButtonEvent e) {
@@ -95,7 +102,6 @@ public class MenuState extends GameState {
 			}
 			if(buttons.get(button).getX() >= -200){
 				buttonInAnimation(button+1);
-				System.out.println(buttons.get(button).getX());
 			}
 		}
 	}

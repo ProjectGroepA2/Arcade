@@ -8,9 +8,10 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import control.joystick.JoystickEvent;
+import model.SongHandler;
 import control.GameStateManager;
 import control.button.ButtonEvent;
-import control.joystick.JoystickEvent;
 
 public class TitleState extends GameState {
 
@@ -23,8 +24,8 @@ public class TitleState extends GameState {
     int frame = 0;
     int maxFrames = 2560;
 
-	public TitleState(GameStateManager gsm) {
-		super(gsm);
+	public TitleState(GameStateManager gsm, SongHandler sh){
+		super(gsm, sh);
 	}
 	@Override
 	public void init() {
@@ -63,7 +64,7 @@ public class TitleState extends GameState {
 		Font textFont = new Font("OCR A Extended", Font.BOLD, 15);
 		g2.setFont(textFont);
 		g2.setColor(Color.WHITE);
-		g2.drawString("©2015 Team Hamtaro", - 18*5, 500);
+		g2.drawString("ï¿½2015 Team Hamtaro", - 18*5, 500);
 		
 	}
 	
