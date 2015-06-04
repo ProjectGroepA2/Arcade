@@ -33,7 +33,8 @@ public class SongHandler {
 		if(Window.ON_RASP)
 			dir = new File(System.getProperty( "user.home" ) + "/ColorStrike/Songs");
 		else
-			dir = new File(System.getProperty( "user.home" ) + "/ColorStrike/Songs");		
+			dir = new File(System.getProperty( "user.home" ) + "/Documents/songs");
+		
 		songs = DirScanner.scanDirectories(dir);
 	}
 	
