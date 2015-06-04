@@ -1,38 +1,43 @@
 package model.gameState;
 
-import image.Images;
-import image.Images.ImageType;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.List;
 
 import model.SongHandler;
 import model.objects.MenuButton;
+import audio.Song;
 import control.GameStateManager;
 import control.GameStateManager.State;
+import control.button.Button;
 import control.button.ButtonEvent;
 import control.joystick.Joystick;
 import control.joystick.JoystickEvent;
 
 public class MenuState extends GameState {
 	private ArrayList<MenuButton> buttons;
-	private int selected;
+	private int selected, oldselected;
+	private List<Song> songs;
 	private Polygon triangle;
 
-    int frame = 0;
-    int maxFrames = 2560;
-    int animationcounter;
+	private int animationcounter;
+	private boolean subscreen, startanimation;
 	
 	public MenuState(GameStateManager gsm, SongHandler sh) {	
 		super(gsm, sh);
 		buttons = new ArrayList<MenuButton>();
-		buttons.add(new MenuButton(-600, 50,1.7,	"Quick play", 0, Color.green));
-		buttons.add(new MenuButton(-600, 150, 1.7, "Pick song", 10, new Color(60,60,255)));
-		buttons.add(new MenuButton(-600, 250, 1.7, "Best played", 20, Color.red));
-		buttons.add(new MenuButton(-600, 350, 1.7, "Last played", 30, Color.yellow));
+		this.songs = sh.getSongs();
+		startanimation = true;
+		
+		buttons.add(new MenuButton(-600, 50,1.7, 0, Color.green, selectedToSong(selected-2) ));
+		buttons.add(new MenuButton(-600, 150, 1.7, 10, new Color(60,60,255), selectedToSong(selected-1)));
+		buttons.add(new MenuButton(-600, 250, 1.7, 20, Color.red, selectedToSong(selected)));
+		buttons.add(new MenuButton(-600, 350, 1.7, 30, Color.yellow,selectedToSong(selected+1)));
+		buttons.add(new MenuButton(-600, 450, 1.7, 30, Color.yellow,selectedToSong(selected+2)));
+		buttons.get(2).setSelected(true);
+		
 	}
 	@Override
 	public void init() {
@@ -40,20 +45,32 @@ public class MenuState extends GameState {
 
 	@Override
 	public void update() {
-		buttonInAnimation(animationcounter);
+		if(startanimation){
+			buttonInAnimation(animationcounter);
+			if(animationcounter == 5){
+				startanimation = false;
+			}
+		}else if(subscreen){
+			nextScreen();
+		}else{
+			previousScreen();
+		}
 	     for(MenuButton b:buttons){
 	    	 b.update();
 	     }
-	     frame++;
+	     if(selected != oldselected){
+	    	 for(int i = 0; i < buttons.size(); i++){
+		    	 buttons.get(i).setSong(selectedToSong(selected+(i-2)));
+	    	 }
+	    	 oldselected = selected;
+	     }
 	}
 
 	@Override
 	public void draw(Graphics2D g2) {
-//	    g2.drawImage(Images.getImage(ImageType.background), -640 -((frame * 4) % maxFrames), 0, 5120, 1024, null); 
 	    for(MenuButton b:buttons){
 	    	 b.draw(g2);
 	     }
-	    
 	    g2.setColor(Color.ORANGE);
 	    triangle = new Polygon();
 	    triangle.addPoint(0, 0);
@@ -64,12 +81,16 @@ public class MenuState extends GameState {
 	
 	@Override
 	public void buttonPressed(ButtonEvent e) {
-		if(e.getButton().getButtonID() == 1){
-			for(MenuButton b:buttons){
-				if(b.isSelected()){
-					gsm.setState(State.PLAY_STATE);
-				}
-			}
+		if(subscreen){								//Screen for Song details
+			if(e.getButton().getButtonID() == 2){
+				subscreen = false;
+			}	
+		}else{										//Screen for selecting song
+			if(e.getButton().getButtonID() == 1){
+				subscreen = true;
+			}else if(e.getButton().getButtonID() == 2){
+				subscreen = false;
+			}	
 		}
 	}
 	@Override
@@ -78,26 +99,16 @@ public class MenuState extends GameState {
 	}
 	@Override
 	public void onJoystickMoved(JoystickEvent e) {
-		if(e.getJoystick().getPos() == Joystick.Position.DOWN){
-			selected++;
-			selected %= buttons.size();
-			for(int i = 0; i < buttons.size(); i++){
-				if(selected == i){
-					buttons.get(i).setSelected(true);
-				}else{
-					buttons.get(i).setSelected(false);
-				}
+		if(subscreen){								//Screen for Song details
+				
+		}else{										//Screen for selecting song
+			if(e.getJoystick().getPos() == Joystick.Position.DOWN){
+				selected++;
+			}else if(e.getJoystick().getPos() == Joystick.Position.UP){
+				selected--;
 			}
-		}else if(e.getJoystick().getPos() == Joystick.Position.UP){
-			selected--;
-			if(selected < 0) selected = buttons.size()-1;
-			for(int i = 0; i < buttons.size(); i++){
-				if(selected == i){
-					buttons.get(i).setSelected(true);
-				}else{
-					buttons.get(i).setSelected(false);
-				}
-			}
+			sh.set(songs.indexOf(selectedToSong(selected)));
+			sh.play();	
 		}
 	}
 	
@@ -113,4 +124,28 @@ public class MenuState extends GameState {
 		}
 	}
 
+	public void nextScreen(){
+		if(buttons.get(0).getX() > -700){
+			for(MenuButton b:buttons){
+				b.setX(b.getX()-100);
+			}
+		}
+	}
+	
+	public void previousScreen(){
+		if(buttons.get(0).getX() < 300){
+			for(MenuButton b:buttons){
+				b.setX(b.getX()+100);
+			}
+		}
+	}
+	
+	public Song selectedToSong(int s){
+		s %= songs.size();
+		if(s < 0){
+			return songs.get(songs.size()+s);
+		}else{
+			return songs.get(s);
+		}
+	}
 }
