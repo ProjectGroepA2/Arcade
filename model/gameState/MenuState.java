@@ -39,7 +39,7 @@ public class MenuState extends GameState {
 	}
 
 	@Override
-	public void update() {
+	public void update(float factor) {
 		buttonInAnimation(animationcounter);
 	     for(MenuButton b:buttons){
 	    	 b.update();

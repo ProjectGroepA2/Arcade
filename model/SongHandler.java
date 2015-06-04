@@ -28,7 +28,7 @@ public class SongHandler {
 		
 		currentSong = null;
 		currentSongInstance = null;
-		currentIndex = 0;
+		currentIndex = 1;
 		
 		p = new AudioPlayer();
 		

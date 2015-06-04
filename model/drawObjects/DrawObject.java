@@ -23,5 +23,5 @@ public abstract class DrawObject {
 	
 	
 	public abstract void draw(Graphics2D g2);
-	public abstract void update();
+	public abstract void update(float factor);
 }

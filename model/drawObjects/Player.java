@@ -27,7 +27,7 @@ public class Player extends DrawObject {
 		
 	}
 	
-	public void update(){
+	public void update(float update){
 		if(lastindex != index){
 			transform = new AffineTransform();
 			transform.rotate(Math.toRadians(index*45),middlePoint.getX(),middlePoint.getY());

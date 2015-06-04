@@ -8,6 +8,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.drawObjects.Enemy;
 import model.gameState.PlayState;
 
 public class PlayArea {
@@ -67,14 +68,27 @@ public class PlayArea {
 		
 		widthOfGameScreen += xToRight;			
 		
-		paths.add(new Path(middlePointX,0						,hitArea.xpoints[6],hitArea.ypoints[6]));//top
-		paths.add(new Path(widthOfGameScreen,0					,hitArea.xpoints[7],hitArea.ypoints[7]));//right 	-top
-		paths.add(new Path(widthOfGameScreen,middlePointY		,hitArea.xpoints[0],hitArea.ypoints[0]));//right
-		paths.add(new Path(widthOfGameScreen,heightOfGameScreen,hitArea.xpoints[1],hitArea.ypoints[1]));//right	-down
-		paths.add(new Path(middlePointX,heightOfGameScreen		,hitArea.xpoints[2],hitArea.ypoints[2]));//down
-		paths.add(new Path(xToRight,heightOfGameScreen			,hitArea.xpoints[3],hitArea.ypoints[3]));//left		-down
-		paths.add(new Path(xToRight,middlePointY				,hitArea.xpoints[4],hitArea.ypoints[4]));//left
-		paths.add(new Path(xToRight,0							,hitArea.xpoints[5],hitArea.ypoints[5]));//left	 	-top
+//		paths.add(new Path(middlePointX,0						,hitArea.xpoints[6],hitArea.ypoints[6]));//top
+//		paths.add(new Path(widthOfGameScreen,0					,hitArea.xpoints[7],hitArea.ypoints[7]));//right 	-top
+//		paths.add(new Path(widthOfGameScreen,middlePointY		,hitArea.xpoints[0],hitArea.ypoints[0]));//right
+//		paths.add(new Path(widthOfGameScreen,heightOfGameScreen,hitArea.xpoints[1],hitArea.ypoints[1]));//right	-down
+//		paths.add(new Path(middlePointX,heightOfGameScreen		,hitArea.xpoints[2],hitArea.ypoints[2]));//down
+//		paths.add(new Path(xToRight,heightOfGameScreen			,hitArea.xpoints[3],hitArea.ypoints[3]));//left		-down
+//		paths.add(new Path(xToRight,middlePointY				,hitArea.xpoints[4],hitArea.ypoints[4]));//left
+//		paths.add(new Path(xToRight,0							,hitArea.xpoints[5],hitArea.ypoints[5]));//left	 	-top
+		
+		double angleX,angleY;
+		angleX = (Math.cos(Math.toRadians(45)))*Enemy.distanceToOctagon;
+		angleY = (Math.sin(Math.toRadians(45)))*Enemy.distanceToOctagon;
+		
+		paths.add(new Path(hitArea.xpoints[6],hitArea.ypoints[6]-Enemy.distanceToOctagon		,hitArea.xpoints[6],hitArea.ypoints[6]));//top
+		paths.add(new Path(hitArea.xpoints[7] + angleX,hitArea.ypoints[7] - angleY				,hitArea.xpoints[7],hitArea.ypoints[7]));//right 	-top
+		paths.add(new Path(hitArea.xpoints[0]+Enemy.distanceToOctagon,hitArea.ypoints[0]		,hitArea.xpoints[0],hitArea.ypoints[0]));//right
+		paths.add(new Path(hitArea.xpoints[1]+angleX,hitArea.ypoints[1]+angleY					,hitArea.xpoints[1],hitArea.ypoints[1]));//right	-down
+		paths.add(new Path(hitArea.xpoints[2],hitArea.ypoints[2]+Enemy.distanceToOctagon		,hitArea.xpoints[2],hitArea.ypoints[2]));//down
+		paths.add(new Path(hitArea.xpoints[3] - angleX,hitArea.ypoints[3] + angleY				,hitArea.xpoints[3],hitArea.ypoints[3]));//left		-down
+		paths.add(new Path(hitArea.xpoints[4] - Enemy.distanceToOctagon,hitArea.ypoints[4]		,hitArea.xpoints[4],hitArea.ypoints[4]));//left
+		paths.add(new Path(hitArea.xpoints[5] - angleX,hitArea.ypoints[5] - angleY				,hitArea.xpoints[5],hitArea.ypoints[5]));//left	 	-top
 		
 		
 	}	

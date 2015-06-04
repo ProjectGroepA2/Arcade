@@ -45,7 +45,7 @@ public class GameStateManager {
 		currentState.init();
 	}
 	
-	public void update(){		
-		currentState.update();
+	public void update(float factor){		
+		currentState.update(factor);
 	}
 }

@@ -11,8 +11,8 @@ import java.util.Iterator;
 
 import model.GameModel;
 import model.SongHandler;
+import model.drawObjects.Enemy;
 import model.drawObjects.Player;
-import model.drawObjects.enemy.Enemy;
 import model.objects.InfoPanel;
 import model.objects.Path;
 import model.objects.PlayArea;
@@ -39,9 +39,9 @@ public class PlayState extends GameState{
 		super(gsm,sh);
 		infoPanel = new InfoPanel(0, 0);			
 		area = new PlayArea(256, 1024, 1024, 100);
-//		for(int index = 0; index < 8; index++){						
-//			addEnemy(index, GameModel.colors[index % 6]);
-//		}
+		for(int index = 0; index < 8; index++){						
+			addEnemy(index, GameModel.colors[index % 6]);
+		}
 		
 		player = new Player(1280-1024+1024/2, 1024/2);		
 		stroke = new BasicStroke(sizeOfEnemy,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND);
@@ -52,12 +52,12 @@ public class PlayState extends GameState{
 		sh.stop();
 		sh.play();
 		
-		System.out.println("Diff" + sh.getCurrentSongInstance().getDifficulty());
+//		System.out.println("Diff" + sh.getCurrentSongInstance().getDifficulty());
 	}
 
 	@Override
-	public void update() {		
-		player.update();		
+	public void update(float factor) {		
+		player.update(factor);		
 		for(Path path : area.paths){						
 		Iterator<Enemy>enemyIterator = path.getEnemysInPath().iterator();
 		while(enemyIterator.hasNext()){			
@@ -69,21 +69,21 @@ public class PlayState extends GameState{
 			if(hitArea.intersectsLine(e.enemy) && !e.isClickable()){
 				e.clickable();
 			}
-				e.update();				
+				e.update(factor);				
 			}
 		}		
 		
 		infoPanel.updateIPanel();		
 		
-		long progress = sh.getProgress() / 1000;
-
-		for(ObjectInstance ob : sh.getCurrentSongInstance().getBetween(oldProgress, progress))
-		{
-			Path p = area.paths.get(ob.getDirection());
-			p.addEnemy(ob.getColor(), ob.getDirection(), (int) ob.getLength());
-		}
-			
-		oldProgress = progress;
+//		long progress = sh.getProgress() / 1000;
+//
+//		for(ObjectInstance ob : sh.getCurrentSongInstance().getBetween(oldProgress, progress))
+//		{
+//			Path p = area.paths.get(ob.getDirection());
+//			p.addEnemy(ob.getColor(), ob.getDirection(), (int) ob.getLength());
+//		}
+//			
+//		oldProgress = progress;
 	}
 	
 
@@ -166,7 +166,7 @@ public class PlayState extends GameState{
 
 	public void addEnemy(int pathID,Color color){	
 		Path path = area.paths.get(pathID);
-		Enemy e = new Enemy(pathID,1,color,100,path.getP1(),path.getP2());		
+		Enemy e = new Enemy(pathID,1,color,path);		
 		path.getEnemysInPath().addLast(e);			
 	}		
 }

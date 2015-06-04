@@ -18,7 +18,7 @@ public abstract class GameState  {
 	}
 	
 	public abstract void init();
-	public abstract void update();
+	public abstract void update(float factor);
 	public abstract void draw(Graphics2D g2);	
 	public abstract void buttonPressed(ButtonEvent e);	
 	public abstract void buttonReleased(ButtonEvent e);	

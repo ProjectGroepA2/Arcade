@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.geom.Line2D;
 import java.util.ArrayDeque;
 
-import model.drawObjects.enemy.Enemy;
+import model.drawObjects.Enemy;
 
 public class Path extends Line2D.Double {
 
@@ -29,6 +29,6 @@ public class Path extends Line2D.Double {
 	
 	public void addEnemy(Color c, int pathID, int length)
 	{
-		enemysInPath.addLast(new Enemy(pathID, length, c, 100, getP1(), getP2()));
+		enemysInPath.addLast(new Enemy(pathID, length, c,this));
 	}
 }

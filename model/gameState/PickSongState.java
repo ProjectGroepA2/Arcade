@@ -1,9 +1,6 @@
 package model.gameState;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Window;
-import java.awt.image.BufferedImage;
 
 import model.SongHandler;
 import control.GameStateManager;
@@ -23,7 +20,7 @@ public class PickSongState extends GameState {
 	}
 
 	@Override
-	public void update() {
+	public void update(float factor) {
 		// TODO Auto-generated method stub
 
 	}

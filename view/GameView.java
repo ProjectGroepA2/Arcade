@@ -13,14 +13,14 @@ import javax.swing.Timer;
 import control.GameStateManager;
 import control.LedHandler;
 
-public class GameView extends JPanel implements ActionListener{
+public class GameView extends JPanel{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1939480784205689618L;
 	
-	Timer t;	
+		
 	LedHandler led;
 	GameStateManager gsm;
 	
@@ -28,15 +28,10 @@ public class GameView extends JPanel implements ActionListener{
 	{
 		this.led=led;
 		this.gsm = gsm;		
-		t = new Timer(1000/60, this);
-		t.start();
+		
 		setPreferredSize(new Dimension(1280,1024));
 	}
 
-	public void actionPerformed(ActionEvent arg0) {
-		repaint();
-	}
-	
 	@Override
 	public void paintComponent(Graphics g)
 	{

@@ -34,7 +34,7 @@ public class TitleState extends GameState {
 	}
 
 	@Override
-	public void update() {
+	public void update(float factor) {
 
         frame++;
 	}
