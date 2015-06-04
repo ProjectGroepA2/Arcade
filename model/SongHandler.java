@@ -70,6 +70,8 @@ public class SongHandler {
 		
 		p.stop();
 		p.setClip(currentSong);
+		
+		System.out.println(currentSong.getSongs().size());
 	}
 	
 	public long getProgress()

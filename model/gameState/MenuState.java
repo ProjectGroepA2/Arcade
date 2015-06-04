@@ -30,7 +30,7 @@ public class MenuState extends GameState {
 	
 	int z;
 	
-	int yPosDiffButton = 900;
+	int yPosDiffButton = 400;
 	
 	public MenuState(GameStateManager gsm, SongHandler sh) {	
 		super(gsm, sh);
@@ -77,7 +77,9 @@ public class MenuState extends GameState {
 	    	 
 	    	buttons2.clear();
 	 		int instanceNr = 0;
-	 		for(int i = sh.getCurrentSong().getSongs().size()-1; i>0; i--){
+	 		for(int i = sh.getCurrentSong().getSongs().size(); i>0; i--){
+	 			if(sh.getCurrentSong().getSongs().size() == 0)
+	 				continue;
 	 			SongInstance si = sh.getCurrentSong().getSongs().get(i-1);
 	 			buttons2.add(new DifficultyButton(yPosDiffButton-instanceNr,si.getDifficulty(), GameModel.colors[i-1]));
 	 			instanceNr += 100;
