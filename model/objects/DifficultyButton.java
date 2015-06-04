@@ -32,4 +32,5 @@ public class DifficultyButton {
 		g2.drawString(str, x+5, y+50);
 		
 	}
+	
 }

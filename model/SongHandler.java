@@ -26,7 +26,7 @@ public class SongHandler {
 		songs = new ArrayList<Song>();
 		
 		currentSong = null;
-		currentIndex = -1;
+		currentIndex = 0;
 		
 		p = new AudioPlayer();
 		
@@ -36,6 +36,8 @@ public class SongHandler {
 			dir = new File(System.getProperty( "user.home" ) + "/Documents/songs");
 		
 		songs = DirScanner.scanDirectories(dir);
+		
+		updatePlayer();
 	}
 	
 	public void next()

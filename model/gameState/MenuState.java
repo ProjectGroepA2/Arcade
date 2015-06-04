@@ -11,9 +11,8 @@ import model.SongHandler;
 import model.objects.DifficultyButton;
 import model.objects.MenuButton;
 import audio.Song;
+import audio.SongInstance;
 import control.GameStateManager;
-import control.GameStateManager.State;
-import control.button.Button;
 import control.button.ButtonEvent;
 import control.joystick.Joystick;
 import control.joystick.JoystickEvent;
@@ -28,7 +27,9 @@ public class MenuState extends GameState {
 	private int animationcounter;
 	private boolean subscreen, startanimation;
 	
-	private int z;
+	int z;
+	
+	int yPosDiffButton = 900;
 	
 	public MenuState(GameStateManager gsm, SongHandler sh) {	
 		super(gsm, sh);
@@ -45,14 +46,10 @@ public class MenuState extends GameState {
 		buttons.add(new MenuButton(-600, 450, 1.7, 30, Color.WHITE,selectedToSong(selected+2)));
 		buttons.get(2).setSelected(true);
 		
-		buttons2.add(new DifficultyButton(600 ,"Beginner", Color.BLUE));
-		buttons2.add(new DifficultyButton(700 ,"Easy", Color.GREEN));
-		buttons2.add(new DifficultyButton(800 ,"Normal", Color.orange));
-		buttons2.add(new DifficultyButton(900 ,"Hard", Color.RED));
-		
 	}
 	@Override
 	public void init() {
+		
 	}
 
 	@Override
@@ -76,6 +73,14 @@ public class MenuState extends GameState {
 		    	 z=i;
 	    	 }
 	    	 oldselected = selected;
+	    	 
+	    	 buttons2.clear();
+	 		int instanceNr = 0;
+	 		for(SongInstance si : sh.getCurrentSong().getSongs()){
+	 			buttons2.add(new DifficultyButton(yPosDiffButton-instanceNr,si.getDifficulty(), Color.BLUE));
+	 			instanceNr += 100;
+	 			System.out.println(sh.getCurrentSong().getSongs().size());
+	 		}
 	     }
 	}
 

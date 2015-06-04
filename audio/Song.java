@@ -29,7 +29,7 @@ public class Song {
 	private BufferedImage bannerImage;
 	private AudioInputStream audioStream;
 
-	private List<SongInstance> songs;
+	public List<SongInstance> songs;
 
 	public Song() {
 		title = "";
