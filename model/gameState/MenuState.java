@@ -1,6 +1,7 @@
 package model.gameState;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.util.ArrayList;
@@ -30,12 +31,13 @@ public class MenuState extends GameState {
 		buttons = new ArrayList<MenuButton>();
 		this.songs = sh.getSongs();
 		startanimation = true;
+		subscreen = false;
 		
 		buttons.add(new MenuButton(-600, 50,1.7, 0, Color.green, selectedToSong(selected-2) ));
-		buttons.add(new MenuButton(-600, 150, 1.7, 10, new Color(60,60,255), selectedToSong(selected-1)));
+		buttons.add(new MenuButton(-600, 150, 1.7, 10, Color.BLUE, selectedToSong(selected-1)));
 		buttons.add(new MenuButton(-600, 250, 1.7, 20, Color.red, selectedToSong(selected)));
 		buttons.add(new MenuButton(-600, 350, 1.7, 30, Color.yellow,selectedToSong(selected+1)));
-		buttons.add(new MenuButton(-600, 450, 1.7, 30, Color.yellow,selectedToSong(selected+2)));
+		buttons.add(new MenuButton(-600, 450, 1.7, 30, Color.WHITE,selectedToSong(selected+2)));
 		buttons.get(2).setSelected(true);
 		
 	}
@@ -68,15 +70,38 @@ public class MenuState extends GameState {
 
 	@Override
 	public void draw(Graphics2D g2) {
-	    for(MenuButton b:buttons){
-	    	 b.draw(g2);
-	     }
-	    g2.setColor(Color.ORANGE);
 	    triangle = new Polygon();
 	    triangle.addPoint(0, 0);
 	    triangle.addPoint(0, 1024/4);
 	    triangle.addPoint(1280/2, 0);	    
 	    g2.fillPolygon(triangle);
+	    
+		g2.setColor(Color.BLACK);
+		Font textFont2 = new Font("OCR A Extended", Font.BOLD, 50);
+		g2.setFont(textFont2);
+		
+		if(!subscreen) {
+			g2.setColor(Color.BLACK);
+			g2.fillRect(0,0,1280,1024);
+	
+			for(MenuButton b:buttons){
+		    	 b.draw(g2);
+		     }
+			
+			g2.setColor(Color.ORANGE);
+			g2.fillPolygon(triangle);
+			g2.setColor(Color.BLACK);
+			g2.drawString("Main Menu", 30, 60);
+		}
+		
+		if(subscreen) {
+			g2.setColor(Color.ORANGE);
+			g2.fillPolygon(triangle);
+			g2.setColor(Color.BLACK);
+//			g2.drawString(songs.getTitle(), 30, 60);
+		}
+		
+
 	}
 	
 	@Override
