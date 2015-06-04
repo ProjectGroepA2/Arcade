@@ -15,6 +15,8 @@ public class AudioPlayer {
 
 	public void setClip(Song s) {
 		try {
+			if(clip!=null)
+				clip.close();
 			clip = null;
 			AudioInputStream ais = s.getAudioStream();
 			AudioFormat baseFormat = ais.getFormat();

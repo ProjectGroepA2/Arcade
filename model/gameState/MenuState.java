@@ -7,6 +7,7 @@ import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.GameModel;
 import model.SongHandler;
 import model.objects.DifficultyButton;
 import model.objects.MenuButton;
@@ -74,12 +75,12 @@ public class MenuState extends GameState {
 	    	 }
 	    	 oldselected = selected;
 	    	 
-	    	 buttons2.clear();
+	    	buttons2.clear();
 	 		int instanceNr = 0;
-	 		for(SongInstance si : sh.getCurrentSong().getSongs()){
-	 			buttons2.add(new DifficultyButton(yPosDiffButton-instanceNr,si.getDifficulty(), Color.BLUE));
+	 		for(int i = sh.getCurrentSong().getSongs().size()-1; i>0; i--){
+	 			SongInstance si = sh.getCurrentSong().getSongs().get(i-1);
+	 			buttons2.add(new DifficultyButton(yPosDiffButton-instanceNr,si.getDifficulty(), GameModel.colors[i-1]));
 	 			instanceNr += 100;
-	 			System.out.println(sh.getCurrentSong().getSongs().size());
 	 		}
 	     }
 	}
@@ -153,6 +154,7 @@ public class MenuState extends GameState {
 	}
 	@Override
 	public void onJoystickMoved(JoystickEvent e) {
+		
 		if(subscreen){								//Screen for Song details
 				
 		}else{										//Screen for selecting song
@@ -162,7 +164,7 @@ public class MenuState extends GameState {
 				selected--;
 			}
 			sh.set(songs.indexOf(selectedToSong(selected)));
-			sh.play();	
+			sh.play(true);	
 		}
 	}
 	
