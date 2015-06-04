@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.SongHandler;
+import model.objects.DifficultyButton;
 import model.objects.MenuButton;
 import audio.Song;
 import control.GameStateManager;
@@ -19,6 +20,7 @@ import control.joystick.JoystickEvent;
 
 public class MenuState extends GameState {
 	private ArrayList<MenuButton> buttons;
+	private ArrayList<DifficultyButton> buttons2;
 	private int selected, oldselected;
 	private List<Song> songs;
 	private Polygon triangle;
@@ -26,9 +28,12 @@ public class MenuState extends GameState {
 	private int animationcounter;
 	private boolean subscreen, startanimation;
 	
+	private int z;
+	
 	public MenuState(GameStateManager gsm, SongHandler sh) {	
 		super(gsm, sh);
 		buttons = new ArrayList<MenuButton>();
+		buttons2 = new ArrayList<DifficultyButton>();
 		this.songs = sh.getSongs();
 		startanimation = true;
 		subscreen = false;
@@ -39,6 +44,11 @@ public class MenuState extends GameState {
 		buttons.add(new MenuButton(-600, 350, 1.7, 30, Color.yellow,selectedToSong(selected+1)));
 		buttons.add(new MenuButton(-600, 450, 1.7, 30, Color.WHITE,selectedToSong(selected+2)));
 		buttons.get(2).setSelected(true);
+		
+		buttons2.add(new DifficultyButton(600 ,"Beginner", Color.BLUE));
+		buttons2.add(new DifficultyButton(700 ,"Easy", Color.GREEN));
+		buttons2.add(new DifficultyButton(800 ,"Normal", Color.orange));
+		buttons2.add(new DifficultyButton(900 ,"Hard", Color.RED));
 		
 	}
 	@Override
@@ -63,6 +73,7 @@ public class MenuState extends GameState {
 	     if(selected != oldselected){
 	    	 for(int i = 0; i < buttons.size(); i++){
 		    	 buttons.get(i).setSong(selectedToSong(selected+(i-2)));
+		    	 z=i;
 	    	 }
 	    	 oldselected = selected;
 	     }
@@ -95,10 +106,23 @@ public class MenuState extends GameState {
 		}
 		
 		if(subscreen) {
-			g2.setColor(Color.ORANGE);
-			g2.fillPolygon(triangle);
 			g2.setColor(Color.BLACK);
-//			g2.drawString(songs.getTitle(), 30, 60);
+			g2.fillRect(0,0,1280,1024);
+			g2.setColor(Color.ORANGE);
+			g2.fillRect(0, 0, 1280, 1024/8);
+			g2.setColor(Color.BLACK);
+			g2.drawString(selectedToSong(selected).getTitle(), 30, 60);
+			
+			g2.setColor(Color.WHITE);
+			g2.drawString("Overall Highscore: " + "", 30, 200);
+			g2.drawString("Daily Highscore: " + "", 30, 300);
+			g2.drawString("Beats per Minute: " + selectedToSong(selected).getBPM(), 30, 400);
+			
+			for(DifficultyButton b : buttons2){
+				b.draw(g2);
+			}
+			
+			
 		}
 		
 
