@@ -1,13 +1,13 @@
 package model;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import main.Window;
 import audio.AudioPlayer;
 import audio.Song;
+import audio.SongInstance;
 import audio.io.DirScanner;
 
 public class SongHandler {
@@ -15,6 +15,7 @@ public class SongHandler {
 	private List<Song> songs;
 	
 	private Song currentSong;
+	private SongInstance currentSongInstance;
 	private int currentIndex;
 	
 	private File dir;
@@ -26,17 +27,18 @@ public class SongHandler {
 		songs = new ArrayList<Song>();
 		
 		currentSong = null;
-		currentIndex = 0;
+		currentSongInstance = null;
+		currentIndex = 1;
 		
 		p = new AudioPlayer();
 		
 		if(Window.ON_RASP)
-			dir = new File(System.getProperty( "user.home" ) + "/ColorStrike/Songs");
+			dir = new File(System.getProperty( "user.home" ) + "/ColorStrike/Songs/");
 		else
-			dir = new File(System.getProperty( "user.home" ) + "/Documents/songs");
+			dir = new File(System.getProperty( "user.home" ) + "/Documents/songs/");
 		
 		songs = DirScanner.scanDirectories(dir);
-		
+		System.out.println(songs.size());
 		updatePlayer();
 	}
 	
@@ -58,20 +60,24 @@ public class SongHandler {
 			updatePlayer();
 		}
 	}
+	public void set(SongInstance si)
+	{
+		currentSongInstance = si;
+	}
 	
 	
 	private void updatePlayer()
 	{
 		if(currentIndex < 0)
 			currentIndex = songs.size() + currentIndex;
-		
-		currentIndex%=songs.size();
+		if(currentIndex >= songs.size())
+			currentIndex = currentIndex - songs.size();
+	
 		currentSong = songs.get(currentIndex);
+		currentSongInstance = currentSong.getSongs().get(0);
 		
 		p.stop();
 		p.setClip(currentSong);
-		
-		System.out.println(currentSong.getSongs().size());
 	}
 	
 	public long getProgress()
@@ -86,6 +92,10 @@ public class SongHandler {
 	public Song getCurrentSong()
 	{
 		return currentSong;
+	}
+	public SongInstance getCurrentSongInstance()
+	{
+		return currentSongInstance;
 	}
 	
 	public void close()
@@ -106,7 +116,7 @@ public class SongHandler {
 	{
 		if(b)
 		{
-			p.play((int)currentSong.getSampleStart()*10000);
+			p.play((int)currentSong.getSampleStart()*10);
 		}
 	}
 	

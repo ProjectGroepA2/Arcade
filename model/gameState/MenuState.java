@@ -29,9 +29,8 @@ public class MenuState extends GameState {
 	private int animationcounter;
 	private boolean subscreen, startanimation;
 	
-	int z;
-	
-	int yPosDiffButton = 900;
+	int yPosDiffButton = 400;
+	private int difSelect=0;
 	
 	public MenuState(GameStateManager gsm, SongHandler sh) {	
 		super(gsm, sh);
@@ -72,7 +71,6 @@ public class MenuState extends GameState {
 	     if(selected != oldselected){
 	    	 for(int i = 0; i < buttons.size(); i++){
 		    	 buttons.get(i).setSong(selectedToSong(selected+(i-2)));
-		    	 z=i;
 	    	 }
 	    	 oldselected = selected;
 	    	 
@@ -85,6 +83,7 @@ public class MenuState extends GameState {
 	 			buttons2.add(new DifficultyButton(yPosDiffButton-instanceNr,si.getDifficulty(), GameModel.colors[i-1]));
 	 			instanceNr += 100;
 	 		}
+	 		
 	     }
 	}
 
@@ -156,6 +155,9 @@ public class MenuState extends GameState {
 				b.draw(g2);
 			}
 			
+			g2.setColor(Color.BLACK);
+			g2.fillRect(865, 425 - difSelect*100, 25, 25);
+			
 			
 		}
 		
@@ -167,7 +169,10 @@ public class MenuState extends GameState {
 		if(subscreen){								//Screen for Song details
 			if(e.getButton().getButtonID() == 2){
 				subscreen = false;
-			}	
+			}
+			if(e.getButton().getButtonID() == 1){
+				gsm.next();
+			}
 		}else{										//Screen for selecting song
 			if(e.getButton().getButtonID() == 1){
 				subscreen = true;
@@ -183,8 +188,26 @@ public class MenuState extends GameState {
 	@Override
 	public void onJoystickMoved(JoystickEvent e) {
 		
-		if(subscreen){								//Screen for Song details
+		if(subscreen){		
+			if(e.getJoystick().getPos() == Joystick.Position.DOWN){
+				difSelect--;
+				if(difSelect < 0){
+					difSelect += buttons2.size();
+				}
+//				System.out.println(difSelect);
+			}else if(e.getJoystick().getPos() == Joystick.Position.UP){
+				difSelect++;
+				if(difSelect > buttons2.size()-1){
+					difSelect = 0;
+				}
 				
+//				System.out.println(difSelect);
+			}
+			sh.set(sh.getCurrentSong().getSongs().get(difSelect));	
+			
+			
+			
+			
 		}else{										//Screen for selecting song
 			if(e.getJoystick().getPos() == Joystick.Position.DOWN){
 				selected++;
