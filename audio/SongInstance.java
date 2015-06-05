@@ -43,16 +43,34 @@ public class SongInstance {
 		this.difficulty = difficulty;
 	}
 
-	public List<ObjectInstance> getBetween(long oldProgress, long progress) {
+	public List<ObjectInstance> getObjectsBetween(long oldProgress, long progress) {
 		List<ObjectInstance> b = new ArrayList<ObjectInstance>();
 		
 		for(ObjectInstance i : objects)
 		{
-			if(i.getTime() > progress)
+			if(i.getTime() >= progress)
 			{
 				return b;
 			}
-			if(i.getTime() > oldProgress && i.getTime() <= progress)
+			if(i.getTime() >= oldProgress && i.getTime() < progress)
+			{
+				b.add(i);
+			}
+		}
+		
+		return b;
+	}
+	
+	public List<ButtonInstance> getButtonsBetween(long oldProgress, long progress) {
+		List<ButtonInstance> b = new ArrayList<ButtonInstance>();
+		
+		for(ButtonInstance i : buttons)
+		{
+			if(i.getTime() >= progress)
+			{
+				return b;
+			}
+			if(i.getTime() >= oldProgress && i.getTime() < progress)
 			{
 				b.add(i);
 			}

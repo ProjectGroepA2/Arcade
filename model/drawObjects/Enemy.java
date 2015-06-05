@@ -90,7 +90,7 @@ public class Enemy extends DrawObject {
 		angleY = Math.sin(Math.toRadians(45))*distanceFromStart;
 		
 //		System.out.println(Math.toRadians(45)*distanceFromStart);
-		System.out.println(angleX+" - "+angleY);
+//		System.out.println(angleX+" - "+angleY);
 		
 		switch(index){
 		case 0:

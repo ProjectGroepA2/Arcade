@@ -13,9 +13,12 @@ import model.drawObjects.Player;
 import model.objects.InfoPanel;
 import model.objects.Path;
 import model.objects.PlayArea;
+import audio.ButtonInstance;
 import audio.ObjectInstance;
 import control.GameStateManager;
+import control.button.Button;
 import control.button.ButtonEvent;
+import control.button.ButtonHandler;
 import control.joystick.JoystickEvent;
 
 public class PlayState extends GameState {
@@ -51,12 +54,36 @@ public class PlayState extends GameState {
 		sh.stop();
 		sh.play();
 
+		for(int i=1; i<ButtonHandler.getButtons().size(); i++)
+		{
+			Button b = ButtonHandler.getButton(i);
+			b.setColor(Color.BLACK);
+		}
+		
 		// System.out.println("Diff" +
 		// sh.getCurrentSongInstance().getDifficulty());
 	}
 
 	@Override
 	public void update(float factor) {
+		
+		long progress = (long) ((sh.getProgress() / 1000) + (Enemy.secondsToEnd * 1000));
+
+		for (ButtonInstance bu : sh.getCurrentSongInstance().getButtonsBetween(
+				oldProgress, progress)) {
+			Button b = ButtonHandler.getButton(bu.getButtonID());
+			b.setColor(bu.getColor());
+//			System.out.println(bu.getButtonID() + " - " + bu.getColor()+ " / " + b.getColor());
+		}
+		
+		for (ObjectInstance ob : sh.getCurrentSongInstance().getObjectsBetween(
+				oldProgress, progress)) {
+			Path p = area.paths.get(ob.getDirection());
+			p.addEnemy(ob.getColor(), ob.getDirection(), (int) ob.getLength());
+		}
+
+		oldProgress = progress;
+		
 		player.update(factor);
 		for (Path path : area.paths) {
 
@@ -65,26 +92,17 @@ public class PlayState extends GameState {
 			while (enemyIterator.hasNext()) {
 
 				Enemy e = enemyIterator.next();
-				
-				if(e.getDistanceFromStart() > Enemy.distanceToOctagon+(sizeOfEnemy*1.5)){
+
+				if (e.getDistanceFromStart() > Enemy.distanceToOctagon
+						+ (sizeOfEnemy * 1.5)) {
 					enemyIterator.remove();
 				}
-				
+
 				e.update(factor);
 			}
 		}
 
 		infoPanel.updateIPanel();
-
-		long progress = (long) ((sh.getProgress() / 1000) + (Enemy.secondsToEnd * 1000));
-
-		for (ObjectInstance ob : sh.getCurrentSongInstance().getBetween(
-				oldProgress, progress)) {
-			Path p = area.paths.get(ob.getDirection());
-			p.addEnemy(ob.getColor(), ob.getDirection(), (int) ob.getLength());
-		}
-
-		oldProgress = progress;
 	}
 
 	@Override
@@ -107,26 +125,28 @@ public class PlayState extends GameState {
 				player.draw(g2);
 		} catch (Exception e) {
 		}
-		;
-
 	}
 
 	@Override
 	public void buttonPressed(ButtonEvent e) {
-		Iterator<Enemy> enemysInPath = area.paths.get(player.getIndex()).getEnemysInPath().iterator();
-		while(enemysInPath.hasNext()){
+//		System.out.println(e.getButton().getColor());
+		Iterator<Enemy> enemysInPath = area.paths.get(player.getIndex())
+				.getEnemysInPath().iterator();
+		while (enemysInPath.hasNext()) {
 			Enemy enemy = enemysInPath.next();
-			if(enemy.getDistanceFromStart() > Enemy.distanceToOctagon || enemy.getDistanceFromStart() > Enemy.distanceToOctagon+sizeOfEnemy)
-			{
-				if(e.getButton().getColor().equals(enemy.getColor()))
-				{
-					currentScore += enemy.getDistanceFromStart() - Enemy.distanceToOctagon;
+			if (enemy.getDistanceFromStart() > Enemy.distanceToOctagon
+					|| enemy.getDistanceFromStart() > Enemy.distanceToOctagon
+							+ sizeOfEnemy) {
+				if (e.getButton().getColor().equals(enemy.getColor())) {
+					currentScore += enemy.getDistanceFromStart()
+							- Enemy.distanceToOctagon;
 					enemysInPath.remove();
+					break;
 				}
 			}
-			
+
 		}
-		
+
 	}
 
 	@Override
