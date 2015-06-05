@@ -1,13 +1,14 @@
 package audio;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
+import java.io.FileInputStream;
 
-public class AudioPlayer {
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
 
-	private Clip clip;
+public class AudioPlayer{
+
+	private Player clip;
+	private FileInputStream fis;
 
 	public AudioPlayer() {
 		clip = null;
@@ -15,13 +16,11 @@ public class AudioPlayer {
 
 	public void setClip(Song s) {
 		try {
-			clip = null;
-			AudioInputStream ais = s.getAudioStream();
-			AudioFormat baseFormat = ais.getFormat();
-			AudioFormat decodeFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, baseFormat.getSampleRate(), 16, baseFormat.getChannels(), baseFormat.getChannels() * 2, baseFormat.getSampleRate(), false);
-			AudioInputStream dais = AudioSystem.getAudioInputStream(decodeFormat, ais);
-			clip = AudioSystem.getClip();
-			clip.open(dais);
+			if(clip != null){
+				clip.close();
+			}
+			fis = new FileInputStream(s.getAudio());
+			clip = new Player(fis);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -30,49 +29,52 @@ public class AudioPlayer {
 	public void play() {
 		if (clip == null)
 			return;
-		clip.start();
-	}
-	
-	public void pause()
-	{
-		if (clip == null)
-			return;
-		if (clip.isRunning())
-		{
-			clip.stop();
-		}
-	}
-	
-	public void play(int framePosition) {
-		if (clip == null)
-			return;
-		stop();
-		clip.setFramePosition(framePosition);
-		clip.start();
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				if(clip != null){
+					try {
+						clip.play();
+					} catch (JavaLayerException e) {
+						e.printStackTrace();
+					}
+				}
+			}}).start();
+		
 	}
 
-	public void stop() {
+	
+	public void play(final int framePosition) {
 		if (clip == null)
-			return;
-		if (clip.isRunning())
-		{
-			clip.stop();
-			clip.setFramePosition(0);
-		}
+			return;	
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				if(clip != null){
+					try {
+						clip.play(framePosition);
+					} catch (JavaLayerException e) {
+						e.printStackTrace();
+					}
+				}
+			}}).start();
+
 	}
+
 
 	public void close() {
-		stop();
 		if(clip != null)
 		{
 			clip.close();
+			clip = null;
+			fis = null;
 		}
 	}
 	
 	public long getProgress()
 	{
 		if(clip != null)
-			return clip.getMicrosecondPosition();
+			return clip.getPosition()*1000;
 		else
 			return 0L;
 	}

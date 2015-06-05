@@ -25,7 +25,7 @@ public class GameControl implements JoystickListener, ButtonListener,ActionListe
 		this.model = model;
 		this.view = view;
 		this.gsm = gsm;
-		update = new Timer(0, this);
+		update = new Timer(1000/60, this);
 		update.start();
 	}
 

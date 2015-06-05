@@ -51,7 +51,6 @@ public class PlayState extends GameState {
 
 	@Override
 	public void init() {
-		sh.stop();
 		sh.play();
 
 		for(int i=1; i<ButtonHandler.getButtons().size(); i++)

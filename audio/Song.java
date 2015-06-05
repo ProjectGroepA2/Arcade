@@ -27,7 +27,6 @@ public class Song {
 	
 	private BufferedImage backgroundImage;
 	private BufferedImage bannerImage;
-	private AudioInputStream audioStream;
 
 	private List<SongInstance> songs;
 
@@ -45,7 +44,6 @@ public class Song {
 		
 		backgroundImage = null;
 		bannerImage = null;
-		audioStream = null;
 
 		songs = new ArrayList<SongInstance>();
 	}
@@ -98,27 +96,6 @@ public class Song {
 		return audio;
 	}
 	
-	public AudioInputStream getAudioStream()
-	{
-		if(audioStream == null)
-		{
-			try {
-				this.audioStream = AudioSystem.getAudioInputStream(audio);
-			} catch (UnsupportedAudioFileException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		try {
-			audioStream.reset();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return audioStream;
-	}
-
 	public void setAudio(File audio) {
 		this.audio = audio;
 	}
@@ -172,12 +149,5 @@ public class Song {
 	
 	public void close()
 	{
-		if(audioStream != null)
-		{
-			try {
-				audioStream.close();
-			} catch (IOException e) {
-			}
-		}
 	}
 }

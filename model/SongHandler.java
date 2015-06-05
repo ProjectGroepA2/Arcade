@@ -35,7 +35,7 @@ public class SongHandler {
 		if(Window.ON_RASP)
 			dir = new File(System.getProperty( "user.home" ) + "/ColorStrike/Songs/");
 		else
-			dir = new File(System.getProperty( "user.home" ) + "/Documents/songs/");
+			dir = new File(System.getProperty( "user.home" ) + "/Documenten/songs/");
 		
 		songs = DirScanner.scanDirectories(dir);
 		System.out.println(songs.size());
@@ -76,7 +76,7 @@ public class SongHandler {
 		currentSong = songs.get(currentIndex);
 		currentSongInstance = currentSong.getSongs().get(0);
 		
-		p.stop();
+		p.close();
 		p.setClip(currentSong);
 	}
 	
@@ -118,15 +118,5 @@ public class SongHandler {
 		{
 			p.play((int)currentSong.getSampleStart()*10);
 		}
-	}
-	
-	public void pause()
-	{
-		p.pause();
-	}
-	
-	public void stop()
-	{
-		p.stop();
 	}
 }
