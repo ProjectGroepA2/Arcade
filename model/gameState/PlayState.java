@@ -1,6 +1,4 @@
-
 package model.gameState;
-
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -9,7 +7,6 @@ import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
-import model.GameModel;
 import model.SongHandler;
 import model.drawObjects.Enemy;
 import model.drawObjects.Player;
@@ -21,118 +18,124 @@ import control.GameStateManager;
 import control.button.ButtonEvent;
 import control.joystick.JoystickEvent;
 
-public class PlayState extends GameState{
+public class PlayState extends GameState {
 
-	public static final Rectangle2D borderRect = new Rectangle2D.Double(256, 0, 1024, 1024);
+	public static final Rectangle2D borderRect = new Rectangle2D.Double(256, 0,
+			1024, 1024);
 	private PlayArea area;
 	private InfoPanel infoPanel;
-	private Player player;			
-	private Stroke stroke;	 	
-	
+	private Player player;
+	private Stroke stroke;
+
 	public static int sizeOfEnemy = 40;
-	public static int currentScore = 0; 
+	public static int currentScore = 0;
 	public static int lifePoints = 100;
-	
+
 	private long oldProgress = 0;
-	
+
 	public PlayState(GameStateManager gsm, SongHandler sh) {
-		super(gsm,sh);
-		infoPanel = new InfoPanel(0, 0);			
-		area = new PlayArea(256, 1024, 1024, 100);
-		for(int index = 0; index < 8; index++){						
-			addEnemy(index, GameModel.colors[index % 6]);
-		}
-		
-		player = new Player(1280-1024+1024/2, 1024/2);		
-		stroke = new BasicStroke(sizeOfEnemy,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND);
+		super(gsm, sh);
+		infoPanel = new InfoPanel(0, 0);
+		area = new PlayArea(256, 1024, 1024, 125);
+		// for(int index = 0; index < 8; index++){
+		// addEnemy(index, GameModel.colors[index % 6]);
+		// }
+		//
+		player = new Player(1280 - 1024 + 1024 / 2, 1024 / 2);
+		stroke = new BasicStroke(sizeOfEnemy, BasicStroke.CAP_ROUND,
+				BasicStroke.JOIN_ROUND);
 	}
 
 	@Override
 	public void init() {
 		sh.stop();
 		sh.play();
-		
-//		System.out.println("Diff" + sh.getCurrentSongInstance().getDifficulty());
+
+		// System.out.println("Diff" +
+		// sh.getCurrentSongInstance().getDifficulty());
 	}
 
 	@Override
-	public void update(float factor) {		
-		player.update(factor);		
-		for(Path path : area.paths){						
-		Iterator<Enemy>enemyIterator = path.getEnemysInPath().iterator();
-		while(enemyIterator.hasNext()){			
-			Enemy e = enemyIterator.next();
-			Rectangle2D hitArea = area.hitAreas[e.getIndex()];
-			if(e.finised()){
-				enemyIterator.remove();
-			}			
-			if(hitArea.intersectsLine(e.enemy) && !e.isClickable()){
-				e.clickable();
-			}
-				e.update(factor);				
-			}
-		}		
-		
-		infoPanel.updateIPanel();		
-		
-//		long progress = sh.getProgress() / 1000;
-//
-//		for(ObjectInstance ob : sh.getCurrentSongInstance().getBetween(oldProgress, progress))
-//		{
-//			Path p = area.paths.get(ob.getDirection());
-//			p.addEnemy(ob.getColor(), ob.getDirection(), (int) ob.getLength());
-//		}
-//			
-//		oldProgress = progress;
-	}
-	
+	public void update(float factor) {
+		player.update(factor);
+		for (Path path : area.paths) {
 
-	@Override
-	public void draw(Graphics2D g2) {			
-		try{			
-			infoPanel.draw(g2);
-			g2.setClip(borderRect);	
-			area.draw(g2);
-			
-			g2.setStroke(stroke);
-			for(Path p : area.paths){
-				if(p.getEnemysInPath() != null){
-					for(Enemy enemy : p.getEnemysInPath()){
-						enemy.draw(g2);
-					}
-				}	
-			}
+			Iterator<Enemy> enemyIterator = path.getEnemysInPath().iterator();
 
-			if(player != null)
-				player.draw(g2);
-		}catch(Exception e){};
-		
-	}
-	
-	
+			while (enemyIterator.hasNext()) {
 
-	@Override
-	public void buttonPressed(ButtonEvent e) {			
-//		int index = player.getIndex();		
-		Path currentPath = area.paths.get(player.getIndex());
-		if (!currentPath.getEnemysInPath().isEmpty()) {
-			Enemy ce = currentPath.getEnemysInPath().getFirst();
-			if (ce.isClickable()) {
-				if (ce.getColor().equals(e.getButton().getColor())) {
-					currentScore += ce.getTimeLeftToClick();
-					currentPath.getEnemysInPath().remove(ce);
+				Enemy e = enemyIterator.next();
+				
+				if(e.getDistanceFromStart() > Enemy.distanceToOctagon+(sizeOfEnemy*1.5)){
+					enemyIterator.remove();
 				}
+				
+				e.update(factor);
 			}
 		}
+
+		infoPanel.updateIPanel();
+
+		long progress = (long) ((sh.getProgress() / 1000) + (Enemy.secondsToEnd * 1000));
+
+		for (ObjectInstance ob : sh.getCurrentSongInstance().getBetween(
+				oldProgress, progress)) {
+			Path p = area.paths.get(ob.getDirection());
+			p.addEnemy(ob.getColor(), ob.getDirection(), (int) ob.getLength());
+		}
+
+		oldProgress = progress;
 	}
 
 	@Override
-	public void buttonReleased(ButtonEvent e) {		
+	public void draw(Graphics2D g2) {
+		try {
+			infoPanel.draw(g2);
+			g2.setClip(borderRect);
+			area.draw(g2);
+
+			g2.setStroke(stroke);
+			for (Path p : area.paths) {
+				if (p.getEnemysInPath() != null) {
+					for (Enemy enemy : p.getEnemysInPath()) {
+						enemy.draw(g2);
+					}
+				}
+			}
+
+			if (player != null)
+				player.draw(g2);
+		} catch (Exception e) {
+		}
+		;
+
 	}
 
 	@Override
-	public void onJoystickMoved(JoystickEvent e) {	
-		switch(e.getJoystick().getPos()){
+	public void buttonPressed(ButtonEvent e) {
+		Iterator<Enemy> enemysInPath = area.paths.get(player.getIndex()).getEnemysInPath().iterator();
+		while(enemysInPath.hasNext()){
+			Enemy enemy = enemysInPath.next();
+			if(enemy.getDistanceFromStart() > Enemy.distanceToOctagon || enemy.getDistanceFromStart() > Enemy.distanceToOctagon+sizeOfEnemy)
+			{
+				if(e.getButton().getColor().equals(enemy.getColor()))
+				{
+					currentScore += enemy.getDistanceFromStart() - Enemy.distanceToOctagon;
+					enemysInPath.remove();
+				}
+			}
+			
+		}
+		
+	}
+
+	@Override
+	public void buttonReleased(ButtonEvent e) {
+	}
+
+	@Override
+	public void onJoystickMoved(JoystickEvent e) {
+		switch (e.getJoystick().getPos()) {
 		case CENTER:
 			break;
 		case DOWN:
@@ -159,14 +162,14 @@ public class PlayState extends GameState{
 		case UP_RIGHT:
 			player.setIndex(1);
 			break;
-		default:			
+		default:
 			break;
 		}
 	}
 
-	public void addEnemy(int pathID,Color color){	
+	public void addEnemy(int pathID, Color color) {
 		Path path = area.paths.get(pathID);
-		Enemy e = new Enemy(pathID,1,color,path);		
-		path.getEnemysInPath().addLast(e);			
-	}		
+		Enemy e = new Enemy(pathID, 1, color, path);
+		path.getEnemysInPath().addLast(e);
+	}
 }

@@ -8,13 +8,11 @@ import model.objects.Path;
 
 public class Enemy extends DrawObject {
 
-	public static final int distanceToOctagon = 1000;
-	private final double secondsToEnd = 3;
-	private int length,timeToClick = 10,currentTimeToClick;	
+	public static final double distanceToOctagon = 1000,secondsToEnd = 5.0;	
+	private int length;
 	private double lengthOf1Side,distanceFromStart;//lengthOf1Side wordt alleen gebruikt als de lijn een schuine lijn is.	
 	public Line2D enemy;
 	private Color c;	
-	private boolean clickable = false;
 	private Path path;
 	
 	public Enemy(int pathID,int lengthOfEnemy,Color c,Path path){
@@ -66,7 +64,8 @@ public class Enemy extends DrawObject {
 		endX += beginX;
 		endY += beginY;
 		
-		enemy = new Line2D.Double(beginX, beginY, endX, endY);			
+		enemy = new Line2D.Double(beginX, beginY, endX, endY);	
+//		System.out.println("Enemy added on path: "+pathID);
 	}
 
 	@Override
@@ -77,11 +76,8 @@ public class Enemy extends DrawObject {
 
 	@Override
 	public void update(float factor) {	
-		if(clickable){
-			currentTimeToClick++;
-		}		
 		
-		distanceFromStart += (distanceToOctagon/(secondsToEnd*1000))*factor;
+		distanceFromStart += (distanceToOctagon/(secondsToEnd*1000))*factor;		
 		
 		double x1,x2,y1,y2;
 		x1 = enemy.getX1();
@@ -93,7 +89,7 @@ public class Enemy extends DrawObject {
 		angleX = Math.cos(Math.toRadians(45))*distanceFromStart;
 		angleY = Math.sin(Math.toRadians(45))*distanceFromStart;
 		
-		System.out.println(Math.toRadians(45)*distanceFromStart);
+//		System.out.println(Math.toRadians(45)*distanceFromStart);
 		System.out.println(angleX+" - "+angleY);
 		
 		switch(index){
@@ -161,29 +157,9 @@ public class Enemy extends DrawObject {
 
 	public void setBullet(Line2D bullet) {
 		this.enemy = bullet;
-	}	
-	
-	public void clickable(){
-		clickable = true;
-	}
-	
-	/**
-	 * deze methode kijkt hoeveel frame je nog hebt om te klikken op het moment dat je bolletje in de hitzone zit
-	 * @return
-	 */
-	public boolean finised(){
-		if(currentTimeToClick >= timeToClick){
-			return true;
-		}
-		return false;
-	}
-	
-	public boolean isClickable(){
-		return clickable;
-	}
-	
-	public int getTimeLeftToClick() {
-		return currentTimeToClick;
 	}
 
+	public double getDistanceFromStart() {
+		return distanceFromStart;
+	}	
 }

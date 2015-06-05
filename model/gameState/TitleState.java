@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import control.joystick.JoystickEvent;
 import model.SongHandler;
 import control.GameStateManager;
+import control.GameStateManager.State;
 import control.button.ButtonEvent;
 
 public class TitleState extends GameState {
@@ -73,7 +74,8 @@ public class TitleState extends GameState {
 		
 		switch(e.getButton().getButtonID()){
 		case 0:
-			gsm.next();
+			//gsm.next();
+			gsm.setState(State.PLAY_STATE);
 			break;
 		}
 		
