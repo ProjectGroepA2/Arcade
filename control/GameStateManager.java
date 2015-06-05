@@ -6,9 +6,8 @@ import java.util.List;
 import model.SongHandler;
 import model.gameState.GameState;
 import model.gameState.MenuState;
-import model.gameState.TitleState;
-import model.gameState.PickSongState;
 import model.gameState.PlayState;
+import model.gameState.TitleState;
 
 public class GameStateManager {
 
@@ -19,8 +18,7 @@ public class GameStateManager {
 	public enum State {
 		TITLE_STATE,
 		MENU_STATE,
-		PLAY_STATE,
-		PICKSONG_STATE
+		PLAY_STATE
 	}
 	
 	public GameStateManager(SongHandler sh){
@@ -28,7 +26,6 @@ public class GameStateManager {
 		gamestates.add(new TitleState(this, sh));
 		gamestates.add(new MenuState(this, sh));
 		gamestates.add(new PlayState(this, sh));
-		gamestates.add(new PickSongState(this, sh));
 		currentState = gamestates.get(0);
 	}
 	

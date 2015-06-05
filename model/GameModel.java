@@ -7,7 +7,7 @@ import control.button.ButtonHandler;
 
 public class GameModel{
 	
-	public static Color[] colors = {Color.MAGENTA,Color.RED,Color.GREEN,Color.YELLOW,Color.CYAN,Color.WHITE};
+	public static Color[] colors = {Color.GREEN,Color.YELLOW,Color.RED,Color.MAGENTA,Color.CYAN,Color.WHITE};
 	private GameStateManager gsm;
 	private SongHandler sh;	
 	

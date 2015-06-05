@@ -54,11 +54,8 @@ public class SongHandler {
 	}
 	public void set(int i)
 	{
-		if(currentIndex != i)
-		{
-			currentIndex = i;
-			updatePlayer();
-		}
+		currentIndex = i;
+		updatePlayer();
 	}
 	public void set(SongInstance si)
 	{
@@ -112,11 +109,5 @@ public class SongHandler {
 		p.play();
 	}
 	
-	public void play(boolean b)
-	{
-		if(b)
-		{
-			p.play((int)currentSong.getSampleStart()*10);
-		}
-	}
+	
 }

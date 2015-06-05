@@ -51,6 +51,12 @@ public class PlayState extends GameState {
 
 	@Override
 	public void init() {
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 		sh.play();
 
 		for(int i=1; i<ButtonHandler.getButtons().size(); i++)

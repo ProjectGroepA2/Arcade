@@ -10,6 +10,8 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
+import audio.Song;
+
 public class MenuButton {
 
 	private ArrayList<GeneralPath> buttonparts;
@@ -18,18 +20,19 @@ public class MenuButton {
 	private Paint gradient;
 	private int x, y, rounding;
 	private double scalefactor;
-	private String text;
 	
 	private boolean selected; 
 	private int fadecounter;
 	
-	public MenuButton(int x, int y, double scale, String text, int rounding, Color c0){
+	private Song song;
+	
+	public MenuButton(int x, int y, double scale, int rounding, Color c0, Song song){
 		this.x = x;
 		this.y = y;
 		this.scalefactor = scale;
-		this.text = text;
 		this.rounding = rounding;
 		calculateButton();
+		setSong(song);
 		
 		colors = new ArrayList<Color>();
 		
@@ -98,15 +101,15 @@ public class MenuButton {
 		g2d.setFont(textFont);
 		g2d.translate((x+160)*scalefactor, (y+74)*scalefactor);
 		g2d.rotate(-0.1);
-		g2d.drawString(text,  0, 0);
+		g2d.drawString(song.getTitle(),  0, 0);
 		g2d.rotate(0.1);
 		g2d.translate(-(x+160)*scalefactor, -(y+74)*scalefactor);
 	}
 	
 	public void update(){
 		if(selected && fadecounter < 5){
-			x -= 8;
-			y -=8;
+			x += 8;
+			y -= 8;
 			scalefactor += 0.04;
 			fadecounter++;
 			calculateButton();
@@ -134,6 +137,12 @@ public class MenuButton {
 	public int getX() {
 		return x;
 	}
-	
-	
+
+	public Song getSong() {
+		return song;
+	}
+
+	public void setSong(Song song) {
+		this.song = song;
+	}
 }

@@ -1,6 +1,8 @@
 package audio;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
@@ -9,6 +11,8 @@ public class AudioPlayer{
 
 	private Player clip;
 	private FileInputStream fis;
+	private Song s;
+	private Thread thread;
 
 	public AudioPlayer() {
 		clip = null;
@@ -16,20 +20,22 @@ public class AudioPlayer{
 
 	public void setClip(Song s) {
 		try {
-			if(clip != null){
+			if(clip!=null)
 				clip.close();
-			}
-			fis = new FileInputStream(s.getAudio());
-			clip = new Player(fis);
+			this.s = s;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void play() {
-		if (clip == null)
-			return;
-		new Thread(new Runnable() {
+		try {
+			fis = new FileInputStream(s.getAudio());
+			clip = new Player(fis);
+		} catch (JavaLayerException | FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		 Thread thread = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				if(clip != null){
@@ -39,37 +45,27 @@ public class AudioPlayer{
 						e.printStackTrace();
 					}
 				}
-			}}).start();
-		
+			}});
+		 thread.start();
 	}
-
-	
-	public void play(final int framePosition) {
-		if (clip == null)
-			return;	
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				if(clip != null){
-					try {
-						clip.play(framePosition);
-					} catch (JavaLayerException e) {
-						e.printStackTrace();
-					}
-				}
-			}}).start();
-
-	}
-
 
 	public void close() {
 		if(clip != null)
 		{
 			clip.close();
 			clip = null;
-			fis = null;
+			try {
+				if(fis != null)
+					fis.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			if(thread != null && thread.isAlive())
+				thread.stop();
 		}
 	}
+	
+
 	
 	public long getProgress()
 	{
