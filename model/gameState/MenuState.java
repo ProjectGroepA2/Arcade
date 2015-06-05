@@ -1,10 +1,14 @@
 package model.gameState;
 
+import image.Images;
+import image.Images.ImageType;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +35,9 @@ public class MenuState extends GameState {
 	
 	int yPosDiffButton = 900;
 	private int difSelect=0;
+	
+	BufferedImage aanwijzers = Images.getImage(ImageType.aanwijzers);
+	int index = 0;
 	
 	public MenuState(GameStateManager gsm, SongHandler sh) {	
 		super(gsm, sh);
@@ -85,6 +92,7 @@ public class MenuState extends GameState {
 	 		}
 	 		
 	     }
+	     index++;
 	}
 
 	@Override
@@ -155,9 +163,12 @@ public class MenuState extends GameState {
 				b.draw(g2);
 			}
 			
-			g2.setColor(Color.BLACK);
-			g2.fillRect(865, 425 - difSelect*100, 25, 25);
 			
+			int y = (index/5)*75;
+			int x = (index%5)*75;
+			index%=25;
+			BufferedImage subImg = aanwijzers.getSubimage(x, y, 75, 75);
+			g2.drawImage(subImg, 825,900 - difSelect*100,75,75,null);
 			
 		}
 		
