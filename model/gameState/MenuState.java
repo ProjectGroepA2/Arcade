@@ -2,6 +2,7 @@ package model.gameState;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.util.ArrayList;
@@ -23,14 +24,14 @@ public class MenuState extends GameState {
 	private ArrayList<DifficultyButton> buttons2;
 	private int selected, oldselected;
 	private List<Song> songs;
-	private Polygon triangle;
+	private Polygon triangle,triangle2;
 
 	private int animationcounter;
 	private boolean subscreen, startanimation;
 	
 	int z;
 	
-	int yPosDiffButton = 400;
+	int yPosDiffButton = 900;
 	
 	public MenuState(GameStateManager gsm, SongHandler sh) {	
 		super(gsm, sh);
@@ -89,37 +90,62 @@ public class MenuState extends GameState {
 
 	@Override
 	public void draw(Graphics2D g2) {
-	    triangle = new Polygon();
-	    triangle.addPoint(0, 0);
-	    triangle.addPoint(0, 1024/4);
-	    triangle.addPoint(1280/2, 0);	    
-	    g2.fillPolygon(triangle);
+
 	    
 		g2.setColor(Color.BLACK);
 		Font textFont2 = new Font("OCR A Extended", Font.BOLD, 50);
 		g2.setFont(textFont2);
 		
+		
 		if(!subscreen) {
-			g2.setColor(Color.BLACK);
-			g2.fillRect(0,0,1280,1024);
-	
+			GradientPaint gp = new GradientPaint(0, 0, new Color(0,0,1, 0.6f),1280,1024 ,new Color(0,0,1, 0.2f));
+			g2.setPaint(gp);
+			g2.fillRect(0, 0, 1280, 1024);
+			
+			
+			
+			triangle2 = new Polygon();
+			triangle2.addPoint(0, 0);
+			triangle2.addPoint(0, 1024/4+50);
+			triangle2.addPoint(1280/2+50, 0);
+			
+			
+			
+		    triangle = new Polygon();
+		    triangle.addPoint(0, 0);
+		    triangle.addPoint(0, 1024/4);
+		    triangle.addPoint(1280/2, 0);	    
+		    
+		    
 			for(MenuButton b:buttons){
 		    	 b.draw(g2);
 		     }
 			
+			
+			GradientPaint gp2 = new GradientPaint(0, 0, new Color(1,1,0, 0.6f),1280,1024 ,new Color(0,0,1, 0.2f));
+			g2.setPaint(gp2);
+			g2.fillPolygon(triangle2);
+			
 			g2.setColor(Color.ORANGE);
 			g2.fillPolygon(triangle);
+			
 			g2.setColor(Color.BLACK);
 			g2.drawString("Main Menu", 30, 60);
 		}
 		
 		if(subscreen) {
-			g2.setColor(Color.BLACK);
-			g2.fillRect(0,0,1280,1024);
+			//g2.setColor(Color.BLACK);
+			GradientPaint gp3 = new GradientPaint(640, 1024/8,Color.BLUE,640,1024 ,Color.WHITE);
+			g2.setPaint(gp3);
+			g2.fillRect(0, 0, 1280, 1024);
+			GradientPaint gp4 = new GradientPaint(0, 0,new Color(1,1,0,0.6f),1280,1024,new Color(1,1,1,0.2f));
+			g2.setPaint(gp4);
+			g2.fillRect(0,128,1280,25);
 			g2.setColor(Color.ORANGE);
 			g2.fillRect(0, 0, 1280, 1024/8);
 			g2.setColor(Color.BLACK);
 			g2.drawString(selectedToSong(selected).getTitle(), 30, 60);
+			
 			
 			g2.setColor(Color.WHITE);
 			g2.drawString("Overall Highscore: " + "", 30, 200);
