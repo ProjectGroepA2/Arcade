@@ -29,7 +29,7 @@ public class MenuState extends GameState {
 	private int animationcounter;
 	private boolean subscreen, startanimation;
 	
-	int yPosDiffButton = 400;
+	int yPosDiffButton = 900;
 	private int difSelect=0;
 	
 	public MenuState(GameStateManager gsm, SongHandler sh) {	
