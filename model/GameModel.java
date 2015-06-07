@@ -9,13 +9,10 @@ public class GameModel{
 	
 	public static Color[] colors = {Color.GREEN,Color.YELLOW,Color.RED,Color.MAGENTA,Color.CYAN,Color.WHITE};
 	private GameStateManager gsm;
-	private SongHandler sh;	
 	
 	public GameModel(SongHandler sh, GameStateManager gsm)
 	{
 		this.gsm = gsm;
-		
-		this.sh = sh;		
 		
 		for(int i = 1; i < ButtonHandler.getButtons().size(); i++){
 			ButtonHandler.getButtons().get(i).setColor(colors[i-1]);;

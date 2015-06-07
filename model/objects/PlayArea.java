@@ -1,10 +1,15 @@
 package model.objects;
 
+import image.Images;
+
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.RenderingHints;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +21,7 @@ public class PlayArea {
 	public List<Path> paths;
 	private Polygon octagon,hitArea;	
 	public Rectangle2D[] hitAreas; //de area voor elk path die de enemy moet raken
+	private BufferedImage background;
 	
 	public PlayArea(double xToRight,double heightOfGameScreen,double widthOfGameScreen, int sizeOctagon) {
 		super();
@@ -90,22 +96,26 @@ public class PlayArea {
 		paths.add(new Path(hitArea.xpoints[4] - Enemy.distanceToOctagon,hitArea.ypoints[4]		,hitArea.xpoints[4],hitArea.ypoints[4]));//left
 		paths.add(new Path(hitArea.xpoints[5] - angleX,hitArea.ypoints[5] - angleY				,hitArea.xpoints[5],hitArea.ypoints[5]));//left	 	-top
 		
-		
-	}	
-	
-	public void draw(Graphics2D g2){
-		Line2D current;
+		background = new BufferedImage(1280, 1024, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2 = background.createGraphics();
+		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	    g2.setRenderingHints(rh);
+	    Line2D current;
 		int index;
+		g2.setColor(Color.BLACK);
 		for(int i = 0; i < paths.size(); i++){
 			current = paths.get(i);
 			index = (i+14)%8;
 			g2.drawLine((int)current.getX1(), (int)current.getY1(), octagon.xpoints[index],octagon.ypoints[index]);
 		}
 		g2.draw(octagon);
-		g2.draw(hitArea);	
-//		for(Rectangle2D hit : hitAreas){
-//			g2.fill(hit);
-//		}
+		g2.draw(hitArea);
+		background.createGraphics();
+		background = Images.toCompatibleImage(background);
+	}	
+	
+	public void draw(Graphics2D g2){
+		g2.drawImage(background, 0, 0, 1280, 1024, null);
 	}
 	
 	public Line2D getLine(int index){

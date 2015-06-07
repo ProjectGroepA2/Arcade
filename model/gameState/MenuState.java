@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,14 +31,14 @@ public class MenuState extends GameState {
 	private ArrayList<DifficultyButton> buttons2;
 	private int selected, oldselected;
 	private List<Song> songs;
-	private Polygon triangle,triangle2;
 
 	private int animationcounter;
 	private boolean subscreen, startanimation;
+	private BufferedImage mainScreenBackground;
 	
 	int yPosDiffButton = 900;
 	private int difSelect=0;
-	
+	Font textFont2 = new Font("OCR A Extended", Font.BOLD, 50);
 	BufferedImage aanwijzers = Images.getImage(ImageType.aanwijzers);
 	int index = 0;
 	
@@ -55,6 +56,8 @@ public class MenuState extends GameState {
 		buttons.add(new MenuButton(-600, 350, 1.7, 30, Color.yellow,selectedToSong(selected+1)));
 		buttons.add(new MenuButton(-600, 450, 1.7, 30, Color.WHITE,selectedToSong(selected+2)));
 		buttons.get(2).setSelected(true);
+		generateMainScreenBackground();
+
 		
 	}
 	@Override
@@ -99,47 +102,11 @@ public class MenuState extends GameState {
 
 	@Override
 	public void draw(Graphics2D g2) {
-
-	    
-		g2.setColor(Color.BLACK);
-		Font textFont2 = new Font("OCR A Extended", Font.BOLD, 50);
-		g2.setFont(textFont2);
-		
-		
 		if(!subscreen) {
-			GradientPaint gp = new GradientPaint(0, 0, new Color(0,0,1, 0.6f),1280,1024 ,new Color(0,0,1, 0.2f));
-			g2.setPaint(gp);
-			g2.fillRect(0, 0, 1280, 1024);
-			
-			
-			
-			triangle2 = new Polygon();
-			triangle2.addPoint(0, 0);
-			triangle2.addPoint(0, 1024/4+50);
-			triangle2.addPoint(1280/2+50, 0);
-			
-			
-			
-		    triangle = new Polygon();
-		    triangle.addPoint(0, 0);
-		    triangle.addPoint(0, 1024/4);
-		    triangle.addPoint(1280/2, 0);	    
-		    
-		    
+			g2.drawImage(mainScreenBackground, 0, 0, 1280,1024,null);
 			for(MenuButton b:buttons){
 		    	 b.draw(g2);
 		     }
-			
-			
-			GradientPaint gp2 = new GradientPaint(0, 0, new Color(1,1,0, 0.6f),1280,1024 ,new Color(0,0,1, 0.2f));
-			g2.setPaint(gp2);
-			g2.fillPolygon(triangle2);
-			
-			g2.setColor(Color.ORANGE);
-			g2.fillPolygon(triangle);
-			
-			g2.setColor(Color.BLACK);
-			g2.drawString("Main Menu", 30, 60);
 		}
 		
 		if(subscreen) {
@@ -164,14 +131,11 @@ public class MenuState extends GameState {
 			for(DifficultyButton b : buttons2){
 				b.draw(g2);
 			}
-			
-			
 			int y = (index/5)*75;
 			int x = (index%5)*75;
 			index%=25;
 			BufferedImage subImg = aanwijzers.getSubimage(x, y, 75, 75);
-			g2.drawImage(subImg, 825,900 - difSelect*100,75,75,null);
-			
+			g2.drawImage(subImg, 825,900 - difSelect*100,75,75,null);		
 		}
 		
 
@@ -208,14 +172,11 @@ public class MenuState extends GameState {
 				if(difSelect < 0){
 					difSelect += buttons2.size();
 				}
-//				System.out.println(difSelect);
 			}else if(e.getJoystick().getPos() == Joystick.Position.UP){
 				difSelect++;
 				if(difSelect > buttons2.size()-1){
 					difSelect = 0;
 				}
-				
-//				System.out.println(difSelect);
 			}
 			sh.set(sh.getCurrentSong().getSongs().get(difSelect));	
 			
@@ -231,6 +192,36 @@ public class MenuState extends GameState {
 			sh.set(songs.indexOf(selectedToSong(selected)));
 			sh.play();	
 		}
+	}
+	
+	public void generateMainScreenBackground(){
+		mainScreenBackground = new BufferedImage(1280, 1024, BufferedImage.TYPE_4BYTE_ABGR);
+		Graphics2D g2 = mainScreenBackground.createGraphics();
+		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	    g2.setRenderingHints(rh);
+		g2.setFont(textFont2);
+		g2.setPaint(new GradientPaint(0, 0, new Color(0,0,1, 0.6f),1280,1024 ,new Color(0,0,1, 0.2f)));
+		g2.fillRect(0, 0, 1280, 1024);	
+		g2.setPaint(new GradientPaint(0, 0, new Color(1,1,0, 0.6f),1280,1024 ,new Color(0,0,1, 0.2f)));
+		
+	 
+		Polygon triangle2 = new Polygon(); 
+		triangle2.addPoint(0, 0);
+		triangle2.addPoint(0, 1024/4+50);
+		triangle2.addPoint(1280/2+50, 0);
+		g2.fillPolygon(triangle2);
+		
+		g2.setColor(Color.ORANGE);
+		Polygon triangle = new Polygon();
+	    triangle.addPoint(0, 0);
+	    triangle.addPoint(0, 1024/4);
+	    triangle.addPoint(1280/2, 0);
+		g2.fillPolygon(triangle);
+		
+		g2.setColor(Color.BLACK);
+		g2.drawString("Main Menu", 30, 60);
+		mainScreenBackground.createGraphics();
+		mainScreenBackground = Images.toCompatibleImage(mainScreenBackground);
 	}
 	
 	public void buttonInAnimation(int button){
@@ -269,4 +260,5 @@ public class MenuState extends GameState {
 			return songs.get(s);
 		}
 	}
+	
 }

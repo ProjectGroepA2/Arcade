@@ -73,26 +73,4 @@ public class LedHandler {
 	    	err.printStackTrace();
 	    }
     }
-    
-    public void strobo(){
-    	boolean on = true;
-    	while(true){
-    		if(on){
-				for(int i = 1; i < 66; i++){
-					setLed(i, 0, 0, 0);
-				}
-    		}else{
-				for(int i = 1; i < 66; i++){
-					setLed(i, 255, 255, 255);
-				}
-    		}
-    		on = !on;
-    		show();
-    		try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-    	}
-    }
 }

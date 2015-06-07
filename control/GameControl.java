@@ -2,6 +2,7 @@ package control;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.TimerTask;
 
 import javax.swing.Timer;
 
@@ -12,7 +13,7 @@ import control.button.ButtonListener;
 import control.joystick.JoystickEvent;
 import control.joystick.JoystickListener;
 
-public class GameControl implements JoystickListener, ButtonListener,ActionListener {
+public class GameControl implements JoystickListener, ButtonListener, ActionListener {
 	
 	private long lastTime = System.currentTimeMillis();
 	GameModel model;
@@ -20,12 +21,13 @@ public class GameControl implements JoystickListener, ButtonListener,ActionListe
 	GameStateManager gsm;
 	Timer update;
 	
-	public GameControl(GameModel model, GameView view,GameStateManager gsm)
+	public GameControl(final GameModel model, final GameView view,GameStateManager gsm)
 	{
 		this.model = model;
 		this.view = view;
 		this.gsm = gsm;
-		update = new Timer(1000/60, this);
+		view.setIgnoreRepaint(true);
+		update = new Timer(1000/60,this);
 		update.start();
 	}
 
@@ -51,6 +53,7 @@ public class GameControl implements JoystickListener, ButtonListener,ActionListe
 		long currentTime = System.currentTimeMillis();
 		model.update(currentTime - lastTime);
 		lastTime = currentTime;
-		view.repaint();		
+		view.repaint();				
 	}
+
 }

@@ -14,6 +14,7 @@ public class GameStateManager {
 	private List<GameState> gamestates;
 	public GameState currentState;
 	private int index = 0;
+	public int fps;
 	
 	public enum State {
 		TITLE_STATE,
@@ -44,5 +45,6 @@ public class GameStateManager {
 	
 	public void update(float factor){		
 		currentState.update(factor);
+		fps = (int) (60/(factor/10));
 	}
 }

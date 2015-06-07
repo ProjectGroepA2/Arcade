@@ -134,7 +134,6 @@ public class PlayState extends GameState {
 
 	@Override
 	public void buttonPressed(ButtonEvent e) {
-//		System.out.println(e.getButton().getColor());
 		Iterator<Enemy> enemysInPath = area.paths.get(player.getIndex())
 				.getEnemysInPath().iterator();
 		while (enemysInPath.hasNext()) {
