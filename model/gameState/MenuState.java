@@ -9,7 +9,9 @@ import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
+import java.awt.Transparency;
 import java.awt.image.BufferedImage;
+import java.awt.image.VolatileImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +36,7 @@ public class MenuState extends GameState {
 
 	private int animationcounter;
 	private boolean subscreen, startanimation;
-	private BufferedImage mainScreenBackground;
+	private VolatileImage mainScreenBackground;
 	
 	int yPosDiffButton = 900;
 	private int difSelect=0;
@@ -195,7 +197,7 @@ public class MenuState extends GameState {
 	}
 	
 	public void generateMainScreenBackground(){
-		mainScreenBackground = new BufferedImage(1280, 1024, BufferedImage.TYPE_4BYTE_ABGR);
+		mainScreenBackground = Images.initVolatileImage(1280, 1024, Transparency.OPAQUE);
 		Graphics2D g2 = mainScreenBackground.createGraphics();
 		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	    g2.setRenderingHints(rh);
@@ -220,8 +222,8 @@ public class MenuState extends GameState {
 		
 		g2.setColor(Color.BLACK);
 		g2.drawString("Main Menu", 30, 60);
+		g2.dispose();
 		mainScreenBackground.createGraphics();
-		mainScreenBackground = Images.toCompatibleImage(mainScreenBackground);
 	}
 	
 	public void buttonInAnimation(int button){

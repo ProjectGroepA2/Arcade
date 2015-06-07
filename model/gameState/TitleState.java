@@ -7,8 +7,13 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.RenderingHints;
+import java.awt.Transparency;
 import java.awt.image.BufferedImage;
+import java.awt.image.VolatileImage;
 
 import model.SongHandler;
 import control.GameStateManager;
@@ -20,7 +25,7 @@ public class TitleState extends GameState {
 
     BufferedImage pressStart = Images.getImage(ImageType.pressstart);
     BufferedImage colorStrike = Images.getImage(ImageType.colorstrike);
-    BufferedImage background;
+    VolatileImage background;
 	Font textFont = new Font("OCR A Extended", Font.BOLD, 15);
 	Font textFont2 = new Font("OCR A Extended", Font.BOLD, 130);
 	GradientPaint gp = new GradientPaint(300, 0, new Color(0,0,1, 0.6f),980,1024 ,new Color(0,0,1, 0.2f));
@@ -48,7 +53,7 @@ public class TitleState extends GameState {
 	public void draw(Graphics2D g2) {
 		g2.drawImage(background, 0, 0, 1280, 1024, null);
 		int image_x = ((frame / 6) % 6) * 49;
-	    g2.drawImage(pressStart.getSubimage(image_x, 0, 49, 26),  640-122, 512, 245, 130, null);
+		g2.drawImage(pressStart.getSubimage(image_x, 0, 49, 26),  640-122, 512, 245, 130, null);
 	}
 	
 	@Override
@@ -71,7 +76,7 @@ public class TitleState extends GameState {
 	}
 	
 	public void createBackground(){
-		background = new BufferedImage(1280, 1024, BufferedImage.TYPE_4BYTE_ABGR);
+		background = Images.initVolatileImage(1280, 1024, Transparency.OPAQUE);
 		Graphics2D g2 = background.createGraphics();
 		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	    g2.setRenderingHints(rh);
@@ -101,8 +106,8 @@ public class TitleState extends GameState {
 		g2.setFont(textFont2);
 		g2.drawString("Color", 385, 212);
 		g2.drawString("Strike", 390, 342);
+		g2.dispose();
 		background.createGraphics();
-		background = Images.toCompatibleImage(background);
 	}
 
 }

@@ -1,16 +1,20 @@
 package model.objects;
 
+import image.Images;
+
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.LinearGradientPaint;
 import java.awt.Paint;
 import java.awt.RenderingHints;
+import java.awt.Transparency;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.awt.image.VolatileImage;
 
 import audio.Song;
 
@@ -21,7 +25,7 @@ public class MenuButton {
 	private Color buttoncolor;
 	
 	private boolean selected; 
-	private BufferedImage background;
+	private VolatileImage background;
 	
 	private Song song;
 	
@@ -32,7 +36,6 @@ public class MenuButton {
 		this.rounding = rounding;
 		this.buttoncolor = c0;
 		setSong(song);
-		calculateButton();
 	}
 	
 	public void calculateButton(){
@@ -52,10 +55,13 @@ public class MenuButton {
 													new float[]{0.0f, 1.0f}, 
 													new Color[]{new Color(c1.getRed(), c1.getGreen(), c1.getBlue(), 10), buttoncolor});
 		//Draw the generated button to the buffered image
-		background = new BufferedImage(1280, 1024, BufferedImage.TYPE_4BYTE_ABGR);
+		background = Images.initVolatileImage(1280, 500, Transparency.TRANSLUCENT);
 		Graphics2D g2d = background.createGraphics();
 		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	    g2d.setRenderingHints(rh);
+	    g2d.setComposite(AlphaComposite.DstOut);
+	    g2d.fillRect(0, 0, background.getWidth(), background.getHeight());
+	    g2d.setComposite(AlphaComposite.SrcOver);
 	    
 		g2d.setColor(c2);
 		g2d.fill(arrayToGeneralpath(new int[][]{{449, 1}, {449, 68},{113, 103}, {106, 35}}));
@@ -84,8 +90,8 @@ public class MenuButton {
 		g2d.translate((160+358)*scalefactor, (74)*scalefactor);
 		g2d.rotate(-0.1);
 		g2d.drawString(song.getTitle(),  0, 0);
-		
-		background.createGraphics();		
+		g2d.dispose();
+		background.createGraphics();	
 	}
 	
 	public GeneralPath arrayToGeneralpath(int block[][]){
@@ -99,7 +105,7 @@ public class MenuButton {
 	}
 
 	public void draw(Graphics2D g2d){
-		g2d.drawImage(background, (int)((x-320)*scalefactor), (int) ((y)*scalefactor), 1280, 1024, null);
+		g2d.drawImage(background, (int)((x-320)*scalefactor), (int) ((y)*scalefactor), 1280, 500, null);
 	}
 	
 	public void update(){
@@ -130,5 +136,6 @@ public class MenuButton {
 
 	public void setSong(Song song) {
 		this.song = song;
+		calculateButton();
 	}
 }

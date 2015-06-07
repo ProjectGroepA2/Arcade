@@ -2,8 +2,11 @@ package image;
 
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Transparency;
 import java.awt.image.BufferedImage;
+import java.awt.image.VolatileImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -78,6 +81,26 @@ public class Images {
 		g2d.dispose();
 
 		// return the new optimized image
+		new_image.setAccelerationPriority(1);
+		new_image.flush();
 		return new_image; 
+	}
+	
+	public static BufferedImage initBufferedImage(int width, int height){
+		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice device = env.getDefaultScreenDevice();
+		GraphicsConfiguration config = device.getDefaultConfiguration();
+		return config.createCompatibleImage(width, height, Transparency.TRANSLUCENT);
+	}
+	
+	public static VolatileImage initVolatileImage(int width, int height, int opc){
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsConfiguration gc = ge.getDefaultScreenDevice().getDefaultConfiguration();
+		VolatileImage image = null;
+		image = gc.createCompatibleVolatileImage(width, height, opc);
+		int valid = image.validate(gc);
+	    if (valid == VolatileImage.IMAGE_INCOMPATIBLE)
+	    	image = initVolatileImage(width, height, opc);
+		return image;
 	}
 }

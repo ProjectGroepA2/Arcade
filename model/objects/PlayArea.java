@@ -6,10 +6,12 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
+import java.awt.Transparency;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.VolatileImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +23,7 @@ public class PlayArea {
 	public List<Path> paths;
 	private Polygon octagon,hitArea;	
 	public Rectangle2D[] hitAreas; //de area voor elk path die de enemy moet raken
-	private BufferedImage background;
+	private VolatileImage background;
 	
 	public PlayArea(double xToRight,double heightOfGameScreen,double widthOfGameScreen, int sizeOctagon) {
 		super();
@@ -96,7 +98,9 @@ public class PlayArea {
 		paths.add(new Path(hitArea.xpoints[4] - Enemy.distanceToOctagon,hitArea.ypoints[4]		,hitArea.xpoints[4],hitArea.ypoints[4]));//left
 		paths.add(new Path(hitArea.xpoints[5] - angleX,hitArea.ypoints[5] - angleY				,hitArea.xpoints[5],hitArea.ypoints[5]));//left	 	-top
 		
-		background = new BufferedImage(1280, 1024, BufferedImage.TYPE_INT_ARGB);
+		
+		//drawing into buffer
+		background = Images.initVolatileImage(1280,1024, Transparency.BITMASK);
 		Graphics2D g2 = background.createGraphics();
 		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	    g2.setRenderingHints(rh);
@@ -110,8 +114,8 @@ public class PlayArea {
 		}
 		g2.draw(octagon);
 		g2.draw(hitArea);
+		g2.dispose();
 		background.createGraphics();
-		background = Images.toCompatibleImage(background);
 	}	
 	
 	public void draw(Graphics2D g2){
