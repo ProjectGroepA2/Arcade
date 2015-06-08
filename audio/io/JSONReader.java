@@ -57,15 +57,19 @@ public class JSONReader {
 			throw new FileNotFoundException("Audio file does not exist: " + audio.getPath());
 		s.setAudio(audio);
 		
+		/*
 		File background = new File(f.getParent() + File.separator + file.getString("background"));
 		if(!background.exists() || !(background.getName().toLowerCase().endsWith(".jpg") || background.getName().toLowerCase().endsWith(".png")))
 			throw new FileNotFoundException("Background image does not exist: " + background.getPath());
-		s.setBackground(background);
+		s.setBackground(background);*/
+		s.setBackground(null);
 
+		/*
 		File banner = new File(f.getParent() + File.separator + file.getString("banner"));
 		if(!banner.exists() || !(banner.getName().toLowerCase().endsWith(".jpg") || banner.getName().toLowerCase().endsWith(".png")))
 			throw new FileNotFoundException("Banner image does not exist: " + banner.getPath());
-		s.setBanner(banner);
+		s.setBanner(banner);*/
+		s.setBanner(null);
 		
 		s.setFile(f);
 		
