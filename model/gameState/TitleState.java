@@ -25,6 +25,7 @@ public class TitleState extends GameState {
 
     BufferedImage pressStart = Images.getImage(ImageType.pressstart);
     BufferedImage colorStrike = Images.getImage(ImageType.colorstrike);
+    BufferedImage kast = Images.getImage(ImageType.kast);
     VolatileImage background;
 	Font textFont = new Font("OCR A Extended", Font.BOLD, 15);
 	Font textFont2 = new Font("OCR A Extended", Font.BOLD, 130);
@@ -34,6 +35,10 @@ public class TitleState extends GameState {
     int varx = 0;
     int frame;
 
+    
+    int indexKast = 0;
+    int xKast=0;
+    
 	public TitleState(GameStateManager gsm, SongHandler sh){
 		super(gsm, sh);
 		createBackground();
@@ -47,6 +52,7 @@ public class TitleState extends GameState {
 	public void update(float factor) {
 
         frame++;
+        indexKast++;
 	}
 
 	@Override
@@ -54,6 +60,13 @@ public class TitleState extends GameState {
 		g2.drawImage(background, 0, 0, 1280, 1024, null);
 		int image_x = ((frame / 6) % 6) * 49;
 		g2.drawImage(pressStart.getSubimage(image_x, 0, 49, 26),  640-122, 512, 245, 130, null);
+		
+		
+		
+		xKast = indexKast/10;
+		xKast%=4;
+		//g2.drawImage(kast.getSubimage(xKast*300,0,300,400), 640-122,650,300,400,null);
+		g2.drawImage(kast.getSubimage(xKast*300,0,300,400), 100,300,300,400,null);
 	}
 	
 	@Override

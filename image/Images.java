@@ -33,6 +33,7 @@ public class Images {
 		   	images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/aanwijzers4sho.png"))));
 		   	images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/MenuAchtergrond.png"))));
 		   	images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/SubmenuAchtergrond.png"))));
+		   	images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/kast.png"))));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -43,7 +44,7 @@ public class Images {
 	}
 
 	public enum ImageType {
-		pulse,cursor,pressstart,colorstrike,background,aanwijzers,menuachtergrond,subMenu
+		pulse,cursor,pressstart,colorstrike,background,aanwijzers,menuachtergrond,subMenu,kast
 	}
 
 	public static BufferedImage readImage(File f) {
