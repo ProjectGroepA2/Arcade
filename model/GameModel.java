@@ -12,6 +12,7 @@ public class GameModel {
 	public static Color[] colors = { Color.GREEN, Color.YELLOW, Color.RED, Color.MAGENTA, Color.CYAN, Color.WHITE };
 	private GameStateManager gsm;
 	private LedHandler led;
+	private int count = 0;
 
 	public GameModel(SongHandler sh, GameStateManager gsm, LedHandler led) {
 		this.gsm = gsm;
@@ -29,10 +30,15 @@ public class GameModel {
 		Color c = colors[(int) (Math.random() * (colors.length - 1) + 1)];
 
 		if (Window.ON_RASP) {
-			for (int i = 7; i < 54; i++) {
-				led.setLed(i, c.getRed(), c.getGreen(), c.getBlue());
+			count++;
+			if(count>15)
+			{
+				for (int i = 7; i < 54; i++) {
+					led.setLed(i, c.getRed(), c.getGreen(), c.getBlue());
+				}
+				led.show();
+				count = 0;
 			}
-			led.show();
 		}
 	}
 }
