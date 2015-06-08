@@ -2,9 +2,8 @@ package control;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Timer;
 import java.util.TimerTask;
-
-import javax.swing.Timer;
 
 import model.GameModel;
 import view.GameView;
@@ -27,8 +26,20 @@ public class GameControl implements JoystickListener, ButtonListener, ActionList
 		this.view = view;
 		this.gsm = gsm;
 		view.setIgnoreRepaint(true);
-		update = new Timer(1000/60,this);
-		update.start();
+//		update = new Timer(1000/60,this);
+//		update.start();
+		Timer update = new Timer();
+		update.schedule(new TimerTask() {
+			
+			@Override
+			public void run() {
+				long currentTime = System.currentTimeMillis();
+				model.update(currentTime - lastTime);
+				lastTime = currentTime;
+				view.repaint();			
+				System.out.println("Test");
+			}
+		}, 0,1000/120);
 	}
 
 	@Override

@@ -66,8 +66,6 @@ public class PlayState extends GameState {
 		
 		ButtonHandler.getButton(1).setColor(sh.getCurrentSongInstance().getButtons().get(0).getColor());
 
-		// System.out.println("Diff" +
-		// sh.getCurrentSongInstance().getDifficulty());
 	}
 
 	@Override
@@ -78,8 +76,6 @@ public class PlayState extends GameState {
 		for (ButtonInstance bu : sh.getCurrentSongInstance().getButtonsBetween(oldProgress, progress)) {
 			Button b = ButtonHandler.getButton(bu.getButtonID());
 			b.setColor(bu.getColor());
-			// System.out.println(bu.getButtonID() + " - " + bu.getColor()+
-			// " / " + b.getColor());
 		}
 
 		for (ObjectInstance ob : sh.getCurrentSongInstance().getObjectsBetween(oldProgress, progress)) {
@@ -167,6 +163,11 @@ public class PlayState extends GameState {
 			{
 				lifePoints -= 1.5;
 			}
+		}
+		
+		if(e.getButton().getButtonID() == 0)
+		{
+			gsm.setState(State.MENU_STATE);
 		}
 	}
 
