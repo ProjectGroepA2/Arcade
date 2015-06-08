@@ -15,8 +15,6 @@ import java.awt.image.VolatileImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.glass.ui.EventLoop.State;
-
 import model.GameModel;
 import model.SongHandler;
 import model.objects.DifficultyButton;
@@ -36,7 +34,7 @@ public class MenuState extends GameState {
 
 	private int animationcounter;
 	private boolean subscreen, startanimation;
-	private VolatileImage mainScreenBackground;
+	private VolatileImage mainScreenBackground, subScreenBackground;
 	
 	int yPosDiffButton = 900;
 	private int difSelect=0;
@@ -58,9 +56,7 @@ public class MenuState extends GameState {
 		buttons.add(new MenuButton(-600, 350, 1.7, 30, Color.yellow,selectedToSong(selected+1)));
 		buttons.add(new MenuButton(-600, 450, 1.7, 30, Color.WHITE,selectedToSong(selected+2)));
 		buttons.get(2).setSelected(true);
-		generateMainScreenBackground();
-
-		
+		generateMainScreenBackground();		
 	}
 	@Override
 	public void init() {
@@ -110,37 +106,13 @@ public class MenuState extends GameState {
 		    	 b.draw(g2);
 		     }
 		}
-		
 		if(subscreen) {
-			//g2.setColor(Color.BLACK);
-			GradientPaint gp3 = new GradientPaint(640, 1024/8,Color.BLUE,640,1024 ,Color.WHITE);
-			g2.setPaint(gp3);
-			g2.fillRect(0, 0, 1280, 1024);
-			GradientPaint gp4 = new GradientPaint(0, 0,new Color(1,1,0,0.6f),1280,1024,new Color(1,1,1,0.2f));
-			g2.setPaint(gp4);
-			g2.fillRect(0,128,1280,25);
-			g2.setColor(Color.ORANGE);
-			g2.fillRect(0, 0, 1280, 1024/8);
-			g2.setColor(Color.BLACK);
-			g2.drawString(selectedToSong(selected).getTitle(), 30, 60);
-			
-			
-			g2.setColor(Color.WHITE);
-			g2.drawString("Overall Highscore: " + "", 30, 200);
-			g2.drawString("Daily Highscore: " + "", 30, 300);
-			g2.drawString("Beats per Minute: " + selectedToSong(selected).getBPM(), 30, 400);
-			
-			for(DifficultyButton b : buttons2){
-				b.draw(g2);
-			}
+			g2.drawImage(subScreenBackground,0,0,1280,1024,null);
+			index%=25;
 			int y = (index/5)*75;
 			int x = (index%5)*75;
-			index%=25;
-			BufferedImage subImg = aanwijzers.getSubimage(x, y, 75, 75);
-			g2.drawImage(subImg, 825,900 - difSelect*100,75,75,null);		
+			g2.drawImage(aanwijzers.getSubimage(x, y, 75, 75), 825,900 - difSelect*100,75,75,null);		
 		}
-		
-
 	}
 	
 	@Override
@@ -156,6 +128,7 @@ public class MenuState extends GameState {
 		}else{										//Screen for selecting song
 			if(e.getButton().getButtonID() == 1){
 				subscreen = true;
+				generateSubScreenBackground();
 			}else if(e.getButton().getButtonID() == 2){
 				subscreen = false;
 			}	
@@ -181,10 +154,7 @@ public class MenuState extends GameState {
 				}
 			}
 			sh.set(sh.getCurrentSong().getSongs().get(difSelect));	
-			
-			
-			
-			
+			generateSubScreenBackground();			
 		}else{										//Screen for selecting song
 			if(e.getJoystick().getPos() == Joystick.Position.DOWN){
 				selected++;
@@ -221,9 +191,40 @@ public class MenuState extends GameState {
 		g2.fillPolygon(triangle);
 		
 		g2.setColor(Color.BLACK);
-		g2.drawString("Main Menu", 30, 60);
+		g2.drawString("Main Menu", 32, 60);
 		g2.dispose();
 		mainScreenBackground.createGraphics();
+	}
+	
+	public void generateSubScreenBackground(){
+		subScreenBackground = Images.initVolatileImage(1280, 1024, Transparency.OPAQUE);
+		Graphics2D g2 = subScreenBackground.createGraphics();
+		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	    g2.setRenderingHints(rh);
+		g2.setFont(textFont2);
+	    g2.setColor(Color.BLACK);
+		GradientPaint gp3 = new GradientPaint(640, 1024/8,Color.BLUE,640,1024 ,Color.WHITE);
+		g2.setPaint(gp3);
+		g2.fillRect(0, 0, 1280, 1024);
+		GradientPaint gp4 = new GradientPaint(0, 0,new Color(1,1,0,0.6f),1280,1024,new Color(1,1,1,0.2f));
+		g2.setPaint(gp4);
+		g2.fillRect(0,128,1280,25);
+		g2.setColor(Color.ORANGE);
+		g2.fillRect(0, 0, 1280, 1024/8);
+		g2.setColor(Color.BLACK);
+		g2.drawString(selectedToSong(selected).getTitle(), 30, 60);
+		
+		
+		g2.setColor(Color.WHITE);
+		g2.drawString("Overall Highscore: " + "", 30, 200);
+		g2.drawString("Daily Highscore: " + "", 30, 300);
+		g2.drawString("Beats per Minute: " + selectedToSong(selected).getBPM(), 30, 400);
+		
+		for(DifficultyButton b : buttons2){
+			b.draw(g2);
+		}
+		g2.dispose();
+		subScreenBackground.createGraphics();
 	}
 	
 	public void buttonInAnimation(int button){
