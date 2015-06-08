@@ -3,6 +3,7 @@ package model.gameState;
 import image.Images;
 import image.Images.ImageType;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GradientPaint;
@@ -37,7 +38,7 @@ public class MenuState extends GameState {
 
 	private int animationcounter;
 	private boolean subscreen, startanimation;
-	private VolatileImage mainScreenBackground, subScreenBackground;
+	private VolatileImage mainScreenBackground, subScreenBackground, subScreenForeground;
 	
 	int yPosDiffButton = 900;
 	private int difSelect=0;
@@ -59,7 +60,8 @@ public class MenuState extends GameState {
 		buttons.add(new MenuButton(-600, 350, 1.7, 30, Color.yellow,selectedToSong(selected+1)));
 		buttons.add(new MenuButton(-600, 450, 1.7, 30, Color.WHITE,selectedToSong(selected+2)));
 		buttons.get(2).setSelected(true);
-		generateMainScreenBackground();		
+		generateMainScreenBackground();	
+		generateSubScreenBackground();
 	}
 	@Override
 	public void init() {
@@ -114,6 +116,7 @@ public class MenuState extends GameState {
 		}
 		if(subscreen) {
 			g2.drawImage(subScreenBackground,0,0,1280,1024,null);
+			g2.drawImage(subScreenForeground,0,0,1280,1024,null);
 			index%=25;
 			int y = (index/5)*75;
 			int x = (index%5)*75;
@@ -134,7 +137,7 @@ public class MenuState extends GameState {
 		}else{										//Screen for selecting song
 			if(e.getButton().getButtonID() == 1){
 				subscreen = true;
-				generateSubScreenBackground();
+				generateSubScreenForeground();
 			}else if(e.getButton().getButtonID() == 2){
 				subscreen = false;
 			}else if(e.getButton().getButtonID() == 5){
@@ -168,7 +171,7 @@ public class MenuState extends GameState {
 				}
 			}
 			sh.set(sh.getCurrentSong().getSongs().get(difSelect));	
-			generateSubScreenBackground();			
+			generateSubScreenForeground();			
 		}else{										//Screen for selecting song
 			if(e.getJoystick().getPos() == Joystick.Position.DOWN){
 				selected++;
@@ -215,7 +218,6 @@ public class MenuState extends GameState {
 		Graphics2D g2 = subScreenBackground.createGraphics();
 		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	    g2.setRenderingHints(rh);
-		g2.setFont(textFont2);
 	    g2.setColor(Color.BLACK);
 		GradientPaint gp3 = new GradientPaint(640, 1024/8,Color.BLUE,640,1024 ,Color.WHITE);
 		g2.setPaint(gp3);
@@ -226,6 +228,20 @@ public class MenuState extends GameState {
 		g2.setColor(Color.ORANGE);
 		g2.fillRect(0, 0, 1280, 1024/8);
 		g2.setColor(Color.BLACK);
+		g2.dispose();
+		subScreenBackground.createGraphics();
+	}
+	
+	public void generateSubScreenForeground(){
+		subScreenForeground = Images.initVolatileImage(1280, 1024, Transparency.TRANSLUCENT);
+		Graphics2D g2 = subScreenForeground.createGraphics();
+		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setComposite(AlphaComposite.DstOut);
+		g2.fillRect(0, 0, subScreenForeground.getWidth(), subScreenForeground.getHeight());
+		g2.setComposite(AlphaComposite.SrcOver);
+	    g2.setRenderingHints(rh);
+	    g2.setColor(Color.BLACK);
+ 		g2.setFont(textFont2);
 		g2.drawString(selectedToSong(selected).getTitle(), 30, 60);
 		
 		
@@ -237,8 +253,8 @@ public class MenuState extends GameState {
 		for(DifficultyButton b : buttons2){
 			b.draw(g2);
 		}
-		g2.dispose();
-		subScreenBackground.createGraphics();
+	    g2.dispose();
+	    subScreenForeground.createGraphics();
 	}
 	
 	public void buttonInAnimation(int button){
