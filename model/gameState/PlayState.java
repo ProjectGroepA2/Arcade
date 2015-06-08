@@ -150,6 +150,8 @@ public class PlayState extends GameState {
 			}
 
 		}
+		
+		player.setBeat();
 
 	}
 
