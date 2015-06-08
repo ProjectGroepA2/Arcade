@@ -41,16 +41,18 @@ public class PlayState extends GameState {
 		super(gsm, sh);
 		infoPanel = new InfoPanel(0, 0);
 		area = new PlayArea(256, 1024, 1024, 125);
-		// for(int index = 0; index < 8; index++){
-		// addEnemy(index, GameModel.colors[index % 6]);
-		// }
-		//
 		player = new Player(1280 - 1024 + 1024 / 2, 1024 / 2);
 		stroke = new BasicStroke(sizeOfEnemy, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 	}
 
 	@Override
 	public void init() {
+		
+		lifePoints = 100;
+		currentScore = 0;
+		comboScore = 0;
+		oldProgress = 0 ;
+		
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
