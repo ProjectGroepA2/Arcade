@@ -15,10 +15,7 @@ public class LedHandler {
 	    try {
 	        p = Runtime.getRuntime().exec("sudo python led.py");
 	        inp = new BufferedReader( new InputStreamReader(p.getInputStream()) );
-	        out = new BufferedWriter( new OutputStreamWriter(p.getOutputStream()) );
-	        
-	        //setLed(15, 100, 100, 100);	        
-	        //strobo();        
+	        out = new BufferedWriter( new OutputStreamWriter(p.getOutputStream()) );      
 	    }
 	    catch (Exception err) {
 	        err.printStackTrace();

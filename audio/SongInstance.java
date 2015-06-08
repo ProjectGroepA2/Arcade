@@ -66,7 +66,7 @@ public class SongInstance {
 		
 		for(ButtonInstance i : buttons)
 		{
-			if(i.getTime() >= progress)
+			if(i.getTime() > progress)
 			{
 				return b;
 			}

@@ -1,5 +1,6 @@
 package control;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,8 @@ import model.gameState.GameState;
 import model.gameState.MenuState;
 import model.gameState.PlayState;
 import model.gameState.TitleState;
+import control.button.Button;
+import control.button.ButtonHandler;
 
 public class GameStateManager {
 
@@ -27,24 +30,33 @@ public class GameStateManager {
 		gamestates.add(new TitleState(this, sh));
 		gamestates.add(new MenuState(this, sh));
 		gamestates.add(new PlayState(this, sh));
-		currentState = gamestates.get(0);
+		setState(State.TITLE_STATE);
 	}
 	
 	public void setState(State st)
 	{
 		currentState = gamestates.get(st.ordinal());
-		currentState.init();
+		init();
 	}
 
 	public void next() {
 		index++;
 		index %= gamestates.size();
 		currentState = gamestates.get(index);
-		currentState.init();
+		init();
 	}
 	
 	public void update(float factor){		
 		currentState.update(factor);
 		fps = (int) (60/(factor/10));
+	}
+	
+	public void init()
+	{
+		for (int i = 1; i < ButtonHandler.getButtons().size(); i++) {
+			Button b = ButtonHandler.getButton(i);
+			b.setColor(Color.BLACK);
+		}
+		currentState.init();
 	}
 }

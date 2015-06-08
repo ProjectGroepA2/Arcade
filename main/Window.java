@@ -61,7 +61,7 @@ public class Window extends JFrame {
 		final SongHandler sh = new SongHandler();
 		GameStateManager gsm = new GameStateManager(sh);
 		GameView view = new GameView(led,gsm);
-		GameModel model = new GameModel(sh, gsm);
+		GameModel model = new GameModel(sh, gsm, led);
 		GameControl control = new GameControl(model, view,gsm);
 		setContentPane(view);
 		
