@@ -58,4 +58,9 @@ public class InfoPanel {
 	public void draw(Graphics2D g2){
 		g2.drawImage(infoPanel, 0, 0, 256,1024,null);
 	}
+	
+	public String getTotalHighscore()
+	{
+		return totalHighscore;
+	}
 }

@@ -53,6 +53,11 @@ public class PlayState extends GameState {
 		comboScore = 0;
 		oldProgress = 0 ;
 		
+		for(Path p : area.paths)
+		{
+			p.getEnemysInPath().clear();
+		}
+		
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
