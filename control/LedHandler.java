@@ -49,7 +49,6 @@ public class LedHandler {
 	    if(led<0)
 	    	return;
     	try {
-    		System.out.println("Set the led with " + r);
 	        out.write( "1|" + led + "|" + r + "|" + g + "|" + b + "\n" );
 	        out.flush();
 	    }
