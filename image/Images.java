@@ -25,8 +25,8 @@ public class Images {
 
 	static {
 		try {
-			images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/player.png"))));
-			images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/player2.png"))));
+			images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/pulse.png"))));
+			images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/cursor.png"))));
 			images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/pressstart.png")))); 
 			images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/colorstrike.png")))); 
 		   	images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/background.png"))));
@@ -41,7 +41,7 @@ public class Images {
 	}
 
 	public enum ImageType {
-		player,player2,pressstart,colorstrike,background,aanwijzers
+		pulse,cursor,pressstart,colorstrike,background,aanwijzers
 	}
 
 	public static BufferedImage readImage(File f) {
