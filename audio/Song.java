@@ -12,7 +12,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-public class Song {
+public class Song implements Comparable<Song>{
 
 	private String title;
 	private String subtitle;
@@ -149,5 +149,10 @@ public class Song {
 	
 	public void close()
 	{
+	}
+
+	@Override
+	public int compareTo(Song s) {
+		return getTitle().compareTo(s.getTitle());
 	}
 }

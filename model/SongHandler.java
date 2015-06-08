@@ -2,6 +2,8 @@ package model;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import main.Window;
@@ -9,6 +11,7 @@ import audio.AudioPlayer;
 import audio.Song;
 import audio.SongInstance;
 import audio.io.DirScanner;
+import audio.sorting.SortALPHA;
 
 public class SongHandler {
 	
@@ -38,7 +41,9 @@ public class SongHandler {
 			dir = new File(System.getProperty( "user.home" ) + "/Documents/songs/");
 		
 		songs = DirScanner.scanDirectories(dir);
-		System.out.println(songs.size());
+		
+		Collections.sort(songs, new SortALPHA());
+		
 		updatePlayer();
 	}
 	
@@ -107,6 +112,11 @@ public class SongHandler {
 	public void play()
 	{
 		p.play();
+	}
+	
+	public void sort(Comparator<Song> sorter)
+	{
+		Collections.sort(songs, sorter);
 	}
 	
 	
