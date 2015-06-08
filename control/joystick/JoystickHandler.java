@@ -30,8 +30,8 @@ public class JoystickHandler implements KeyListener{
 		listeners = new ArrayList<JoystickListener>();
 		keys = new HashSet<Integer>();
 		j = new Joystick();
-		if(Window.ON_RASP)
-			addGpioListeners();
+//		if(Window.ON_RASP)
+//			addGpioListeners();
 	}
 	
 	private void addGpioListeners(){

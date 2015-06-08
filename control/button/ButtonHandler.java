@@ -39,8 +39,8 @@ public class ButtonHandler implements KeyListener{
 		buttons.add(new Button(5, 4, led));
 		buttons.add(new Button(6, 5, led));
 	
-		if (Window.ON_RASP)
-			addGpioListeners();
+//		if (Window.ON_RASP)
+//			addGpioListeners();
 		
 	}
 	
