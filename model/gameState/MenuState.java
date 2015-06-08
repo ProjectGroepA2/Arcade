@@ -42,6 +42,9 @@ public class MenuState extends GameState {
 	BufferedImage aanwijzers = Images.getImage(ImageType.aanwijzers);
 	int index = 0;
 	
+	BufferedImage menuAchtergrond = Images.getImage(ImageType.menuachtergrond);
+	BufferedImage subMenu = Images.getImage(ImageType.subMenu);
+	
 	public MenuState(GameStateManager gsm, SongHandler sh) {	
 		super(gsm, sh);
 		buttons = new ArrayList<MenuButton>();
@@ -172,16 +175,7 @@ public class MenuState extends GameState {
 		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	    g2.setRenderingHints(rh);
 		g2.setFont(textFont2);
-		g2.setPaint(new GradientPaint(0, 0, new Color(0,0,1, 0.6f),1280,1024 ,new Color(0,0,1, 0.2f)));
-		g2.fillRect(0, 0, 1280, 1024);	
-		g2.setPaint(new GradientPaint(0, 0, new Color(1,1,0, 0.6f),1280,1024 ,new Color(0,0,1, 0.2f)));
-		
-	 
-		Polygon triangle2 = new Polygon(); 
-		triangle2.addPoint(0, 0);
-		triangle2.addPoint(0, 1024/4+50);
-		triangle2.addPoint(1280/2+50, 0);
-		g2.fillPolygon(triangle2);
+		g2.drawImage(menuAchtergrond,0,0,1280,1024,null);
 		
 		g2.setColor(Color.ORANGE);
 		Polygon triangle = new Polygon();
@@ -203,12 +197,8 @@ public class MenuState extends GameState {
 	    g2.setRenderingHints(rh);
 		g2.setFont(textFont2);
 	    g2.setColor(Color.BLACK);
-		GradientPaint gp3 = new GradientPaint(640, 1024/8,Color.BLUE,640,1024 ,Color.WHITE);
-		g2.setPaint(gp3);
-		g2.fillRect(0, 0, 1280, 1024);
-		GradientPaint gp4 = new GradientPaint(0, 0,new Color(1,1,0,0.6f),1280,1024,new Color(1,1,1,0.2f));
-		g2.setPaint(gp4);
-		g2.fillRect(0,128,1280,25);
+	    g2.drawImage(subMenu, 0, 0, 1280, 1024, null);
+	    
 		g2.setColor(Color.ORANGE);
 		g2.fillRect(0, 0, 1280, 1024/8);
 		g2.setColor(Color.BLACK);
