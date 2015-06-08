@@ -13,7 +13,7 @@ import model.gameState.PlayState;
 
 public class InfoPanel {
 	
-	private String totalHighscore = "Score: 000000";
+	private static String totalHighscore = "000000";
 	private int x, y;
 	private VolatileImage infoPanel;
 	
@@ -25,7 +25,7 @@ public class InfoPanel {
 	}
 	
 	public void updateIPanel() {		
-		totalHighscore  = "Score: " + PlayState.currentScore;
+		totalHighscore  = "" + PlayState.currentScore;
 		
 		generateInfoPanel();
 	}
@@ -43,7 +43,7 @@ public class InfoPanel {
 		g2.setFont(scoreFont);
 		g2.setColor(Color.ORANGE);
 		
-		g2.drawString(totalHighscore, 25, 75);
+		g2.drawString("Score: " + totalHighscore, 25, 75);
 		g2.drawRect(25, 100, 200, 30);
 		g2.drawRect(25, 300, 200, 700);
 		g2.setColor(Color.GREEN);
@@ -59,7 +59,7 @@ public class InfoPanel {
 		g2.drawImage(infoPanel, 0, 0, 256,1024,null);
 	}
 	
-	public String getTotalHighscore()
+	public static String getTotalHighscore()
 	{
 		return totalHighscore;
 	}

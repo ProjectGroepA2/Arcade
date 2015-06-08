@@ -114,7 +114,7 @@ public class PlayState extends GameState {
 		lifePoints -= 0.002 * factor;
 		
 		if(lifePoints <= 0)
-			gsm.setState(State.MENU_STATE);
+			gsm.setState(State.GAMEOVER_STATE);
 		if(comboScore >= 100)
 		{
 			comboScore = 0;
@@ -177,7 +177,7 @@ public class PlayState extends GameState {
 		
 		if(e.getButton().getButtonID() == 0)
 		{
-			gsm.setState(State.MENU_STATE);
+			gsm.setState(State.GAMEOVER_STATE);
 		}
 	}
 
