@@ -21,8 +21,11 @@ import model.objects.DifficultyButton;
 import model.objects.MenuButton;
 import audio.Song;
 import audio.SongInstance;
+import audio.sorting.SortALPHA;
+import audio.sorting.SortPLAYED;
 import control.GameStateManager;
 import control.button.ButtonEvent;
+import control.button.ButtonHandler;
 import control.joystick.Joystick;
 import control.joystick.JoystickEvent;
 
@@ -60,7 +63,11 @@ public class MenuState extends GameState {
 	}
 	@Override
 	public void init() {
+		ButtonHandler.getButton(1).setColor(GameModel.colors[0]);
+		ButtonHandler.getButton(2).setColor(GameModel.colors[2]);
 		
+		ButtonHandler.getButton(5).setColor(GameModel.colors[1]);
+		ButtonHandler.getButton(6).setColor(GameModel.colors[4]);
 	}
 
 	@Override
@@ -93,7 +100,6 @@ public class MenuState extends GameState {
 	 			buttons2.add(new DifficultyButton(yPosDiffButton-instanceNr,si.getDifficulty(), GameModel.colors[i-1]));
 	 			instanceNr += 100;
 	 		}
-	 		
 	     }
 	     index++;
 	}
@@ -131,6 +137,14 @@ public class MenuState extends GameState {
 				generateSubScreenBackground();
 			}else if(e.getButton().getButtonID() == 2){
 				subscreen = false;
+			}else if(e.getButton().getButtonID() == 5){
+				sh.sort(new SortALPHA());
+				oldselected = 1;
+				selected = 0;
+			}else if(e.getButton().getButtonID() == 6){
+				sh.sort(new SortPLAYED());
+				oldselected = 1;
+				selected = 0;
 			}	
 		}
 	}

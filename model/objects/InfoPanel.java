@@ -13,31 +13,21 @@ import model.gameState.PlayState;
 
 public class InfoPanel {
 	
-	private String totalHighscore = "XXXXXX";
-	private int lifePercent;
-	private int upgradeScore = 0;
+	private String totalHighscore = "Score: 000000";
 	private int x, y;
 	private VolatileImage infoPanel;
 	
 	public InfoPanel(int x, int y){
 		this.x = x;
 		this.y = y;
-		generateInfoPanel();
 		updateIPanel();
+		generateInfoPanel();
 	}
 	
 	public void updateIPanel() {		
 		totalHighscore  = "Score: " + PlayState.currentScore;
 		
-		
-		lifePercent =+ PlayState.lifePoints;
-		
-		if(0 <= PlayState.currentScore && PlayState.currentScore <=100) {			
-			if(upgradeScore != PlayState.currentScore){
-				upgradeScore = PlayState.currentScore;
-				generateInfoPanel();
-			}
-		}
+		generateInfoPanel();
 	}
 	
 	private void generateInfoPanel(){
@@ -46,18 +36,21 @@ public class InfoPanel {
 		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	    g2.setRenderingHints(rh);	
 	    g2.setColor(Color.BLACK);
+	    
 		g2.fillRect(x, y, 256, 1024);
+		
 		Font scoreFont = new Font("OCR A Extended", Font.BOLD, 30);
 		g2.setFont(scoreFont);
 		g2.setColor(Color.ORANGE);
+		
 		g2.drawString(totalHighscore, 25, 75);
 		g2.drawRect(25, 100, 200, 30);
 		g2.drawRect(25, 300, 200, 700);
 		g2.setColor(Color.GREEN);
-		g2.fillRect(25, 100, 2 * lifePercent, 30);
+		g2.fillRect(25, 100, (int)(2 * PlayState.lifePoints), 30);
 		
 		g2.setColor(Color.YELLOW);		
-		g2.fillRect(25, 1000 - 7 * upgradeScore, 200, 0 + 7 * upgradeScore);
+		g2.fillRect(25, 1000 - 7 * PlayState.comboScore, 200, 0 + 7 * PlayState.comboScore);
 		g2.dispose();
 		infoPanel.createGraphics();
 	}

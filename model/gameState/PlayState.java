@@ -16,6 +16,7 @@ import model.objects.PlayArea;
 import audio.ButtonInstance;
 import audio.ObjectInstance;
 import control.GameStateManager;
+import control.GameStateManager.State;
 import control.button.Button;
 import control.button.ButtonEvent;
 import control.button.ButtonHandler;
@@ -23,8 +24,7 @@ import control.joystick.JoystickEvent;
 
 public class PlayState extends GameState {
 
-	public static final Rectangle2D borderRect = new Rectangle2D.Double(256, 0,
-			1024, 1024);
+	public static final Rectangle2D borderRect = new Rectangle2D.Double(256, 0, 1024, 1024);
 	private PlayArea area;
 	private InfoPanel infoPanel;
 	private Player player;
@@ -32,7 +32,8 @@ public class PlayState extends GameState {
 
 	public static int sizeOfEnemy = 40;
 	public static int currentScore = 0;
-	public static int lifePoints = 100;
+	public static int comboScore = 0;
+	public static double lifePoints = 100;
 
 	private long oldProgress = 0;
 
@@ -45,8 +46,7 @@ public class PlayState extends GameState {
 		// }
 		//
 		player = new Player(1280 - 1024 + 1024 / 2, 1024 / 2);
-		stroke = new BasicStroke(sizeOfEnemy, BasicStroke.CAP_ROUND,
-				BasicStroke.JOIN_ROUND);
+		stroke = new BasicStroke(sizeOfEnemy, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 	}
 
 	@Override
@@ -56,39 +56,39 @@ public class PlayState extends GameState {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		
+
 		sh.play();
 
-		for(int i=1; i<ButtonHandler.getButtons().size(); i++)
-		{
+		for (int i = 1; i < ButtonHandler.getButtons().size(); i++) {
 			Button b = ButtonHandler.getButton(i);
 			b.setColor(Color.BLACK);
 		}
 		
+		ButtonHandler.getButton(1).setColor(sh.getCurrentSongInstance().getButtons().get(0).getColor());
+
 		// System.out.println("Diff" +
 		// sh.getCurrentSongInstance().getDifficulty());
 	}
 
 	@Override
 	public void update(float factor) {
-		
+
 		long progress = (long) ((sh.getProgress() / 1000) + (Enemy.secondsToEnd * 1000));
 
-		for (ButtonInstance bu : sh.getCurrentSongInstance().getButtonsBetween(
-				oldProgress, progress)) {
+		for (ButtonInstance bu : sh.getCurrentSongInstance().getButtonsBetween(oldProgress, progress)) {
 			Button b = ButtonHandler.getButton(bu.getButtonID());
 			b.setColor(bu.getColor());
-//			System.out.println(bu.getButtonID() + " - " + bu.getColor()+ " / " + b.getColor());
+			// System.out.println(bu.getButtonID() + " - " + bu.getColor()+
+			// " / " + b.getColor());
 		}
-		
-		for (ObjectInstance ob : sh.getCurrentSongInstance().getObjectsBetween(
-				oldProgress, progress)) {
+
+		for (ObjectInstance ob : sh.getCurrentSongInstance().getObjectsBetween(oldProgress, progress)) {
 			Path p = area.paths.get(ob.getDirection());
 			p.addEnemy(ob.getColor(), ob.getDirection(), (int) ob.getLength());
 		}
 
 		oldProgress = progress;
-		
+
 		player.update(factor);
 		for (Path path : area.paths) {
 
@@ -98,13 +98,24 @@ public class PlayState extends GameState {
 
 				Enemy e = enemyIterator.next();
 
-				if (e.getDistanceFromStart() > Enemy.distanceToOctagon
-						+ (sizeOfEnemy * 1.5)) {
+				if (e.getDistanceFromStart() > Enemy.distanceToOctagon + (sizeOfEnemy * 1.5)) {
 					enemyIterator.remove();
+					lifePoints -= 5;
+					comboScore /= 2;
 				}
 
 				e.update(factor);
 			}
+		}
+
+		lifePoints -= 0.002 * factor;
+		
+		if(lifePoints <= 0)
+			gsm.setState(State.MENU_STATE);
+		if(comboScore >= 100)
+		{
+			comboScore = 0;
+			currentScore += 500;
 		}
 
 		infoPanel.updateIPanel();
@@ -134,23 +145,29 @@ public class PlayState extends GameState {
 
 	@Override
 	public void buttonPressed(ButtonEvent e) {
-		Iterator<Enemy> enemysInPath = area.paths.get(player.getIndex())
-				.getEnemysInPath().iterator();
+		boolean notHit = true;
+		Iterator<Enemy> enemysInPath = area.paths.get(player.getIndex()).getEnemysInPath().iterator();
 		while (enemysInPath.hasNext()) {
 			Enemy enemy = enemysInPath.next();
-			if (enemy.getDistanceFromStart() > Enemy.distanceToOctagon
-					|| enemy.getDistanceFromStart() > Enemy.distanceToOctagon
-							+ sizeOfEnemy) {
+			if (enemy.getDistanceFromStart() > Enemy.distanceToOctagon || enemy.getDistanceFromStart() > Enemy.distanceToOctagon + sizeOfEnemy) {
 				if (e.getButton().getColor().equals(enemy.getColor())) {
-					currentScore += enemy.getDistanceFromStart()
-							- Enemy.distanceToOctagon;
+					currentScore += enemy.getDistanceFromStart() - Enemy.distanceToOctagon;
+					comboScore += 5;
+					lifePoints = Math.min(lifePoints+10, 100);
 					enemysInPath.remove();
+					notHit = false;
 					break;
 				}
 			}
-
 		}
-
+		
+		if(notHit)
+		{
+			if(area.paths.get(player.getIndex()).getEnemysInPath().size() > 0)
+			{
+				lifePoints -= 1.5;
+			}
+		}
 	}
 
 	@Override
