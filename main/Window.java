@@ -75,10 +75,8 @@ public class Window extends JFrame {
 		});
 		
 		//Create EventListeners
-		if(!Window.ON_RASP){
 			addKeyListener(bth);
 			addKeyListener(jsh);
-		}
 		bth.addButtonListener(control);
 		jsh.addJoystickListener(control);
 		
