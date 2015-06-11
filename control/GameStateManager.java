@@ -9,6 +9,7 @@ import model.gameState.GameOverState;
 import model.gameState.GameState;
 import model.gameState.MenuState;
 import model.gameState.PlayState;
+import model.gameState.PreGameState;
 import model.gameState.TitleState;
 import control.button.Button;
 import control.button.ButtonHandler;
@@ -24,7 +25,8 @@ public class GameStateManager {
 		TITLE_STATE,
 		MENU_STATE,
 		PLAY_STATE,
-		GAMEOVER_STATE
+		GAMEOVER_STATE,
+		PRE_GAME_STATE
 	}
 	
 	public GameStateManager(SongHandler sh){
@@ -33,6 +35,7 @@ public class GameStateManager {
 		gamestates.add(new MenuState(this, sh));
 		gamestates.add(new PlayState(this, sh));
 		gamestates.add(new GameOverState(this, sh));
+		gamestates.add(new PreGameState(this,sh));
 		setState(State.TITLE_STATE);
 	}
 	
