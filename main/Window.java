@@ -54,10 +54,12 @@ public class Window extends JFrame {
 			this.setCursor(blankCursor);
 		}
 		
-		ButtonHandler bth = new ButtonHandler(led);
+		ButtonHandler bth = new ButtonHandler();
 		JoystickHandler jsh = new JoystickHandler();
 		
 		NetworkHandler ntw = new NetworkHandler("192.168.1.6", 1113, bth, jsh);
+		
+		bth.setNetwork(ntw);
 		
 		//Create Instances
 		final SongHandler sh = new SongHandler();

@@ -39,12 +39,11 @@ public class NetworkHandler implements Runnable{
 		send = new byte[1024];
 		receive = new byte[1024];
 		
-		try {
-			udp = new DatagramSocket();
-			udp.connect(InetAddress.getByName(host), port);
-		} catch (SocketException | UnknownHostException e) {
-			e.printStackTrace();
-		}
+			try {
+				udp = new DatagramSocket(1112);
+			} catch (SocketException e) {
+				e.printStackTrace();
+			}
 		
 		running = true;
 		t = new Thread(this);
@@ -84,15 +83,25 @@ public class NetworkHandler implements Runnable{
 		
 		while(running)
 		{
-			DatagramPacket pckg = new DatagramPacket(receive, receive.length);
+			DatagramPacket receivePacket = new DatagramPacket(receive, receive.length);     
 			try {
-				udp.receive(pckg);
+				udp.receive(receivePacket);
 			} catch (IOException e) {
 				e.printStackTrace();
-			}	
+			}                   
+			String sentence = new String( receivePacket.getData());   
+			System.out.println("RECEIVED: " + sentence); 
 			
-			String str = new String(pckg.getData());
-			System.out.println(str);
+			String[] controls = sentence.split("\\|");
+			for(int i = 0; i < 7; i++){
+				if(Integer.parseInt(controls[i]) != ButtonHandler.getButton(i).pressed)
+				{
+					System.out.println("PRESS BITCH " + controls[i]);
+					ButtonHandler.getButton(i).pressed = Integer.parseInt(controls[i]);
+					if(Integer.parseInt(controls[i]) == 0)
+						bth.buttonPress(ButtonHandler.getButton(i));
+				}
+			}
 		}
 			
 	}

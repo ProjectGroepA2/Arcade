@@ -16,28 +16,20 @@ import com.pi4j.io.gpio.RaspiPin;
 import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 
-import control.LedHandler;
+import control.NetworkHandler;
 
 public class ButtonHandler implements KeyListener{
 
 	List<ButtonListener> listeners;
 	static List<Button> buttons;
-	LedHandler led;
+	NetworkHandler ntw;
 	
-	public ButtonHandler(LedHandler led)
+	public ButtonHandler()
 	{
-		this.led = led;
+		this.ntw = null;
 		
 		listeners = new ArrayList<ButtonListener>();
 		buttons = new ArrayList<Button>();
-		
-		buttons.add(new Button(0, -1, led));
-		buttons.add(new Button(1, 2, led));
-		buttons.add(new Button(2, 1, led));
-		buttons.add(new Button(3, 0, led));
-		buttons.add(new Button(4, 3, led));
-		buttons.add(new Button(5, 4, led));
-		buttons.add(new Button(6, 5, led));
 	
 //		if (Window.ON_RASP)
 //			addGpioListeners();
@@ -81,8 +73,8 @@ public class ButtonHandler implements KeyListener{
 		if(Window.ON_RASP)
 		{
 			Color c = b.getColor().brighter().brighter();
-			led.setLed(b.getLedID(), c.getGreen(), c.getRed(), c.getBlue());
-			led.show();
+			ntw.setLed(b.getLedID(), c.getGreen(), c.getRed(), c.getBlue());
+			ntw.show();
 		}
 		ButtonEvent e = new ButtonEvent(b, System.currentTimeMillis());
 	    for (ButtonListener bt : listeners)
@@ -92,8 +84,8 @@ public class ButtonHandler implements KeyListener{
 	public void buttonRelease(Button b) {
 		if(Window.ON_RASP)
 		{
-			led.setLed(b.getLedID(), b.getColor().getGreen(), b.getColor().getRed(), b.getColor().getBlue());
-			led.show();
+			ntw.setLed(b.getLedID(), b.getColor().getGreen(), b.getColor().getRed(), b.getColor().getBlue());
+			ntw.show();
 		}
 		ButtonEvent e = new ButtonEvent(b, System.currentTimeMillis());
 	    for (ButtonListener bt : listeners)
@@ -176,5 +168,17 @@ public class ButtonHandler implements KeyListener{
 			}
 		}
 		return null;
+	}
+
+	public void setNetwork(NetworkHandler ntw) {
+		this.ntw = ntw;
+		
+		buttons.add(new Button(0, -1, ntw));
+		buttons.add(new Button(1, 2, ntw));
+		buttons.add(new Button(2, 1, ntw));
+		buttons.add(new Button(3, 0, ntw));
+		buttons.add(new Button(4, 3, ntw));
+		buttons.add(new Button(5, 4, ntw));
+		buttons.add(new Button(6, 5, ntw));
 	}
 }
