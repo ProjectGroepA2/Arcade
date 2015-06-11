@@ -18,6 +18,7 @@ import view.GameView;
 import control.GameControl;
 import control.GameStateManager;
 import control.LedHandler;
+import control.NetworkHandler;
 import control.button.ButtonHandler;
 import control.joystick.JoystickHandler;
 
@@ -35,9 +36,8 @@ public class Window extends JFrame {
 		setSize(WIDTH, HEIGHT);
 		
 		//Create Events
-		LedHandler led = null;
 		Window.ON_RASP = ON_RASP;
-		
+		LedHandler led = null;
 		if(ON_RASP){ //Only on the raspberry pi
 			led = new LedHandler();
 			GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -56,6 +56,8 @@ public class Window extends JFrame {
 		
 		ButtonHandler bth = new ButtonHandler(led);
 		JoystickHandler jsh = new JoystickHandler();
+		
+		NetworkHandler ntw = new NetworkHandler("192.168.1.6", 1113, bth, jsh);
 		
 		//Create Instances
 		final SongHandler sh = new SongHandler();
