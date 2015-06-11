@@ -28,36 +28,25 @@ public class MenuButton {
 	
 
 	public void draw(Graphics2D g2d){
+			g2d.setColor(color.darker().darker());
+			g2d.fillRect(x-5, y-5,890,80);
 			g2d.setColor(color);
-			g2d.fillRect(x,y,880,50);
+			g2d.fillRect(x,y,880,70);
 		
 		if(selected){
 			g2d.setColor(Color.BLACK);
-			g2d.drawRect(x, y, 880, 50);
+			g2d.drawRect(x-5, y-5, 890, 80);
+			g2d.drawRect(x, y, 880, 70);
+			
 		}
 
 		//draw text
 		g2d.setColor(Color.BLACK);
 		Font textFont = new Font("OCR A Extended", Font.BOLD,60);
 		g2d.setFont(textFont);
-		g2d.drawString(song.getTitle(),  x+50, y+50);
+		g2d.drawString(song.getTitle(),  x+50, y+57);
 	}
 	
-//	public void update(){
-//		if(selected && fadecounter < 5){
-//			x += 8;
-//			y -= 8;
-//			scalefactor += 0.04;
-//			fadecounter++;
-//			calculateButton();
-//		}else if(!selected && fadecounter >0){
-//			x += 8;
-//			y += 8;
-//			fadecounter--;
-//			scalefactor -= 0.04;
-//			calculateButton();
-//		}
-//	}
 	
 	public void setSelected(boolean selected) {
 		this.selected = selected;

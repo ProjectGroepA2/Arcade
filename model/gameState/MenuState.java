@@ -57,12 +57,6 @@ public class MenuState extends GameState {
 		startanimation = true;
 		subscreen = false;
 		
-//		buttons.add(new MenuButton(400,150,GameModel.colors[kleurInt-2],selectedToSong(selected-2)));
-//		buttons.add(new MenuButton(400,250,GameModel.colors[kleurInt-1],selectedToSong(selected-1)));
-//		buttons.add(new MenuButton(400,350,GameModel.colors[kleurInt],selectedToSong(selected)));
-//		buttons.add(new MenuButton(400,450,GameModel.colors[kleurInt+1],selectedToSong(selected+1)));
-//		buttons.add(new MenuButton(400,550,GameModel.colors[kleurInt+2],selectedToSong(selected+2)));
-//		buttons.get(2).setSelected(true);
 		
 	}
 	@Override
@@ -107,11 +101,11 @@ public class MenuState extends GameState {
 	@Override
 	public void draw(Graphics2D g2) {
 		buttons.clear();		
-		buttons.add(new MenuButton(400,150,GameModel.colors[kleurButton1],selectedToSong(selected-2)));
-		buttons.add(new MenuButton(400,250,GameModel.colors[kleurButton2],selectedToSong(selected-1)));
-		buttons.add(new MenuButton(400,350,GameModel.colors[kleurButton3],selectedToSong(selected)));
-		buttons.add(new MenuButton(400,450,GameModel.colors[kleurButton4],selectedToSong(selected+1)));
-		buttons.add(new MenuButton(400,550,GameModel.colors[kleurButton5],selectedToSong(selected+2)));
+		buttons.add(new MenuButton(400,250,GameModel.colors[kleurButton1],selectedToSong(selected-2)));
+		buttons.add(new MenuButton(400,390,GameModel.colors[kleurButton2],selectedToSong(selected-1)));
+		buttons.add(new MenuButton(400,530,GameModel.colors[kleurButton3],selectedToSong(selected)));
+		buttons.add(new MenuButton(400,670,GameModel.colors[kleurButton4],selectedToSong(selected+1)));
+		buttons.add(new MenuButton(400,810,GameModel.colors[kleurButton5],selectedToSong(selected+2)));
 		buttons.get(2).setSelected(true);
 		
 		
@@ -239,10 +233,7 @@ public class MenuState extends GameState {
 		}else{										//Screen for selecting song
 			if(e.getJoystick().getPos() == Joystick.Position.DOWN){
 				selected++;
-//				if(kleurInt > GameModel.colors.length-1){
-//					kleurInt = 0;
-//				} else
-//					kleurInt++;
+				
 				kleurButton1++;
 				kleurButton1 %= 6;
 				
@@ -264,27 +255,27 @@ public class MenuState extends GameState {
 				selected--;
 				kleurButton1--;
 				if(kleurButton1 < 0){
-					kleurButton1 = 1;
+					kleurButton1 = 5;
 				}
 				
 				kleurButton2--;
 				if(kleurButton2 < 0){
-					kleurButton2 = 1;
+					kleurButton2 = 5;
 				}
 				
 				kleurButton3--;
 				if(kleurButton3 < 0){
-					kleurButton3 = 1;
+					kleurButton3 = 5;
 				}
 					
 				kleurButton4--;
 				if(kleurButton4 < 0){
-					kleurButton4 = 1;
+					kleurButton4 = 5;
 				}
 				
 				kleurButton5--;
 				if(kleurButton5 < 0){
-					kleurButton5 = 1;
+					kleurButton5 = 5;
 				}
 				
 
