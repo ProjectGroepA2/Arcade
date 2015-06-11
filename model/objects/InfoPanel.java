@@ -10,6 +10,7 @@ import java.awt.Transparency;
 import java.awt.image.VolatileImage;
 
 import model.SongHandler;
+import model.drawObjects.CoinAnimation;
 import model.gameState.PlayState;
 
 public class InfoPanel {
@@ -19,11 +20,14 @@ public class InfoPanel {
 	private VolatileImage infoPanel;
 	private SongHandler sh;
 	private String time;
+
+	private CoinAnimation coinAnimation = new CoinAnimation(150, 200);
 	
 	public InfoPanel(int x, int y, SongHandler sh){
 		this.x = x;
 		this.y = y;
 		this.sh = sh;
+
 		updateIPanel();
 		generateInfoPanel();
 	}
@@ -77,11 +81,18 @@ public class InfoPanel {
 			g2.drawString(sh.getCurrentSong().getAuthor(), 25, 230);
 			g2.drawString(time, 25, 260);
 		}
-		
+
+		if (!coinAnimation.areWeDoneYet())
+			coinAnimation.draw(g2);
+
 		g2.setColor(Color.YELLOW);		
 		g2.fillRect(25, 1000 - 7 * PlayState.comboScore, 200, 0 + 7 * PlayState.comboScore);
 		g2.dispose();
 		infoPanel.createGraphics();
+	}
+
+	public void throwACoin() {
+		coinAnimation.start();
 	}
 	
 	public void draw(Graphics2D g2){

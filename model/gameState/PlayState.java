@@ -162,6 +162,7 @@ public class PlayState extends GameState {
 					lifePoints = Math.min(lifePoints+10, 100);
 					enemysInPath.remove();
 					notHit = false;
+					infoPanel.throwACoin();
 					break;
 				}
 			}
