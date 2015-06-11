@@ -70,6 +70,10 @@ public class Enemy extends DrawObject {
 		g2.setPaint(c);
 		g2.draw(enemy);		
 	}
+	public void draw(Graphics2D g2, boolean b) {
+		g2.setPaint(c.darker().darker());
+		g2.draw(enemy);		
+	}
 
 	@Override
 	public void update(float factor) {	

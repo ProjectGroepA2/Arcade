@@ -29,6 +29,7 @@ public class PlayState extends GameState {
 	private InfoPanel infoPanel;
 	private Player player;
 	private Stroke stroke;
+	private Stroke borderStroke;
 
 	public static int sizeOfEnemy = 40;
 	public static int currentScore = 0;
@@ -45,6 +46,7 @@ public class PlayState extends GameState {
 		area = new PlayArea(256, 1024, 1024, 125);
 		player = new Player(1280 - 1024 + 1024 / 2, 1024 / 2);
 		stroke = new BasicStroke(sizeOfEnemy, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+		borderStroke = new BasicStroke(sizeOfEnemy+2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 	}
 
 	@Override
@@ -147,10 +149,12 @@ public class PlayState extends GameState {
 			g2.setClip(borderRect);
 			area.draw(g2);
 
-			g2.setStroke(stroke);
 			for (Path p : area.paths) {
 				if (p.getEnemysInPath() != null) {
 					for (Enemy enemy : p.getEnemysInPath()) {
+						g2.setStroke(borderStroke);
+						enemy.draw(g2, true);
+						g2.setStroke(stroke);
 						enemy.draw(g2);
 					}
 				}
