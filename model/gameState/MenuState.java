@@ -66,11 +66,19 @@ public class MenuState extends GameState {
 	}
 	@Override
 	public void init() {
-		ButtonHandler.getButton(1).setColor(GameModel.colors[0]);
-		ButtonHandler.getButton(2).setColor(GameModel.colors[2]);
+		if(subscreen)
+		{
+			ButtonHandler.getButton(1).setColor(GameModel.colors[0]);
+			ButtonHandler.getButton(2).setColor(GameModel.colors[2]);
+		}
+		else
+		{
+			ButtonHandler.getButton(1).setColor(GameModel.colors[0]);
+			
+			ButtonHandler.getButton(5).setColor(GameModel.colors[1]);
+			ButtonHandler.getButton(6).setColor(GameModel.colors[4]);
+		}
 		
-		ButtonHandler.getButton(5).setColor(GameModel.colors[1]);
-		ButtonHandler.getButton(6).setColor(GameModel.colors[4]);
 	}
 
 	@Override
@@ -130,6 +138,7 @@ public class MenuState extends GameState {
 		if(subscreen){								//Screen for Song details
 			if(e.getButton().getButtonID() == 2){
 				subscreen = false;
+				gsm.init();
 			}
 			if(e.getButton().getButtonID() == 1){
 				sh.close();
@@ -138,9 +147,8 @@ public class MenuState extends GameState {
 		}else{										//Screen for selecting song
 			if(e.getButton().getButtonID() == 1){
 				subscreen = true;
+				gsm.init();
 				generateSubScreenForeground();
-			}else if(e.getButton().getButtonID() == 2){
-				subscreen = false;
 			}else if(e.getButton().getButtonID() == 5){
 				sh.sort(new SortALPHA());
 				oldselected = 1;
