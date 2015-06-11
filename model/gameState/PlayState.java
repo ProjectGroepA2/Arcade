@@ -92,6 +92,7 @@ public class PlayState extends GameState {
 
 		oldProgress = progress;
 
+		Enemy closedEnemy = null;
 		player.update(factor);
 		for (Path path : area.paths) {
 
@@ -100,13 +101,18 @@ public class PlayState extends GameState {
 			while (enemyIterator.hasNext()) {
 
 				Enemy e = enemyIterator.next();
-
+//				System.out.println("Path: "+e.getIndex()+"\tDistance: "+(Enemy.distanceToOctagon-e.getDistanceFromStart()));				
 				if (e.getDistanceFromStart() > Enemy.distanceToOctagon + (sizeOfEnemy * 1.5)) {
 					enemyIterator.remove();
 					lifePoints -= 5;
 					comboScore /= 2;
 				}
-
+				if(closedEnemy == null){
+					closedEnemy = e;
+				}
+				if((Enemy.distanceToOctagon-closedEnemy.getDistanceFromStart()) > (Enemy.distanceToOctagon-e.getDistanceFromStart())){
+						closedEnemy = e;
+				}
 				e.update(factor);
 			}
 		}
@@ -123,6 +129,11 @@ public class PlayState extends GameState {
 
 		infoPanel.updateIPanel();
 		area.count();
+		if(closedEnemy == null){
+			area.pathPainted(-1, null);
+		}else{
+			area.pathPainted(closedEnemy.getIndex(), closedEnemy.getColor());
+		}
 	}
 
 	@Override

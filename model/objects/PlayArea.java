@@ -21,10 +21,10 @@ public class PlayArea {
 	public List<Path> paths;
 	private Polygon innerHitAreaBorder,outsideHitAreaBorder;	
 	private GeneralPath hitArea;
-	private Color hitAreaColor;
+	private Color hitAreaColor,pathColor = null;
 	private VolatileImage background;
 	private boolean hit = false;
-	private int count = 0,maxCount = 100;
+	private int count = 0,maxCount = 100,pathID = -1;
 	
 	public PlayArea(double xToRight,double heightOfGameScreen,double widthOfGameScreen, int sizeOctagon) {
 		super();
@@ -99,11 +99,14 @@ public class PlayArea {
 		g2.drawImage(background, 0, 0, 1280, 1024, null);
 		if(hit){
 			g2.setColor(hitAreaColor);
-			g2.fill(hitArea);			
-		}
-		
-		if(count == maxCount){
-			hit = false;
+			g2.fill(hitArea);
+			if(count == maxCount){
+				hit = false;
+			}
+		}		
+		if(pathID >= 0 && pathColor != null){
+			g2.setColor(pathColor);
+			g2.draw(paths.get(pathID));
 		}
 	}
 	
@@ -135,5 +138,10 @@ public class PlayArea {
 			}
 			hitAreaColor = new Color(hitAreaColor.getRed(),hitAreaColor.getGreen(),hitAreaColor.getBlue(),255-(255*count)/maxCount);	
 		}
+	}
+	
+	public void pathPainted(int pathID,Color pathColor){
+		this.pathID = pathID;
+		this.pathColor = pathColor;
 	}
 }
