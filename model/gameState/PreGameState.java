@@ -2,6 +2,8 @@ package model.gameState;
 
 import image.Images;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -13,8 +15,8 @@ import control.joystick.JoystickEvent;
 
 public class PreGameState extends GameState {
 
-	double index2 = 2.25;
-	double index = 2.25;
+	double index2 = 3;
+	double index = 3;
 	double timer;
 	
 	BufferedImage screenshot;
@@ -43,13 +45,16 @@ public class PreGameState extends GameState {
 
 	@Override
 	public void draw(Graphics2D g2) {
+		g2.drawImage(screenshot,0,0,1280,1024,null);
 		Font textFont = new Font("OCR A Extended", Font.BOLD,200);
+		BasicStroke s = new BasicStroke(20);
 		g2.setFont(textFont);
+		g2.setStroke(s);
+		g2.setColor(Color.BLACK);
 		g2.drawString("" + index,  325, 400);
-			
-		if(index < 0.75)
+		if(index < 1)
 			g2.drawString("GO!!!",325,600);
-		else if (index < 1.5)
+		else if (index < 2)
 			g2.drawString("SET", 450,600);
 		else
 			g2.drawString("READY", 325, 600);
