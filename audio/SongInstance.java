@@ -61,6 +61,11 @@ public class SongInstance {
 		return b;
 	}
 	
+	public long getEndTime()
+	{
+		return objects.get(objects.size()-1).getTime();
+	}
+	
 	public List<ButtonInstance> getButtonsBetween(long oldProgress, long progress) {
 		List<ButtonInstance> b = new ArrayList<ButtonInstance>();
 		

@@ -9,6 +9,7 @@ import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.image.VolatileImage;
 
+import model.SongHandler;
 import model.gameState.PlayState;
 
 public class InfoPanel {
@@ -16,17 +17,32 @@ public class InfoPanel {
 	private static String totalHighscore = "000000";
 	private int x, y;
 	private VolatileImage infoPanel;
+	private SongHandler sh;
+	private String time;
 	
-	public InfoPanel(int x, int y){
+	public InfoPanel(int x, int y, SongHandler sh){
 		this.x = x;
 		this.y = y;
+		this.sh = sh;
 		updateIPanel();
 		generateInfoPanel();
 	}
 	
 	public void updateIPanel() {		
 		totalHighscore  = "" + PlayState.currentScore;
+//		time = "";
+//		long progress = (sh.getProgress() / 1000);
+//		time = progress%1000 + time;
+//		progress /= 1000;
+//		time = progress%1000 + ":" + time;
+//		progress /= 1000;
+//		time = progress + ":" +  time;
 		
+		long progress = (sh.getProgress() / 1000);
+		String millis = ((progress) % 1000) + "".length() >= 3 ? ("" +((progress) % 1000)).substring(0, 2) : "" + ((progress) % 1000);
+		String second = ((progress / 1000) % 60 + "").length() <= 1 ? "0" +((progress / 1000) % 60) : "" + ((progress / 1000) % 60);
+		String minute = ((progress / (1000 * 60)) % 60 + "").length() <= 1 ? "0" +((progress / (1000 * 60)) % 60) : "" + ((progress / (1000 * 60)) % 60);
+		time = minute + ":" + second + ":" + millis;
 		generateInfoPanel();
 	}
 	
@@ -41,13 +57,26 @@ public class InfoPanel {
 		
 		Font scoreFont = new Font("OCR A Extended", Font.BOLD, 30);
 		g2.setFont(scoreFont);
-		g2.setColor(Color.ORANGE);
+		g2.setColor(Color.GREEN);
+		g2.fillRect(25, 100, (int)(2 * PlayState.lifePoints), 30);
 		
+		g2.setColor(Color.ORANGE);
 		g2.drawString("Score: " + totalHighscore, 25, 75);
 		g2.drawRect(25, 100, 200, 30);
 		g2.drawRect(25, 300, 200, 700);
-		g2.setColor(Color.GREEN);
-		g2.fillRect(25, 100, (int)(2 * PlayState.lifePoints), 30);
+		
+		g2.drawString(sh.getCurrentSong().getTitle(), 25, 200);
+		if(sh.getCurrentSong().getSubtitle() != "")
+		{
+			g2.drawString(sh.getCurrentSong().getSubtitle(), 25, 230);
+			g2.drawString(sh.getCurrentSong().getAuthor(), 25, 260);
+			g2.drawString(time, 25, 290);
+		}
+		else
+		{
+			g2.drawString(sh.getCurrentSong().getAuthor(), 25, 230);
+			g2.drawString(time, 25, 260);
+		}
 		
 		g2.setColor(Color.YELLOW);		
 		g2.fillRect(25, 1000 - 7 * PlayState.comboScore, 200, 0 + 7 * PlayState.comboScore);

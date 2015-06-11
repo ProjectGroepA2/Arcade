@@ -39,7 +39,7 @@ public class PlayState extends GameState {
 
 	public PlayState(GameStateManager gsm, SongHandler sh) {
 		super(gsm, sh);
-		infoPanel = new InfoPanel(0, 0);
+		infoPanel = new InfoPanel(0, 0, sh);
 		area = new PlayArea(256, 1024, 1024, 125);
 		player = new Player(1280 - 1024 + 1024 / 2, 1024 / 2);
 		stroke = new BasicStroke(sizeOfEnemy, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
@@ -89,6 +89,9 @@ public class PlayState extends GameState {
 			Path p = area.paths.get(ob.getDirection());
 			p.addEnemy(ob.getColor(), ob.getDirection(), (int) ob.getLength());
 		}
+		
+		if(progress > sh.getCurrentSongInstance().getEndTime() + Enemy.secondsToEnd*1000*2)
+			gsm.setState(State.GAMEOVER_STATE);
 
 		oldProgress = progress;
 

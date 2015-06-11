@@ -25,6 +25,7 @@ import audio.SongInstance;
 import audio.sorting.SortALPHA;
 import audio.sorting.SortPLAYED;
 import control.GameStateManager;
+import control.GameStateManager.State;
 import control.button.ButtonEvent;
 import control.button.ButtonHandler;
 import control.joystick.Joystick;
@@ -149,6 +150,11 @@ public class MenuState extends GameState {
 				oldselected = 1;
 				selected = 0;
 			}	
+		}
+		
+		if(e.getButton().getButtonID() == 0)
+		{
+			gsm.setState(State.TITLE_STATE);
 		}
 	}
 	@Override
