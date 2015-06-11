@@ -34,6 +34,8 @@ public class PlayState extends GameState {
 	public static int currentScore = 0;
 	public static int comboScore = 0;
 	public static double lifePoints = 100;
+	
+	private boolean init = false;
 
 	private long oldProgress = 0;
 
@@ -47,7 +49,7 @@ public class PlayState extends GameState {
 
 	@Override
 	public void init() {
-		
+		init = true;
 		lifePoints = 100;
 		currentScore = 0;
 		comboScore = 0;
@@ -57,14 +59,6 @@ public class PlayState extends GameState {
 		{
 			p.getEnemysInPath().clear();
 		}
-		
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		sh.play();
 
 		for (int i = 1; i < ButtonHandler.getButtons().size(); i++) {
 			Button b = ButtonHandler.getButton(i);
@@ -72,12 +66,16 @@ public class PlayState extends GameState {
 		}
 		
 		ButtonHandler.getButton(1).setColor(sh.getCurrentSongInstance().getButtons().get(0).getColor());
-
+		
+		sh.play();
+		init = false;
 	}
 
 	@Override
 	public void update(float factor) {
-
+		if(init)
+			return;
+		
 		long progress = (long) ((sh.getProgress() / 1000) + (Enemy.secondsToEnd * 1000));
 
 		for (ButtonInstance bu : sh.getCurrentSongInstance().getButtonsBetween(oldProgress, progress)) {
@@ -89,6 +87,8 @@ public class PlayState extends GameState {
 			Path p = area.paths.get(ob.getDirection());
 			p.addEnemy(ob.getColor(), ob.getDirection(), (int) ob.getLength());
 		}
+		
+//		System.out.println(progress - oldProgress + " / " + area.paths.get(player.getIndex()).getEnemysInPath().size());
 
 		oldProgress = progress;
 
