@@ -43,7 +43,8 @@ public class MenuState extends GameState {
 	
 	int yPosDiffButton = 900;
 	private int difSelect=0;
-	Font textFont2 = new Font("OCR A Extended", Font.BOLD, 50);
+	Font textFont = new Font("OCR A Extended", Font.BOLD, 50);
+	Font textFontSmall = new Font("OCR A Extended", Font.BOLD, 15);
 	BufferedImage aanwijzers = Images.getImage(ImageType.aanwijzers);
 	int index = 0;
 	
@@ -66,11 +67,19 @@ public class MenuState extends GameState {
 	}
 	@Override
 	public void init() {
-		ButtonHandler.getButton(1).setColor(GameModel.colors[0]);
-		ButtonHandler.getButton(2).setColor(GameModel.colors[2]);
+		if(subscreen)
+		{
+			ButtonHandler.getButton(1).setColor(GameModel.colors[0]);
+			ButtonHandler.getButton(2).setColor(GameModel.colors[2]);
+		}
+		else
+		{
+			ButtonHandler.getButton(1).setColor(GameModel.colors[0]);
+			
+			ButtonHandler.getButton(5).setColor(GameModel.colors[1]);
+			ButtonHandler.getButton(6).setColor(GameModel.colors[4]);
+		}
 		
-		ButtonHandler.getButton(5).setColor(GameModel.colors[1]);
-		ButtonHandler.getButton(6).setColor(GameModel.colors[4]);
 	}
 
 	@Override
@@ -130,6 +139,7 @@ public class MenuState extends GameState {
 		if(subscreen){								//Screen for Song details
 			if(e.getButton().getButtonID() == 2){
 				subscreen = false;
+				gsm.init();
 			}
 			if(e.getButton().getButtonID() == 1){
 				sh.close();
@@ -138,9 +148,8 @@ public class MenuState extends GameState {
 		}else{										//Screen for selecting song
 			if(e.getButton().getButtonID() == 1){
 				subscreen = true;
+				gsm.init();
 				generateSubScreenForeground();
-			}else if(e.getButton().getButtonID() == 2){
-				subscreen = false;
 			}else if(e.getButton().getButtonID() == 5){
 				sh.sort(new SortALPHA());
 				oldselected = 1;
@@ -194,7 +203,7 @@ public class MenuState extends GameState {
 		Graphics2D g2 = mainScreenBackground.createGraphics();
 		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	    g2.setRenderingHints(rh);
-		g2.setFont(textFont2);
+		g2.setFont(textFont);
 		g2.setPaint(new GradientPaint(0, 0, new Color(0,0,1, 0.6f),1280,1024 ,new Color(0,0,1, 0.2f)));
 		g2.fillRect(0, 0, 1280, 1024);	
 		g2.setPaint(new GradientPaint(0, 0, new Color(1,1,0, 0.6f),1280,1024 ,new Color(0,0,1, 0.2f)));
@@ -215,8 +224,28 @@ public class MenuState extends GameState {
 		
 		g2.setColor(Color.BLACK);
 		g2.drawString("Main Menu", 32, 60);
+		
+		g2.setFont(textFontSmall);
+	
+		//select
+		g2.setColor(GameModel.colors[0]);
+		g2.fillOval(20, 900, 30, 30);
+		g2.drawString("Play", 55, 920);
+		
+		//letters
+		g2.setColor(GameModel.colors[1]);
+		g2.fillOval(20, 940, 30, 30);
+		g2.drawString("A-Z", 55, 960);
+		
+		//most played
+		g2.setColor(GameModel.colors[4]);
+		g2.fillOval(20, 980, 30, 30);
+		g2.drawString("Most Played", 55, 1000);		
 		g2.dispose();
+	
 		mainScreenBackground.createGraphics();
+		
+		
 	}
 	
 	public void generateSubScreenBackground(){
@@ -247,7 +276,7 @@ public class MenuState extends GameState {
 		g2.setComposite(AlphaComposite.SrcOver);
 	    g2.setRenderingHints(rh);
 	    g2.setColor(Color.BLACK);
- 		g2.setFont(textFont2);
+ 		g2.setFont(textFont);
 		g2.drawString(selectedToSong(selected).getTitle(), 30, 60);
 		
 		
@@ -259,6 +288,39 @@ public class MenuState extends GameState {
 		for(DifficultyButton b : buttons2){
 			b.draw(g2);
 		}
+		
+		g2.setFont(textFontSmall);
+		
+		//play song
+		g2.setColor(GameModel.colors[0]);
+		g2.fillOval(20, 860, 30, 30);
+		g2.drawString("Play", 55, 880);
+		
+		//back
+		g2.setColor(GameModel.colors[2]);
+		g2.fillOval(20, 900, 30, 30);
+		g2.drawString("Back", 55, 920);
+		
+		//up
+		g2.setColor(Color.BLACK);		
+		Polygon p  = new Polygon();
+		p.addPoint(35, 940);
+		p.addPoint(20, 960);
+		p.addPoint(50, 960);	
+		g2.fillPolygon(p);
+		g2.drawString("Up", 55, 960);
+		
+		//down
+		Polygon p2  = new Polygon();
+		p2.addPoint(35, 1000);
+		p2.addPoint(20, 980);
+		p2.addPoint(50, 980);	
+		g2.fillPolygon(p2);
+
+		g2.drawString("Down", 55, 1000);	
+		
+		
+		
 	    g2.dispose();
 	    subScreenForeground.createGraphics();
 	}

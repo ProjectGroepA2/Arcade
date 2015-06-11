@@ -26,7 +26,7 @@ public class GameControl implements JoystickListener, ButtonListener, ActionList
 		this.view = view;
 		this.gsm = gsm;
 		view.setIgnoreRepaint(true);
-		update = new Timer(1000/60,this);
+		update = new Timer(0,this);
 		update.start();
 //		Timer update = new Timer();
 //		update.schedule(new TimerTask() {
@@ -62,7 +62,10 @@ public class GameControl implements JoystickListener, ButtonListener, ActionList
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		long currentTime = System.currentTimeMillis();
-		model.update(currentTime - lastTime);
+		long time = currentTime - lastTime;
+		if(time > 1000/60)
+			time = 1000/60;
+		model.update(time);
 		lastTime = currentTime;
 		view.repaint();				
 	}
