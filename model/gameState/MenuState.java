@@ -39,6 +39,16 @@ public class MenuState extends GameState {
 	BufferedImage aanwijzers = Images.getImage(ImageType.aanwijzers);
 	int index = 0;
 	
+	
+	
+	int kleurButton1 = 0;
+	int kleurButton2 = 1;
+	int kleurButton3 = 2;
+	int kleurButton4 = 3;
+	int kleurButton5 = 4;
+	
+	
+	
 	public MenuState(GameStateManager gsm, SongHandler sh) {	
 		super(gsm, sh);
 		buttons = new ArrayList<MenuButton>();
@@ -47,12 +57,12 @@ public class MenuState extends GameState {
 		startanimation = true;
 		subscreen = false;
 		
-		buttons.add(new MenuButton(-600, 50,1.7, 0, Color.green, selectedToSong(selected-2) ));
-		buttons.add(new MenuButton(-600, 150, 1.7, 10, Color.BLUE, selectedToSong(selected-1)));
-		buttons.add(new MenuButton(-600, 250, 1.7, 20, Color.red, selectedToSong(selected)));
-		buttons.add(new MenuButton(-600, 350, 1.7, 30, Color.yellow,selectedToSong(selected+1)));
-		buttons.add(new MenuButton(-600, 450, 1.7, 30, Color.WHITE,selectedToSong(selected+2)));
-		buttons.get(2).setSelected(true);
+//		buttons.add(new MenuButton(400,150,GameModel.colors[kleurInt-2],selectedToSong(selected-2)));
+//		buttons.add(new MenuButton(400,250,GameModel.colors[kleurInt-1],selectedToSong(selected-1)));
+//		buttons.add(new MenuButton(400,350,GameModel.colors[kleurInt],selectedToSong(selected)));
+//		buttons.add(new MenuButton(400,450,GameModel.colors[kleurInt+1],selectedToSong(selected+1)));
+//		buttons.add(new MenuButton(400,550,GameModel.colors[kleurInt+2],selectedToSong(selected+2)));
+//		buttons.get(2).setSelected(true);
 		
 	}
 	@Override
@@ -72,14 +82,13 @@ public class MenuState extends GameState {
 		}else{
 			previousScreen();
 		}
-	     for(MenuButton b:buttons){
-	    	 b.update();
-	     }
 	     if(selected != oldselected){
 	    	 for(int i = 0; i < buttons.size(); i++){
 		    	 buttons.get(i).setSong(selectedToSong(selected+(i-2)));
+		    	 
 	    	 }
 	    	 oldselected = selected;
+	    	 
 	    	 
 	    	buttons2.clear();
 	 		int instanceNr = 0;
@@ -90,15 +99,22 @@ public class MenuState extends GameState {
 	 			buttons2.add(new DifficultyButton(yPosDiffButton-instanceNr,si.getDifficulty(), GameModel.colors[i-1]));
 	 			instanceNr += 100;
 	 		}
-	 		
 	     }
 	     index++;
+	     
 	}
 
 	@Override
 	public void draw(Graphics2D g2) {
-
-	    
+		buttons.clear();		
+		buttons.add(new MenuButton(400,150,GameModel.colors[kleurButton1],selectedToSong(selected-2)));
+		buttons.add(new MenuButton(400,250,GameModel.colors[kleurButton2],selectedToSong(selected-1)));
+		buttons.add(new MenuButton(400,350,GameModel.colors[kleurButton3],selectedToSong(selected)));
+		buttons.add(new MenuButton(400,450,GameModel.colors[kleurButton4],selectedToSong(selected+1)));
+		buttons.add(new MenuButton(400,550,GameModel.colors[kleurButton5],selectedToSong(selected+2)));
+		buttons.get(2).setSelected(true);
+		
+		
 		g2.setColor(Color.BLACK);
 		Font textFont2 = new Font("OCR A Extended", Font.BOLD, 50);
 		g2.setFont(textFont2);
@@ -211,6 +227,7 @@ public class MenuState extends GameState {
 				if(difSelect > buttons2.size()-1){
 					difSelect = 0;
 				}
+
 				
 //				System.out.println(difSelect);
 			}
@@ -222,8 +239,56 @@ public class MenuState extends GameState {
 		}else{										//Screen for selecting song
 			if(e.getJoystick().getPos() == Joystick.Position.DOWN){
 				selected++;
+//				if(kleurInt > GameModel.colors.length-1){
+//					kleurInt = 0;
+//				} else
+//					kleurInt++;
+				kleurButton1++;
+				kleurButton1 %= 6;
+				
+				kleurButton2++;
+				kleurButton2 %= 6;
+				
+				kleurButton3++;
+				kleurButton3 %= 6;
+				
+				kleurButton4++;
+				kleurButton4 %= 6;
+				
+				kleurButton5++;
+				kleurButton5 %= 6;
+				
+				
+
 			}else if(e.getJoystick().getPos() == Joystick.Position.UP){
 				selected--;
+				kleurButton1--;
+				if(kleurButton1 < 0){
+					kleurButton1 = 1;
+				}
+				
+				kleurButton2--;
+				if(kleurButton2 < 0){
+					kleurButton2 = 1;
+				}
+				
+				kleurButton3--;
+				if(kleurButton3 < 0){
+					kleurButton3 = 1;
+				}
+					
+				kleurButton4--;
+				if(kleurButton4 < 0){
+					kleurButton4 = 1;
+				}
+				
+				kleurButton5--;
+				if(kleurButton5 < 0){
+					kleurButton5 = 1;
+				}
+				
+
+				
 			}
 			sh.set(songs.indexOf(selectedToSong(selected)));
 			sh.play(true);	
