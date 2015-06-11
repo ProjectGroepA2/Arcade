@@ -21,7 +21,7 @@ public class InfoPanel {
 	private SongHandler sh;
 	private String time;
 
-	private CoinAnimation coinAnimation = new CoinAnimation(150, 200);
+	private CoinAnimation coinAnimation = new CoinAnimation(125, 200);
 	
 	public InfoPanel(int x, int y, SongHandler sh){
 		this.x = x;
