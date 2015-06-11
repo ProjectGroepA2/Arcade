@@ -126,7 +126,7 @@ public class MenuState extends GameState {
 		buttons.clear();		
 		buttons.add(new MenuButton(400,250,GameModel.colors[kleurButton1],selectedToSong(selected-2)));
 		buttons.add(new MenuButton(400,390,GameModel.colors[kleurButton2],selectedToSong(selected-1)));
-		buttons.add(new MenuButton(400,530,GameModel.colors[kleurButton3],selectedToSong(selected)));
+		buttons.add(new MenuButton(360,525,920,80,GameModel.colors[kleurButton3],selectedToSong(selected)));
 		buttons.add(new MenuButton(400,670,GameModel.colors[kleurButton4],selectedToSong(selected+1)));
 		buttons.add(new MenuButton(400,810,GameModel.colors[kleurButton5],selectedToSong(selected+2)));
 		buttons.get(2).setSelected(true);
@@ -345,9 +345,10 @@ public class MenuState extends GameState {
 		
 		
 		g2.setColor(Color.WHITE);
-		g2.drawString("Overall Highscore: " + "", 30, 200);
-		g2.drawString("Daily Highscore: " + "", 30, 300);
-		g2.drawString("Beats per Minute: " + selectedToSong(selected).getBPM(), 30, 400);
+		g2.drawString("Author: " + selectedToSong(selected).getAuthor(), 30, 200);
+		g2.drawString("Overall Highscore: " + "", 30, 300);
+		g2.drawString("Daily Highscore: " + "", 30, 400);
+		g2.drawString("Personal Highscore: " + "", 30, 500);
 		
 		for(DifficultyButton b : buttons2){
 			b.draw(g2);
