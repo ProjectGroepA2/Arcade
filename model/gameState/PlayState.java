@@ -122,6 +122,7 @@ public class PlayState extends GameState {
 		}
 
 		infoPanel.updateIPanel();
+		area.count();
 	}
 
 	@Override
@@ -157,6 +158,8 @@ public class PlayState extends GameState {
 					currentScore += enemy.getDistanceFromStart() - Enemy.distanceToOctagon;
 					comboScore += 5;
 					lifePoints = Math.min(lifePoints+10, 100);
+					area.setHitAreaColor(enemy.getColor());
+					area.hit();
 					enemysInPath.remove();
 					notHit = false;
 					break;

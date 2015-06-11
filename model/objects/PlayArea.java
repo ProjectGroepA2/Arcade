@@ -7,10 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
 import java.awt.Transparency;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,82 +19,63 @@ import model.gameState.PlayState;
 public class PlayArea {
 
 	public List<Path> paths;
-	private Polygon octagon,hitArea;	
-	public Rectangle2D[] hitAreas; //de area voor elk path die de enemy moet raken
+	private Polygon innerHitAreaBorder,outsideHitAreaBorder;	
+	private GeneralPath hitArea;
+	private Color hitAreaColor;
 	private VolatileImage background;
+	private boolean hit = false;
+	private int count = 0,maxCount = 100;
 	
 	public PlayArea(double xToRight,double heightOfGameScreen,double widthOfGameScreen, int sizeOctagon) {
 		super();
 		paths = new ArrayList<Path>();		
-		
+		setHitAreaColor(Color.RED);
+		//make the polygons
 		int amountOfAngles = 8;
 		double middlePointX = widthOfGameScreen/2+xToRight;
 		double middlePointY = heightOfGameScreen/2;
 		
-		octagon = new Polygon();		
+		//the inner octagon
+		innerHitAreaBorder = new Polygon();		
 		for(int i = 0; i < amountOfAngles; i++){
-			octagon.addPoint((int)(middlePointX+sizeOctagon*Math.cos(i*Math.PI/(amountOfAngles/2))), 
+			innerHitAreaBorder.addPoint((int)(middlePointX+sizeOctagon*Math.cos(i*Math.PI/(amountOfAngles/2))), 
 							 (int)(middlePointY+sizeOctagon*Math.sin(i*Math.PI/(amountOfAngles/2))));			
 		}
 		
-		hitArea = new Polygon();
+		//the outside octagon
+		outsideHitAreaBorder = new Polygon();
 		sizeOctagon += PlayState.sizeOfEnemy;		
 		for(int i = 0; i < amountOfAngles; i++){
-			hitArea.addPoint((int)(middlePointX+sizeOctagon*Math.cos(i*Math.PI/(amountOfAngles/2))), 
+			outsideHitAreaBorder.addPoint((int)(middlePointX+sizeOctagon*Math.cos(i*Math.PI/(amountOfAngles/2))), 
 							 (int)(middlePointY+sizeOctagon*Math.sin(i*Math.PI/(amountOfAngles/2))));
 		}
 		
-		hitAreas = new Rectangle2D[amountOfAngles];
-		int newIndex;
-		Point2D beginPoint,endPoint;
-		for(int index = 0; index < hitAreas.length; index++){
-			//in het polygon staat de cooridinaten van de top niet als eerste in de array, maar op index 6.n
-			newIndex = (index+6+8)%8;	
-			hitAreas[index] = new Rectangle2D.Double();
-			beginPoint = new Point2D.Double(octagon.xpoints[newIndex], octagon.ypoints[newIndex]);
-			endPoint = new Point2D.Double(hitArea.xpoints[newIndex], hitArea.ypoints[newIndex]);			
-			hitAreas[index].setFrameFromDiagonal(beginPoint,endPoint);			
+		//hitArea the area where you must click the enemy
+		hitArea = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
+		
+		hitArea.moveTo(innerHitAreaBorder.xpoints[0], innerHitAreaBorder.ypoints[0]);
+		for(int i = 1; i < innerHitAreaBorder.npoints;i++){
+			hitArea.lineTo(innerHitAreaBorder.xpoints[i], innerHitAreaBorder.ypoints[i]);
 		}
 		
+		hitArea.moveTo(outsideHitAreaBorder.xpoints[0], outsideHitAreaBorder.ypoints[0]);
+		for(int i = 1; i < innerHitAreaBorder.npoints;i++){
+			hitArea.lineTo(outsideHitAreaBorder.xpoints[i], outsideHitAreaBorder.ypoints[i]);
+		}		
 		
-		Rectangle2D cr = null;//cr --> current rectangle
-		double size = (hitAreas[1].getWidth() - 10)/2;//dit is de grootte van een zijde als die van de oorspronklijke 0 was.
-		
-		cr = hitAreas[0];
-		hitAreas[0].setFrame(cr.getX()-size/2, cr.getY()+1, size, cr.getHeight());
-		
-		cr = hitAreas[2];
-		hitAreas[2].setFrame(cr.getX()-1, cr.getY()-size/2, cr.getWidth(), size);
-		
-		cr = hitAreas[4];
-		hitAreas[4].setFrame(cr.getX()-size/2, cr.getY()-1, size, cr.getHeight());
-		
-		cr = hitAreas[6];
-		hitAreas[6].setFrame(cr.getX()+1, cr.getY()-size/2, cr.getWidth(), size);
-		
-		widthOfGameScreen += xToRight;			
-		
-//		paths.add(new Path(middlePointX,0						,hitArea.xpoints[6],hitArea.ypoints[6]));//top
-//		paths.add(new Path(widthOfGameScreen,0					,hitArea.xpoints[7],hitArea.ypoints[7]));//right 	-top
-//		paths.add(new Path(widthOfGameScreen,middlePointY		,hitArea.xpoints[0],hitArea.ypoints[0]));//right
-//		paths.add(new Path(widthOfGameScreen,heightOfGameScreen,hitArea.xpoints[1],hitArea.ypoints[1]));//right	-down
-//		paths.add(new Path(middlePointX,heightOfGameScreen		,hitArea.xpoints[2],hitArea.ypoints[2]));//down
-//		paths.add(new Path(xToRight,heightOfGameScreen			,hitArea.xpoints[3],hitArea.ypoints[3]));//left		-down
-//		paths.add(new Path(xToRight,middlePointY				,hitArea.xpoints[4],hitArea.ypoints[4]));//left
-//		paths.add(new Path(xToRight,0							,hitArea.xpoints[5],hitArea.ypoints[5]));//left	 	-top
-		
+		//make the paths
 		double angleX,angleY;
 		angleX = (Math.cos(Math.toRadians(45)))*Enemy.distanceToOctagon;
 		angleY = (Math.sin(Math.toRadians(45)))*Enemy.distanceToOctagon;
 		
-		paths.add(new Path(hitArea.xpoints[6],hitArea.ypoints[6]-Enemy.distanceToOctagon		,hitArea.xpoints[6],hitArea.ypoints[6]));//top
-		paths.add(new Path(hitArea.xpoints[7] + angleX,hitArea.ypoints[7] - angleY				,hitArea.xpoints[7],hitArea.ypoints[7]));//right 	-top
-		paths.add(new Path(hitArea.xpoints[0]+Enemy.distanceToOctagon,hitArea.ypoints[0]		,hitArea.xpoints[0],hitArea.ypoints[0]));//right
-		paths.add(new Path(hitArea.xpoints[1]+angleX,hitArea.ypoints[1]+angleY					,hitArea.xpoints[1],hitArea.ypoints[1]));//right	-down
-		paths.add(new Path(hitArea.xpoints[2],hitArea.ypoints[2]+Enemy.distanceToOctagon		,hitArea.xpoints[2],hitArea.ypoints[2]));//down
-		paths.add(new Path(hitArea.xpoints[3] - angleX,hitArea.ypoints[3] + angleY				,hitArea.xpoints[3],hitArea.ypoints[3]));//left		-down
-		paths.add(new Path(hitArea.xpoints[4] - Enemy.distanceToOctagon,hitArea.ypoints[4]		,hitArea.xpoints[4],hitArea.ypoints[4]));//left
-		paths.add(new Path(hitArea.xpoints[5] - angleX,hitArea.ypoints[5] - angleY				,hitArea.xpoints[5],hitArea.ypoints[5]));//left	 	-top
+		paths.add(new Path(outsideHitAreaBorder.xpoints[6],outsideHitAreaBorder.ypoints[6]-Enemy.distanceToOctagon		,outsideHitAreaBorder.xpoints[6],outsideHitAreaBorder.ypoints[6]));//top
+		paths.add(new Path(outsideHitAreaBorder.xpoints[7] + angleX,outsideHitAreaBorder.ypoints[7] - angleY				,outsideHitAreaBorder.xpoints[7],outsideHitAreaBorder.ypoints[7]));//right 	-top
+		paths.add(new Path(outsideHitAreaBorder.xpoints[0]+Enemy.distanceToOctagon,outsideHitAreaBorder.ypoints[0]		,outsideHitAreaBorder.xpoints[0],outsideHitAreaBorder.ypoints[0]));//right
+		paths.add(new Path(outsideHitAreaBorder.xpoints[1]+angleX,outsideHitAreaBorder.ypoints[1]+angleY					,outsideHitAreaBorder.xpoints[1],outsideHitAreaBorder.ypoints[1]));//right	-down
+		paths.add(new Path(outsideHitAreaBorder.xpoints[2],outsideHitAreaBorder.ypoints[2]+Enemy.distanceToOctagon		,outsideHitAreaBorder.xpoints[2],outsideHitAreaBorder.ypoints[2]));//down
+		paths.add(new Path(outsideHitAreaBorder.xpoints[3] - angleX,outsideHitAreaBorder.ypoints[3] + angleY				,outsideHitAreaBorder.xpoints[3],outsideHitAreaBorder.ypoints[3]));//left		-down
+		paths.add(new Path(outsideHitAreaBorder.xpoints[4] - Enemy.distanceToOctagon,outsideHitAreaBorder.ypoints[4]		,outsideHitAreaBorder.xpoints[4],outsideHitAreaBorder.ypoints[4]));//left
+		paths.add(new Path(outsideHitAreaBorder.xpoints[5] - angleX,outsideHitAreaBorder.ypoints[5] - angleY				,outsideHitAreaBorder.xpoints[5],outsideHitAreaBorder.ypoints[5]));//left	 	-top
 		
 		
 		//drawing into buffer
@@ -104,22 +83,28 @@ public class PlayArea {
 		Graphics2D g2 = background.createGraphics();
 		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	    g2.setRenderingHints(rh);
-	    Line2D current;
-		int index;
+	    Line2D current;		
 		g2.setColor(Color.BLACK);
 		for(int i = 0; i < paths.size(); i++){
-			current = paths.get(i);
-			index = (i+14)%8;
-			g2.drawLine((int)current.getX1(), (int)current.getY1(), octagon.xpoints[index],octagon.ypoints[index]);
+			current = paths.get(i);			
+			g2.draw(current);
 		}
-		g2.draw(octagon);
-		g2.draw(hitArea);
+		g2.draw(innerHitAreaBorder);
+		g2.draw(outsideHitAreaBorder);
 		g2.dispose();
 		background.createGraphics();
 	}	
 	
-	public void draw(Graphics2D g2){
+	public void draw(Graphics2D g2){		
 		g2.drawImage(background, 0, 0, 1280, 1024, null);
+		if(hit){
+			g2.setColor(hitAreaColor);
+			g2.fill(hitArea);			
+		}
+		
+		if(count == maxCount){
+			hit = false;
+		}
 	}
 	
 	public Line2D getLine(int index){
@@ -130,5 +115,25 @@ public class PlayArea {
 			index = 7;
 		}
 		return paths.get(index);
+	}
+	
+
+	public void setHitAreaColor(Color color) {	
+		hitAreaColor = color;	
+		count = 0;
+	}
+	
+	public void hit(){
+		hit = true;
+	}	
+	
+	public void count(){
+		if(hit){
+			count += 3;
+			if(count > maxCount){
+				count = maxCount;
+			}
+			hitAreaColor = new Color(hitAreaColor.getRed(),hitAreaColor.getGreen(),hitAreaColor.getBlue(),255-(255*count)/maxCount);	
+		}
 	}
 }
