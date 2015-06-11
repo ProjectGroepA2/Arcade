@@ -8,6 +8,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import control.button.ButtonHandler;
+import control.joystick.Joystick.Position;
 import control.joystick.JoystickHandler;
 
 public class NetworkHandler implements Runnable{
@@ -89,17 +90,83 @@ public class NetworkHandler implements Runnable{
 			} catch (IOException e) {
 				e.printStackTrace();
 			}                   
-			String sentence = new String( receivePacket.getData());   
+			String sentence = new String( receivePacket.getData());  
+			
+			if(sentence.length() != 21)
+				return;
+			
 			System.out.println("RECEIVED: " + sentence); 
 			
 			String[] controls = sentence.split("\\|");
+			int[] control = new int[controls.length];
+			for(int i=0; i<controls.length; i++)
+				control[i] = Integer.parseInt(controls[i]);
+			
 			for(int i = 0; i < 7; i++){
-				if(Integer.parseInt(controls[i]) != ButtonHandler.getButton(i).pressed)
+				if(control[i] != ButtonHandler.getButton(i).pressed)
 				{
 					System.out.println("PRESS BITCH " + controls[i]);
-					ButtonHandler.getButton(i).pressed = Integer.parseInt(controls[i]);
-					if(Integer.parseInt(controls[i]) == 0)
+					ButtonHandler.getButton(i).pressed = control[i];
+					if(control[i] == 0)
 						bth.buttonPress(ButtonHandler.getButton(i));
+				}
+			}
+			
+			if(control[7] == 0 && control[8] == 0){
+				if(JoystickHandler.j.getPos() != Position.UP_LEFT)
+				{
+					JoystickHandler.j.setPosition(Position.UP_LEFT);
+					jth.onJoystickMoved(JoystickHandler.j);
+				}
+			}
+			else if(control[7] == 0 && control[9] == 0){
+				if(JoystickHandler.j.getPos() != Position.UP_RIGHT)
+				{
+					JoystickHandler.j.setPosition(Position.UP_RIGHT);
+					jth.onJoystickMoved(JoystickHandler.j);
+				}
+			}
+			else if(control[10] == 0 && control[8] == 0){
+				if(JoystickHandler.j.getPos() != Position.DOWN_LEFT)
+				{
+					JoystickHandler.j.setPosition(Position.DOWN_LEFT);
+					jth.onJoystickMoved(JoystickHandler.j);
+				}
+			}
+			else if(control[10] == 0 && control[9] == 0){
+				if(JoystickHandler.j.getPos() != Position.DOWN_RIGHT)
+				{
+					JoystickHandler.j.setPosition(Position.DOWN_RIGHT);
+					jth.onJoystickMoved(JoystickHandler.j);
+				}
+			}
+			
+			else if(control[7] == 0){
+				if(JoystickHandler.j.getPos() != Position.UP)
+				{
+					JoystickHandler.j.setPosition(Position.UP);
+					jth.onJoystickMoved(JoystickHandler.j);
+				}
+			}
+			else if(control[8] == 0){
+				if(JoystickHandler.j.getPos() != Position.LEFT)
+				{
+					JoystickHandler.j.setPosition(Position.LEFT);
+					jth.onJoystickMoved(JoystickHandler.j);
+				}
+			}
+			else if(control[9] == 0){
+				if(JoystickHandler.j.getPos() != Position.RIGHT)
+				{
+					JoystickHandler.j.setPosition(Position.RIGHT);
+					jth.onJoystickMoved(JoystickHandler.j);
+				}
+			}
+			else if(control[10] == 0){
+				if(JoystickHandler.j.getPos() != Position.DOWN)
+				{
+					JoystickHandler.j.setPosition(Position.DOWN);
+					jth.onJoystickMoved(JoystickHandler.j);
 				}
 			}
 		}

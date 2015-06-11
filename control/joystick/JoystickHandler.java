@@ -23,13 +23,12 @@ public class JoystickHandler implements KeyListener{
 
 	List<JoystickListener> listeners;
 	Set<Integer> keys;
-	Joystick j;
+	public static Joystick j = new Joystick();;
 	
 	public JoystickHandler()
 	{
 		listeners = new ArrayList<JoystickListener>();
 		keys = new HashSet<Integer>();
-		j = new Joystick();
 //		if(Window.ON_RASP)
 //			addGpioListeners();
 	}
