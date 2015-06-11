@@ -1,12 +1,8 @@
 package model.drawObjects;
-import javax.imageio.ImageIO;
+
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * Created by Bilel on 4-6-2015.
@@ -24,6 +20,7 @@ public class CoinAnimation extends DrawObject {
         coinShape       = new Ellipse2D.Double(startX, startY, 20, 20);
     }
 
+    // Start
     public void start() {
         timerLoops      = 1;
     }
@@ -34,7 +31,6 @@ public class CoinAnimation extends DrawObject {
         g2.draw(coinShape);                                             // MUNTJE TEKENEN
         g2.fill(coinShape);
         update(timerLoops);                                             // UPDATE
-
     }
 
     // Wordt na elke paint aangeroepen
@@ -45,20 +41,25 @@ public class CoinAnimation extends DrawObject {
             return;
         }
 
-        // Frame steeds aanpassen aan locatie van coin (Zodat hele coin wel te zien blijft)
+        // Coin omlaag verschuiven doordat Y * loops omlaag gaat
         coinShape.setFrame(coinSetPoint.getX(), coinSetPoint.getY() + 10 * timerLoops,
                 coinShape.getWidth(), coinShape.getHeight());
 
         timerLoops++;
-
     }
 
+    // Zijn we al begonnen/klaar?
     public boolean areWeDoneYet() {
-        System.out.println(timerLoops);
         if (timerLoops > 50 || timerLoops == 0) {
             timerLoops = 0;
             return true;
         }
+        return false;
+    }
+
+    public boolean isLastLoop() {
+        if (timerLoops == 49)
+            return true;
 
         return false;
     }
