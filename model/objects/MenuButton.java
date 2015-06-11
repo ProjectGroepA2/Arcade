@@ -1,12 +1,11 @@
 package model.objects;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 
-import model.GameModel;
 import audio.Song;
 
 public class MenuButton {
@@ -28,13 +27,32 @@ public class MenuButton {
 	
 
 	public void draw(Graphics2D g2d){
-			g2d.setColor(color.darker().darker());
-			g2d.fillRect(x-5, y-5,890,80);
+
+		
+		if(selected){
 			g2d.setColor(color);
-			g2d.fillRect(x,y,880,70);
+			GeneralPath path = new GeneralPath();
+			path.moveTo(320, 540);
+			path.lineTo(320, 590);
+			path.lineTo(385, 565);
+			
+			path.closePath();
+			g2d.fill(path);
+			
+			g2d.setColor(Color.BLACK);
+			g2d.draw(path);
+			
+			g2d.setColor(color.darker().darker().darker().darker());
+			g2d.fillRect(x-10, y-10,900,90);
+		}
+		g2d.setColor(color.darker().darker());
+		g2d.fillRect(x-5, y-5,890,80);
+		g2d.setColor(color);
+		g2d.fillRect(x,y,880,70);
 		
 		if(selected){
 			g2d.setColor(Color.BLACK);
+			g2d.drawRect(x-10, y-10, 900, 90);
 			g2d.drawRect(x-5, y-5, 890, 80);
 			g2d.drawRect(x, y, 880, 70);
 			
