@@ -65,13 +65,7 @@ public class MenuState extends GameState {
 		this.songs = sh.getSongs();
 		startanimation = true;
 		subscreen = false;
-		
-		buttons.add(new MenuButton(-600, 50,1.7, 0, Color.green, selectedToSong(selected-2) ));
-		buttons.add(new MenuButton(-600, 150, 1.7, 10, Color.BLUE, selectedToSong(selected-1)));
-		buttons.add(new MenuButton(-600, 250, 1.7, 20, Color.red, selectedToSong(selected)));
-		buttons.add(new MenuButton(-600, 350, 1.7, 30, Color.yellow,selectedToSong(selected+1)));
-		buttons.add(new MenuButton(-600, 450, 1.7, 30, Color.WHITE,selectedToSong(selected+2)));
-		buttons.get(2).setSelected(true);
+
 		generateMainScreenBackground();	
 		generateSubScreenBackground();
 	}
