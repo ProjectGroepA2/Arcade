@@ -138,6 +138,11 @@ public class Song implements Comparable<Song>{
 	public File getFile() {
 		return file;
 	}
+	
+	public String getFolder()
+	{
+		return file.getParentFile().getName();
+	}
 
 	public void setFile(File file) {
 		this.file = file;

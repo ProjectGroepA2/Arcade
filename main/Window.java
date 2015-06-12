@@ -17,10 +17,10 @@ import model.SongHandler;
 import view.GameView;
 import control.GameControl;
 import control.GameStateManager;
-import control.LedHandler;
 import control.NetworkHandler;
 import control.button.ButtonHandler;
 import control.joystick.JoystickHandler;
+import data.io.SQLConnector;
 
 public class Window extends JFrame {	
 	private static final long serialVersionUID = -9222956702898533696L;
@@ -37,9 +37,7 @@ public class Window extends JFrame {
 		
 		//Create Events
 		Window.ON_RASP = ON_RASP;
-		LedHandler led = null;
 		if(ON_RASP){ //Only on the raspberry pi
-			led = new LedHandler();
 			GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			GraphicsDevice[] devices =  graphicsEnvironment.getScreenDevices();
 
@@ -57,15 +55,16 @@ public class Window extends JFrame {
 		ButtonHandler bth = new ButtonHandler();
 		JoystickHandler jsh = new JoystickHandler();
 		
+		SQLConnector sql = new SQLConnector();
 		NetworkHandler ntw = new NetworkHandler("192.168.1.6", 1113, bth, jsh);
 		
 		bth.setNetwork(ntw);
 		
 		//Create Instances
-		final SongHandler sh = new SongHandler();
+		final SongHandler sh = new SongHandler(sql);
 		GameStateManager gsm = new GameStateManager(sh);
-		GameView view = new GameView(led,gsm);
-		GameModel model = new GameModel(sh, gsm, led);
+		GameView view = new GameView(gsm);
+		GameModel model = new GameModel(sh, gsm, ntw);
 		GameControl control = new GameControl(model, view,gsm);
 		setContentPane(view);
 		
@@ -74,6 +73,11 @@ public class Window extends JFrame {
 		addWindowListener(new WindowAdapter(){
 			public void windowClosing(WindowEvent e) {
 				sh.close();
+				try {
+					sql.finalize();
+				} catch (Throwable e1) {
+					e1.printStackTrace();
+				}
 				System.exit(0);
 			}
 		});

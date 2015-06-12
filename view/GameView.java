@@ -20,13 +20,11 @@ public class GameView extends JPanel {
 	 */
 	private static final long serialVersionUID = 1939480784205689618L;
 
-	LedHandler led;
 	GameStateManager gsm;
 
 	// Font fpsfont = new Font("OCR A Extended", Font.BOLD, 60);
 
-	public GameView(LedHandler led, GameStateManager gsm) {
-		this.led = led;
+	public GameView(GameStateManager gsm) {
 		this.gsm = gsm;
 		this.setPreferredSize(new Dimension(1280, 1024));
 	}
