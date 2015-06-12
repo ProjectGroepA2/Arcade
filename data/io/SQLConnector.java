@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.objects.Highscore;
+import model.objects.highscore.Highscore;
 import audio.Song;
 import audio.SongInstance;
 

@@ -1,4 +1,4 @@
-package model.objects;
+package model.objects.highscore;
 
 import java.util.Date;
 

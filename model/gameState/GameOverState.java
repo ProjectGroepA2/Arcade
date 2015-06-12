@@ -13,6 +13,7 @@ import java.awt.image.VolatileImage;
 
 import model.SongHandler;
 import model.objects.InfoPanel;
+import model.objects.highscore.HighscoreName;
 import control.GameStateManager;
 import control.GameStateManager.State;
 import control.button.ButtonEvent;
@@ -24,15 +25,15 @@ public class GameOverState extends GameState {
     BufferedImage gameOver = Images.getImage(ImageType.gameover);
     VolatileImage background;
 	Font textFont = new Font("OCR A Extended", Font.BOLD, 70);
-	
-	
-	private String endScore = "";
+	HighscoreName hsn;
+	int image_x = 0;		
 	
     int frame;
 
 	public GameOverState(GameStateManager gsm, SongHandler sh, SQLConnector sql) {
 		super(gsm, sh, sql);
 		createBackground();
+		hsn = new HighscoreName(640,717,5,textFont);
 	}
 
 	@Override
@@ -41,16 +42,56 @@ public class GameOverState extends GameState {
 
 	@Override
 	public void update(float factor) {
-
+		image_x = ((frame / 5) % 5) * 40;
         frame++;
 	}
 
 	@Override
 	public void draw(Graphics2D g2) {
-		g2.drawImage(background, 0, 0, 1280, 1024, null);
-		int image_x = ((frame / 5) % 5) * 40;
-		g2.drawImage(gameOver.getSubimage(image_x, 0, 40, 26),  640-122, 512, 245, 130, null);
+		g2.drawImage(background, 0, 0, 1280, 1024, null);		
+		g2.drawImage(gameOver.getSubimage(image_x, 0, 40, 26),  640-122, 400, 245, 130, null);
+		hsn.drawName(g2);
+	}
+	
+	@Override
+	public void buttonPressed(ButtonEvent e) {
+		System.out.println("Name: "+hsn.getName());
+		switch(e.getButton().getButtonID()){
+		case 0:
+			gsm.setState(State.MENU_STATE);
+			break;
+		}
 		
+		
+	}
+	@Override
+	public void buttonReleased(ButtonEvent e) {
+		
+	}
+	@Override
+	public void onJoystickMoved(JoystickEvent e) {
+		switch(e.getJoystick().getPos()){		
+		case DOWN:
+			hsn.down();
+			break;			
+		case LEFT:
+			hsn.left();
+			break;
+		case RIGHT:
+			hsn.right();
+			break;
+		case UP:
+			hsn.up();
+			break;		
+		default:
+			break;	
+		}
+	}
+	
+	public void createBackground(){
+		background = Images.initVolatileImage(1280, 1024, Transparency.OPAQUE);
+		Graphics2D g2 = background.createGraphics();
+
 		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	    g2.setRenderingHints(rh);
 		g2.setColor(new Color(1,1,1, 0.3f));
@@ -73,30 +114,5 @@ public class GameOverState extends GameState {
 		g2.drawString("High Score", 385, 212);
 		g2.drawString(InfoPanel.getTotalHighscore(), 390, 342);
 		g2.dispose();
-		background.createGraphics();
-	}
-	
-	@Override
-	public void buttonPressed(ButtonEvent e) {
-		
-		switch(e.getButton().getButtonID()){
-		case 0:
-			gsm.setState(State.MENU_STATE);
-			break;
-		}
-		
-		
-	}
-	@Override
-	public void buttonReleased(ButtonEvent e) {
-		
-	}
-	@Override
-	public void onJoystickMoved(JoystickEvent e) {
-	}
-	
-	public void createBackground(){
-		background = Images.initVolatileImage(1280, 1024, Transparency.OPAQUE);
-		Graphics2D g2 = background.createGraphics();
 	}
 }

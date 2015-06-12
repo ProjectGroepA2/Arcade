@@ -169,6 +169,9 @@ public class PlayState extends GameState {
 
 	@Override
 	public void buttonPressed(ButtonEvent e) {
+		if(e.getButton().getButtonID() == 0){
+			lifePoints = 0;
+		}
 		boolean notHit = true;
 		Iterator<Enemy> enemysInPath = area.paths.get(player.getIndex()).getEnemysInPath().iterator();
 		while (enemysInPath.hasNext()) {
