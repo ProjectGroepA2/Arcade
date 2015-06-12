@@ -2,6 +2,10 @@ package control;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 import javax.swing.Timer;
 
@@ -28,18 +32,6 @@ public class GameControl implements JoystickListener, ButtonListener, ActionList
 		view.setIgnoreRepaint(true);
 		update = new Timer(1000/60,this);
 		update.start();
-//		Timer update = new Timer();
-//		update.schedule(new TimerTask() {
-//			
-//			@Override
-//			public void run() {
-//				long currentTime = System.currentTimeMillis();
-//				model.update(currentTime - lastTime);
-//				lastTime = currentTime;
-//				view.repaint();			
-//				System.out.println("Test");
-//			}
-//		}, 0,1000/120);
 	}
 
 	@Override
@@ -62,7 +54,10 @@ public class GameControl implements JoystickListener, ButtonListener, ActionList
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		long currentTime = System.currentTimeMillis();
-		model.update(currentTime - lastTime);
+		long time = currentTime - lastTime;
+		if(time > 1000/60)
+			time = 1000/60;
+		model.update(time);
 		lastTime = currentTime;
 		view.repaint();				
 	}

@@ -18,8 +18,6 @@ public class Enemy extends DrawObject {
 	public Enemy(int pathID,int lengthOfEnemy,Color c,Path path){
 		super();		
 		this.length = lengthOfEnemy;			
-//		System.out.println(this.length*this.length/2);
-//		System.out.println(Math.sqrt(Math.pow(this.length,2)/2));
 		lengthOf1Side = Math.sqrt(Math.pow(lengthOfEnemy,2)/2);		
 		this.c = c;		
 		this.index = pathID;
@@ -65,12 +63,15 @@ public class Enemy extends DrawObject {
 		endY += beginY;
 		
 		enemy = new Line2D.Double(beginX, beginY, endX, endY);	
-//		System.out.println("Enemy added on path: "+pathID);
 	}
 
 	@Override
 	public void draw(Graphics2D g2) {
 		g2.setPaint(c);
+		g2.draw(enemy);		
+	}
+	public void draw(Graphics2D g2, boolean b) {
+		g2.setPaint(c.darker().darker());
 		g2.draw(enemy);		
 	}
 
@@ -89,8 +90,7 @@ public class Enemy extends DrawObject {
 		angleX = Math.cos(Math.toRadians(45))*distanceFromStart;
 		angleY = Math.sin(Math.toRadians(45))*distanceFromStart;
 		
-//		System.out.println(Math.toRadians(45)*distanceFromStart);
-//		System.out.println(angleX+" - "+angleY);
+		
 		
 		switch(index){
 		case 0:
@@ -98,7 +98,6 @@ public class Enemy extends DrawObject {
 			y2 = y1 - length;				
 			break;
 		case 1:
-//			x1 -= speedX;
 			x1 = path.getX1() - angleX;
 			x2 = x1 + lengthOf1Side;	
 			

@@ -29,11 +29,14 @@ public class PlayState extends GameState {
 	private InfoPanel infoPanel;
 	private Player player;
 	private Stroke stroke;
+	private Stroke borderStroke;
 
 	public static int sizeOfEnemy = 40;
 	public static int currentScore = 0;
 	public static int comboScore = 0;
 	public static double lifePoints = 100;
+	
+	private boolean init = false;
 
 	private long oldProgress = 0;
 
@@ -43,11 +46,12 @@ public class PlayState extends GameState {
 		area = new PlayArea(256, 1024, 1024, 125);
 		player = new Player(1280 - 1024 + 1024 / 2, 1024 / 2);
 		stroke = new BasicStroke(sizeOfEnemy, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+		borderStroke = new BasicStroke(sizeOfEnemy+2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 	}
 
 	@Override
 	public void init() {
-		
+		init = true;
 		lifePoints = 100;
 		currentScore = 0;
 		comboScore = 0;
@@ -57,14 +61,6 @@ public class PlayState extends GameState {
 		{
 			p.getEnemysInPath().clear();
 		}
-		
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		sh.play();
 
 		for (int i = 1; i < ButtonHandler.getButtons().size(); i++) {
 			Button b = ButtonHandler.getButton(i);
@@ -72,12 +68,16 @@ public class PlayState extends GameState {
 		}
 		
 		ButtonHandler.getButton(1).setColor(sh.getCurrentSongInstance().getButtons().get(0).getColor());
-
+		
+		sh.play();
+		init = false;
 	}
 
 	@Override
 	public void update(float factor) {
-
+		if(init)
+			return;
+		
 		long progress = (long) ((sh.getProgress() / 1000) + (Enemy.secondsToEnd * 1000));
 
 		for (ButtonInstance bu : sh.getCurrentSongInstance().getButtonsBetween(oldProgress, progress)) {
@@ -90,11 +90,15 @@ public class PlayState extends GameState {
 			p.addEnemy(ob.getColor(), ob.getDirection(), (int) ob.getLength());
 		}
 		
+
 		if(progress > sh.getCurrentSongInstance().getEndTime() + Enemy.secondsToEnd*1000*2)
 			gsm.setState(State.GAMEOVER_STATE);
 
+//		System.out.println(progress - oldProgress + " / " + area.paths.get(player.getIndex()).getEnemysInPath().size());
+
 		oldProgress = progress;
 
+		Enemy closedEnemy = null;
 		player.update(factor);
 		for (Path path : area.paths) {
 
@@ -103,13 +107,18 @@ public class PlayState extends GameState {
 			while (enemyIterator.hasNext()) {
 
 				Enemy e = enemyIterator.next();
-
+//				System.out.println("Path: "+e.getIndex()+"\tDistance: "+(Enemy.distanceToOctagon-e.getDistanceFromStart()));				
 				if (e.getDistanceFromStart() > Enemy.distanceToOctagon + (sizeOfEnemy * 1.5)) {
 					enemyIterator.remove();
 					lifePoints -= 5;
 					comboScore /= 2;
 				}
-
+				if(closedEnemy == null){
+					closedEnemy = e;
+				}
+				if((Enemy.distanceToOctagon-closedEnemy.getDistanceFromStart()) > (Enemy.distanceToOctagon-e.getDistanceFromStart())){
+						closedEnemy = e;
+				}
 				e.update(factor);
 			}
 		}
@@ -125,6 +134,12 @@ public class PlayState extends GameState {
 		}
 
 		infoPanel.updateIPanel();
+		area.count();
+		if(closedEnemy == null){
+			area.pathPainted(-1, null);
+		}else{
+			area.pathPainted(closedEnemy.getIndex(), closedEnemy.getColor());
+		}
 	}
 
 	@Override
@@ -134,10 +149,12 @@ public class PlayState extends GameState {
 			g2.setClip(borderRect);
 			area.draw(g2);
 
-			g2.setStroke(stroke);
 			for (Path p : area.paths) {
 				if (p.getEnemysInPath() != null) {
 					for (Enemy enemy : p.getEnemysInPath()) {
+						g2.setStroke(borderStroke);
+						enemy.draw(g2, true);
+						g2.setStroke(stroke);
 						enemy.draw(g2);
 					}
 				}
@@ -160,6 +177,8 @@ public class PlayState extends GameState {
 					currentScore += enemy.getDistanceFromStart() - Enemy.distanceToOctagon;
 					comboScore += 5;
 					lifePoints = Math.min(lifePoints+10, 100);
+					area.setHitAreaColor(enemy.getColor());
+					area.hit();
 					enemysInPath.remove();
 					notHit = false;
 					infoPanel.throwACoin();
