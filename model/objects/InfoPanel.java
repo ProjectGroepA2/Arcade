@@ -84,13 +84,14 @@ public class InfoPanel {
 
 		if (!coinAnimation.areWeDoneYet()) {
 			coinAnimation.draw(g2);
-
+			// Score pas updaten wanneer coin klaar is met afspelen
 			if (coinAnimation.isLastLoop())
 				tempComboScore = PlayState.comboScore;
-		}
+		} else
+			tempComboScore = PlayState.comboScore;
 
+		g2.setColor(Color.YELLOW);
 		g2.fillRect(25, 1000 - 7 * tempComboScore, 200, 7 * tempComboScore);
-		g2.setColor(Color.YELLOW);		
 
 		g2.dispose();
 		infoPanel.createGraphics();
