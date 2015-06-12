@@ -30,6 +30,7 @@ import control.button.ButtonEvent;
 import control.button.ButtonHandler;
 import control.joystick.Joystick;
 import control.joystick.JoystickEvent;
+import data.io.SQLConnector;
 
 public class MenuState extends GameState {
 	private ArrayList<MenuButton> buttons;
@@ -58,8 +59,8 @@ public class MenuState extends GameState {
 	
 	
 	
-	public MenuState(GameStateManager gsm, SongHandler sh) {	
-		super(gsm, sh);
+	public MenuState(GameStateManager gsm, SongHandler sh, SQLConnector sql) {	
+		super(gsm, sh, sql);
 		buttons = new ArrayList<MenuButton>();
 		buttons2 = new ArrayList<DifficultyButton>();
 		this.songs = sh.getSongs();

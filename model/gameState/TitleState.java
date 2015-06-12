@@ -17,6 +17,7 @@ import control.GameStateManager;
 import control.GameStateManager.State;
 import control.button.ButtonEvent;
 import control.joystick.JoystickEvent;
+import data.io.SQLConnector;
 
 public class TitleState extends GameState {
 
@@ -37,8 +38,8 @@ public class TitleState extends GameState {
     int indexKast = 0;
     int xKast=0;
     
-	public TitleState(GameStateManager gsm, SongHandler sh){
-		super(gsm, sh);
+	public TitleState(GameStateManager gsm, SongHandler sh, SQLConnector sql){
+		super(gsm, sh, sql);
 		createBackground();
 	}
 

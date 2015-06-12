@@ -62,7 +62,7 @@ public class Window extends JFrame {
 		
 		//Create Instances
 		final SongHandler sh = new SongHandler(sql);
-		GameStateManager gsm = new GameStateManager(sh);
+		GameStateManager gsm = new GameStateManager(sh, sql);
 		GameView view = new GameView(gsm);
 		GameModel model = new GameModel(sh, gsm, ntw);
 		GameControl control = new GameControl(model, view,gsm);

@@ -12,6 +12,7 @@ import model.gameState.PlayState;
 import model.gameState.TitleState;
 import control.button.Button;
 import control.button.ButtonHandler;
+import data.io.SQLConnector;
 
 public class GameStateManager {
 
@@ -27,12 +28,12 @@ public class GameStateManager {
 		GAMEOVER_STATE
 	}
 	
-	public GameStateManager(SongHandler sh){
+	public GameStateManager(SongHandler sh, SQLConnector sql){
 		gamestates = new ArrayList<GameState>();
-		gamestates.add(new TitleState(this, sh));
-		gamestates.add(new MenuState(this, sh));
-		gamestates.add(new PlayState(this, sh));
-		gamestates.add(new GameOverState(this, sh));
+		gamestates.add(new TitleState(this, sh, sql));
+		gamestates.add(new MenuState(this, sh, sql));
+		gamestates.add(new PlayState(this, sh, sql));
+		gamestates.add(new GameOverState(this, sh, sql));
 		setState(State.TITLE_STATE);
 	}
 	

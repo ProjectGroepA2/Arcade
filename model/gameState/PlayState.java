@@ -21,6 +21,7 @@ import control.button.Button;
 import control.button.ButtonEvent;
 import control.button.ButtonHandler;
 import control.joystick.JoystickEvent;
+import data.io.SQLConnector;
 
 public class PlayState extends GameState {
 
@@ -40,8 +41,8 @@ public class PlayState extends GameState {
 
 	private long oldProgress = 0;
 
-	public PlayState(GameStateManager gsm, SongHandler sh) {
-		super(gsm, sh);
+	public PlayState(GameStateManager gsm, SongHandler sh, SQLConnector sql) {
+		super(gsm, sh, sql);
 		infoPanel = new InfoPanel(0, 0, sh);
 		area = new PlayArea(256, 1024, 1024, 125);
 		player = new Player(1280 - 1024 + 1024 / 2, 1024 / 2);
