@@ -181,11 +181,11 @@ public class PlayState extends GameState {
 					area.hit();
 					enemysInPath.remove();
 					notHit = false;
+					infoPanel.throwACoin();		// Coin Animatie starten bij hit
 					break;
 				}
 			}
 		}
-		
 
 		player.setBeat();
 

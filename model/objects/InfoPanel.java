@@ -10,6 +10,7 @@ import java.awt.Transparency;
 import java.awt.image.VolatileImage;
 
 import model.SongHandler;
+import model.drawObjects.CoinAnimation;
 import model.gameState.PlayState;
 
 public class InfoPanel {
@@ -19,11 +20,16 @@ public class InfoPanel {
 	private VolatileImage infoPanel;
 	private SongHandler sh;
 	private String time;
+
+	private int tempComboScore;
+
+	private CoinAnimation coinAnimation = new CoinAnimation(125, 250);
 	
 	public InfoPanel(int x, int y, SongHandler sh){
 		this.x = x;
 		this.y = y;
 		this.sh = sh;
+
 		updateIPanel();
 		generateInfoPanel();
 	}
@@ -64,24 +70,35 @@ public class InfoPanel {
 		g2.drawString("Score: " + totalHighscore, 25, 75);
 		g2.drawRect(25, 100, 200, 30);
 		g2.drawRect(25, 300, 200, 700);
-		
 		g2.drawString(sh.getCurrentSong().getTitle(), 25, 200);
-		if(sh.getCurrentSong().getSubtitle() != "")
-		{
+
+		if(sh.getCurrentSong().getSubtitle() != "") {
 			g2.drawString(sh.getCurrentSong().getSubtitle(), 25, 230);
 			g2.drawString(sh.getCurrentSong().getAuthor(), 25, 260);
 			g2.drawString(time, 25, 290);
 		}
-		else
-		{
+		else {
 			g2.drawString(sh.getCurrentSong().getAuthor(), 25, 230);
 			g2.drawString(time, 25, 260);
 		}
-		
-		g2.setColor(Color.YELLOW);		
-		g2.fillRect(25, 1000 - 7 * PlayState.comboScore, 200, 0 + 7 * PlayState.comboScore);
+
+		if (!coinAnimation.areWeDoneYet()) {
+			coinAnimation.draw(g2);
+			// Score pas updaten wanneer coin klaar is met afspelen
+			if (coinAnimation.isLastLoop())
+				tempComboScore = PlayState.comboScore;
+		} else
+			tempComboScore = PlayState.comboScore;
+
+		g2.setColor(Color.YELLOW);
+		g2.fillRect(25, 1000 - 7 * tempComboScore, 200, 7 * tempComboScore);
+
 		g2.dispose();
 		infoPanel.createGraphics();
+	}
+
+	public void throwACoin() {
+		coinAnimation.start();
 	}
 	
 	public void draw(Graphics2D g2){
