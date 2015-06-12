@@ -14,11 +14,13 @@ import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import model.GameModel;
 import model.SongHandler;
 import model.objects.DifficultyButton;
+import model.objects.Highscore;
 import model.objects.MenuButton;
 import audio.Song;
 import audio.SongInstance;
@@ -37,6 +39,7 @@ public class MenuState extends GameState {
 	private ArrayList<DifficultyButton> buttons2;
 	private int selected, oldselected;
 	private List<Song> songs;
+	SQLConnector sql = new SQLConnector();
 
 	private int animationcounter;
 	private boolean subscreen, startanimation;
@@ -345,11 +348,52 @@ public class MenuState extends GameState {
 		g2.drawString(selectedToSong(selected).getTitle(), 30, 60);
 		
 		
+		
+		
+		List<Highscore> highscores = sql.getHighscore(selectedToSong(selected), sh.getCurrentSong().getSongs().get(difSelect));
+		List<Highscore> dailyHighs = new ArrayList<Highscore>();
+		int highest = 0;
+		int oldHighest = 0;
+		
+		Date date = new Date();
+		int time = date.getDay();
+		int dailyHighest = 0;
+		int oldDailyHighest = 0;
+		
+		
+		String name = "";
+		String dailyName = "";
+		
+		for(Highscore h:highscores){
+			
+			oldHighest = h.getScore();
+			if(oldHighest > highest){
+				highest = oldHighest;
+				name = h.getName();
+			}
+			
+			
+			if(time == h.getDate().getDay())
+				dailyHighs.add(h);
+			for(int i = 0; i < dailyHighs.size(); i ++){
+				oldDailyHighest = dailyHighs.get(i).getDate().getDay();
+				if(oldDailyHighest > dailyHighest){
+					dailyHighest = oldDailyHighest;
+					dailyName = h.getName();
+				}
+			}	
+		}
+		
+		
 		g2.setColor(Color.WHITE);
 		g2.drawString("Author: " + selectedToSong(selected).getAuthor(), 30, 200);
-		g2.drawString("Overall Highscore: " + "", 30, 300);
-		g2.drawString("Daily Highscore: " + "", 30, 400);
-		g2.drawString("Personal Highscore: " + "", 30, 500);
+		g2.drawString("Overall Highscore: " + highest , 30, 300);
+		g2.drawString("Overall Highscore by: " + name, 30, 400);
+		g2.drawString("Daily Highscore: " + dailyHighest, 30, 500);
+		g2.drawString("Daily Highscore by: : " + dailyName, 30, 600);
+		
+		
+		
 		
 		for(DifficultyButton b : buttons2){
 			b.draw(g2);

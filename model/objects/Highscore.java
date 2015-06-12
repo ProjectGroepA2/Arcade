@@ -1,5 +1,7 @@
 package model.objects;
 
+import java.util.Date;
+
 import audio.SongInstance;
 
 public class Highscore {
@@ -13,5 +15,20 @@ public class Highscore {
 		this.name = name;
 		this.score = score;
 		this.time = time;
+	}
+
+	public int getScore() {
+		return score;
+	}
+	
+	public long getTime(){
+		return time;
+	}
+	public Date getDate(){
+		return new Date(getTime());
+	}
+	
+	public String getName(){
+		return name;
 	}
 }
