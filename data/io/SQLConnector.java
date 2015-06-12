@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import model.objects.Highscore;
@@ -45,10 +46,11 @@ public class SQLConnector
         }
     }
     
-    public List<Highscore> getHighscore(String song)
+    public List<Highscore> getHighscore(Song s, SongInstance si)
     {
-    	Statement st = executeResultQuery("SELECT * FROM highscore");
+    	Statement st = executeResultQuery("SELECT * FROM highscore WHERE songinstance = (SELECT id FROM songinstance WHERE difficulty=" + si.getDifficulty() + " AND song=(SELECT id FROM song WHERE folder='" + s.getFolder() + "')) ");
     	ResultSet result = null;
+    	List<Highscore> hsc = new ArrayList<Highscore>();
 		try {
 			result = st.getResultSet();
 		} catch (SQLException e1) {
@@ -57,12 +59,12 @@ public class SQLConnector
     	try {
 			while(result.next())
 			{
-				
+				hsc.add(new Highscore(si, result.getString("username"), result.getInt("score"), result.getDate("date").getTime()));
 			}
 		} catch (SQLException e) {
 		}
     	
-    	return  null;
+    	return hsc;
     }
     
     public void update(List<Song> songs)
