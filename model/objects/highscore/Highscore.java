@@ -5,10 +5,10 @@ import java.util.Date;
 import audio.SongInstance;
 
 public class Highscore {
-	public SongInstance si;
-	public String name;
-	public int score;
-	public long time;
+	private SongInstance si;
+	private String name;
+	private int score;
+	private long time;
 	
 	public Highscore(SongInstance si, String name, int score, long time) {
 		this.si = si;
