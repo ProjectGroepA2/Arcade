@@ -35,7 +35,7 @@ public class SongHandler {
 		
 		currentSong = null;
 		currentSongInstance = null;
-		currentIndex = 1;
+		currentIndex = 0;
 		
 		p = new AudioPlayer();
 		
@@ -46,7 +46,7 @@ public class SongHandler {
 		
 		songs = DirScanner.scanDirectories(dir);
 		
-		Collections.sort(songs, new SortALPHA());
+		sort(new SortALPHA());
 		
 		sql.update(songs);
 		
