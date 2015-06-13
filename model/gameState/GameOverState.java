@@ -11,13 +11,16 @@ import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
 
+import model.GameModel;
 import model.SongHandler;
 import model.objects.InfoPanel;
 import model.objects.highscore.HighscoreName;
 import control.GameStateManager;
 import control.GameStateManager.State;
 import control.button.ButtonEvent;
+import control.button.ButtonHandler;
 import control.joystick.JoystickEvent;
+import control.joystick.JoystickHandler;
 import data.io.SQLConnector;
 
 public class GameOverState extends GameState {
@@ -32,12 +35,14 @@ public class GameOverState extends GameState {
 
 	public GameOverState(GameStateManager gsm, SongHandler sh, SQLConnector sql) {
 		super(gsm, sh, sql);
-		createBackground();
 		hsn = new HighscoreName(640,717,5,textFont);
 	}
 
 	@Override
 	public void init() {
+		createBackground();
+		ButtonHandler.getButton(1).setColor(GameModel.colors[0]);
+		JoystickHandler.REPEAT = true;
 	}
 
 	@Override
@@ -55,10 +60,15 @@ public class GameOverState extends GameState {
 	
 	@Override
 	public void buttonPressed(ButtonEvent e) {
-		System.out.println("Name: "+hsn.getName());
+		//System.out.println("Name: "+hsn.getName());
 		switch(e.getButton().getButtonID()){
+		case 1:
 		case 0:
-			gsm.setState(State.MENU_STATE);
+			if(hsn.getName().trim().length() >= 3)
+			{
+				sql.addHighscore(sh.getCurrentSong(), sh.getCurrentSongInstance(), hsn.getName(), PlayState.currentScore);
+				gsm.setState(State.MENU_STATE);
+			}
 			break;
 		}
 		
@@ -111,8 +121,9 @@ public class GameOverState extends GameState {
 		
 		g2.setColor(Color.BLACK);
 		g2.setFont(textFont);
+		
 		g2.drawString("High Score", 385, 212);
-		g2.drawString(InfoPanel.getTotalHighscore(), 390, 342);
+		g2.drawString(InfoPanel.getTotalHighscore() + "", 390, 342);
 		g2.dispose();
 	}
 }
