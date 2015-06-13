@@ -30,7 +30,7 @@ public class DifficultyButton {
 		g2.fillRect(0, 0, 300, 75);
 		g2.setColor(Color.ORANGE);
 		g2.drawRect(0, 0, 300, 75);
-		g2.drawRect(0-2, 0-2, 304, 79);
+		//g2.drawRect(0-2, 0-2, 304, 79);
 		
 		g2.setColor(color);
 		Font textFont2 = new Font("OCR A Extended", Font.BOLD, 50);
