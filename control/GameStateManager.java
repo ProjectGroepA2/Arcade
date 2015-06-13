@@ -12,6 +12,7 @@ import model.gameState.PlayState;
 import model.gameState.TitleState;
 import control.button.Button;
 import control.button.ButtonHandler;
+import control.joystick.JoystickHandler;
 import data.io.SQLConnector;
 
 public class GameStateManager {
@@ -57,6 +58,7 @@ public class GameStateManager {
 	
 	public void init()
 	{
+		JoystickHandler.REPEAT = false;
 		for (int i = 1; i < ButtonHandler.getButtons().size(); i++) {
 			Button b = ButtonHandler.getButton(i);
 			b.setColor(Color.BLACK);
