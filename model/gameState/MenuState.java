@@ -32,6 +32,8 @@ import control.button.ButtonEvent;
 import control.button.ButtonHandler;
 import control.joystick.Joystick;
 import control.joystick.JoystickEvent;
+import control.joystick.JoystickHandler;
+import control.joystick.Joystick.Position;
 import data.io.SQLConnector;
 
 public class MenuState extends GameState {
@@ -46,7 +48,7 @@ public class MenuState extends GameState {
 	private VolatileImage mainScreenBackground, subScreenBackground, subScreenForeground;
 	
 	int yPosDiffButton = 900;
-	private int difSelect=0;
+	private int difSelect=0, oldDifSelect = -1;
 	Font textFont = new Font("OCR A Extended", Font.BOLD, 50);
 	Font textFontSmall = new Font("OCR A Extended", Font.BOLD, 15);
 	BufferedImage aanwijzers = Images.getImage(ImageType.aanwijzers);
@@ -69,6 +71,20 @@ public class MenuState extends GameState {
 		this.songs = sh.getSongs();
 		startanimation = true;
 		subscreen = false;
+		
+		selected = 0;
+		oldselected = -1;
+		
+		buttons2.clear();
+ 		int instanceNr = 0;
+ 		for(int i = selectedToSong(selected).getSongs().size(); i>0; i--){
+ 			if(sh.getCurrentSong().getSongs().size() == 0)
+ 				continue;
+ 			SongInstance si = selectedToSong(selected).getSongs().get(i-1);
+ 			buttons2.add(new DifficultyButton(yPosDiffButton-instanceNr,si.getDifficulty(), GameModel.colors[i-1]));
+ 			instanceNr += 100;
+ 		}
+		difSelect = 0;
 
 		generateMainScreenBackground();	
 		generateSubScreenBackground();
@@ -79,6 +95,7 @@ public class MenuState extends GameState {
 		{
 			ButtonHandler.getButton(1).setColor(GameModel.colors[0]);
 			ButtonHandler.getButton(2).setColor(GameModel.colors[2]);
+			generateSubScreenForeground();
 		}
 		else
 		{
@@ -86,7 +103,10 @@ public class MenuState extends GameState {
 			
 			ButtonHandler.getButton(5).setColor(GameModel.colors[1]);
 			ButtonHandler.getButton(6).setColor(GameModel.colors[4]);
+			JoystickHandler.REPEAT = true;
 		}
+		
+		
 		
 	}
 
@@ -98,9 +118,9 @@ public class MenuState extends GameState {
 				startanimation = false;
 			}
 		}else if(subscreen){
-			nextScreen();
+			//nextScreen();
 		}else{
-			previousScreen();
+			//previousScreen();
 		}
 	     if(selected != oldselected){
 	    	 for(int i = 0; i < buttons.size(); i++){
@@ -108,17 +128,11 @@ public class MenuState extends GameState {
 		    	 
 	    	 }
 	    	 oldselected = selected;
-	    	 
-	    	 
-	    	buttons2.clear();
-	 		int instanceNr = 0;
-	 		for(int i = sh.getCurrentSong().getSongs().size(); i>0; i--){
-	 			if(sh.getCurrentSong().getSongs().size() == 0)
-	 				continue;
-	 			SongInstance si = sh.getCurrentSong().getSongs().get(i-1);
-	 			buttons2.add(new DifficultyButton(yPosDiffButton-instanceNr,si.getDifficulty(), GameModel.colors[i-1]));
-	 			instanceNr += 100;
-	 		}
+	     }
+	     if(difSelect != oldDifSelect)
+	     {
+	    	 oldDifSelect = difSelect;
+	    	 generateSubScreenForeground();
 	     }
 	     index++;
 	     
@@ -173,12 +187,14 @@ public class MenuState extends GameState {
 				generateSubScreenForeground();
 			}else if(e.getButton().getButtonID() == 5){
 				sh.sort(new SortALPHA());
-				oldselected = 1;
 				selected = 0;
+				sh.set(songs.indexOf(selectedToSong(selected)));
+				sh.play();	
 			}else if(e.getButton().getButtonID() == 6){
 				sh.sort(new SortPLAYED());
-				oldselected = 1;
 				selected = 0;
+				sh.set(songs.indexOf(selectedToSong(selected)));
+				sh.play();	
 			}	
 		}
 		
@@ -206,10 +222,13 @@ public class MenuState extends GameState {
 					difSelect = 0;
 				}
 				
-//				System.out.println(difSelect);
+				//System.out.println(difSelect);
 			}
-			sh.set(sh.getCurrentSong().getSongs().get(difSelect));	
-			generateSubScreenForeground();			
+			else if(e.getJoystick().getPos() == Position.CENTER)	
+			{
+				sh.set(selectedToSong(selected).getSongs().get(difSelect));
+			}
+			//generateSubScreenForeground();			
 		}else{										//Screen for selecting song
 			if(e.getJoystick().getPos() == Joystick.Position.DOWN){
 				selected++;
@@ -261,8 +280,23 @@ public class MenuState extends GameState {
 
 				
 			}
-			sh.set(songs.indexOf(selectedToSong(selected)));
-			sh.play();	
+			
+			else if(e.getJoystick().getPos() == Position.CENTER)
+			{
+				buttons2.clear();
+		 		int instanceNr = 0;
+		 		for(int i = selectedToSong(selected).getSongs().size(); i>0; i--){
+		 			if(sh.getCurrentSong().getSongs().size() == 0)
+		 				continue;
+		 			SongInstance si = selectedToSong(selected).getSongs().get(i-1);
+		 			buttons2.add(new DifficultyButton(yPosDiffButton-instanceNr,si.getDifficulty(), GameModel.colors[i-1]));
+		 			instanceNr += 100;
+		 		}
+				difSelect = 0;
+		 		
+				sh.set(songs.indexOf(selectedToSong(selected)));
+				sh.play();	
+			}
 		}
 	}
 	
@@ -347,10 +381,44 @@ public class MenuState extends GameState {
  		g2.setFont(textFont);
 		g2.drawString(selectedToSong(selected).getTitle(), 30, 60);
 		
+		g2.setColor(Color.WHITE);
+		g2.drawString("Author: " + selectedToSong(selected).getAuthor(), 30, 200);
 		
+		boolean highscoresFound = true;
+		int HIGHSCORES_TO_DISPLAY = 5;
 		
+		List<Highscore> highscores = sql.getHighscoresToday(selectedToSong(selected), sh.getCurrentSong().getSongs().get(difSelect));
+		if(highscores.isEmpty())
+		{
+			highscores = sql.getHighscores(selectedToSong(selected), sh.getCurrentSong().getSongs().get(difSelect));
+			if(highscores.isEmpty())
+			{
+				highscoresFound = false;
+			}
+			else
+				g2.drawString("All Time Highscores", 30, 300);
+		}
+		else
+			g2.drawString("Daily Highscore", 30, 300);
 		
-		List<Highscore> highscores = sql.getHighscore(selectedToSong(selected), sh.getCurrentSong().getSongs().get(difSelect));
+		if(highscoresFound)
+		{
+			HIGHSCORES_TO_DISPLAY = HIGHSCORES_TO_DISPLAY > highscores.size() ? highscores.size() : HIGHSCORES_TO_DISPLAY;
+			
+			for(int i = 0; i<HIGHSCORES_TO_DISPLAY; i++)
+			{
+				Highscore hi = highscores.get(i);
+				
+				g2.drawString(hi.getName() + " - " + hi.getScore(), 30, 400 + i*100);
+			}
+		}
+		else
+		{
+			g2.drawString("No Highscores found", 30, 400);
+		}
+		
+		/*
+		List<Highscore> highscores = sql.getHighscores(selectedToSong(selected), sh.getCurrentSong().getSongs().get(difSelect));
 		List<Highscore> dailyHighs = new ArrayList<Highscore>();
 		int highest = 0;
 		int oldHighest = 0;
@@ -392,7 +460,7 @@ public class MenuState extends GameState {
 		g2.drawString("Daily Highscore: " + dailyHighest, 30, 500);
 		g2.drawString("Daily Highscore by: : " + dailyName, 30, 600);
 		
-		
+		*/
 		
 		
 		for(DifficultyButton b : buttons2){
@@ -447,6 +515,7 @@ public class MenuState extends GameState {
 		}
 	}
 
+	/*
 	public void nextScreen(){
 		if(buttons.get(0).getX() > -700){
 			for(MenuButton b:buttons){
@@ -462,6 +531,7 @@ public class MenuState extends GameState {
 			}
 		}
 	}
+	*/
 	
 	public Song selectedToSong(int s){
 		s %= songs.size();
