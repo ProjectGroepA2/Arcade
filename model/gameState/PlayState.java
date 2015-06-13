@@ -37,6 +37,11 @@ public class PlayState extends GameState {
 	public static int comboScore = 0;
 	public static double lifePoints = 100;
 	
+	private int enemies_hit = 0;
+	private int enemies_missed = 0;
+	private int buttons_pressed = 0;
+	private int joystick_moved = 0;
+	
 	private boolean init = false;
 
 	private long oldProgress = 0;
@@ -56,7 +61,12 @@ public class PlayState extends GameState {
 		lifePoints = 100;
 		currentScore = 0;
 		comboScore = 0;
-		oldProgress = 0 ;
+		oldProgress = 0;
+		
+		enemies_hit = 0;
+		enemies_missed = 0;
+		buttons_pressed = 0;
+		joystick_moved = 0;
 		
 		for(Path p : area.paths)
 		{
@@ -93,7 +103,7 @@ public class PlayState extends GameState {
 		
 
 		if(progress > sh.getCurrentSongInstance().getEndTime() + Enemy.secondsToEnd*1000*2)
-			gsm.setState(State.GAMEOVER_STATE);
+			endGame();
 
 //		System.out.println(progress - oldProgress + " / " + area.paths.get(player.getIndex()).getEnemysInPath().size());
 
@@ -113,6 +123,7 @@ public class PlayState extends GameState {
 					enemyIterator.remove();
 					lifePoints -= 5;
 					comboScore /= 2;
+					enemies_missed++;
 				}
 				if(closedEnemy == null){
 					closedEnemy = e;
@@ -126,21 +137,30 @@ public class PlayState extends GameState {
 
 		lifePoints -= 0.002 * factor;
 		
+		infoPanel.updateIPanel();
+		
 		if(lifePoints <= 0)
-			gsm.setState(State.GAMEOVER_STATE);
+		{
+			endGame();
+		}
 		if(comboScore >= 100)
 		{
 			comboScore = 0;
 			currentScore += 500;
 		}
 
-		infoPanel.updateIPanel();
+		
 		area.count();
 		if(closedEnemy == null){
 			area.pathPainted(-1, null);
 		}else{
 			area.pathPainted(closedEnemy.getIndex(), closedEnemy.getColor());
 		}
+	}
+
+	private void endGame() {
+		gsm.setState(State.GAMEOVER_STATE);
+		sql.addPlaydata(sh.getCurrentSong(), sh.getCurrentSongInstance(), sh.getProgress()/1000, enemies_missed, enemies_hit, buttons_pressed, joystick_moved);
 	}
 
 	@Override
@@ -169,9 +189,6 @@ public class PlayState extends GameState {
 
 	@Override
 	public void buttonPressed(ButtonEvent e) {
-		if(e.getButton().getButtonID() == 0){
-			lifePoints = 0;
-		}
 		boolean notHit = true;
 		Iterator<Enemy> enemysInPath = area.paths.get(player.getIndex()).getEnemysInPath().iterator();
 		while (enemysInPath.hasNext()) {
@@ -183,6 +200,7 @@ public class PlayState extends GameState {
 					lifePoints = Math.min(lifePoints+10, 100);
 					area.setHitAreaColor(enemy.getColor());
 					area.hit();
+					enemies_hit++;
 					enemysInPath.remove();
 					notHit = false;
 					break;
@@ -203,8 +221,10 @@ public class PlayState extends GameState {
 		
 		if(e.getButton().getButtonID() == 0)
 		{
-			gsm.setState(State.GAMEOVER_STATE);
+			endGame();
 		}
+		else
+			buttons_pressed++;
 	}
 
 	@Override
@@ -243,6 +263,7 @@ public class PlayState extends GameState {
 		default:
 			break;
 		}
+		joystick_moved++;
 	}
 
 	public void addEnemy(int pathID, Color color) {
