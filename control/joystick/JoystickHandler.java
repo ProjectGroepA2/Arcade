@@ -23,6 +23,7 @@ public class JoystickHandler implements KeyListener{
 
 	List<JoystickListener> listeners;
 	Set<Integer> keys;
+	public static boolean REPEAT = false;
 	public static Joystick j = new Joystick();;
 	
 	public JoystickHandler()
@@ -157,7 +158,7 @@ public class JoystickHandler implements KeyListener{
 			keys.add(e.getKeyCode());
 			updateJoystickPosition();
 			
-			if(!keys.equals(keysCopy))
+			if(REPEAT || !keys.equals(keysCopy) )
 			{
 				onJoystickMoved(j);				
 			}
@@ -173,7 +174,7 @@ public class JoystickHandler implements KeyListener{
 			keys.remove(e.getKeyCode());
 			updateJoystickPosition();
 			
-			if(!keys.equals(keysCopy))
+			if(REPEAT || !keys.equals(keysCopy))
 			{
 				onJoystickMoved(j);				
 			}
