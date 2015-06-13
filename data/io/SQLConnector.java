@@ -46,9 +46,11 @@ public class SQLConnector
         }
     }
     
-    public List<Highscore> getHighscore(Song s, SongInstance si)
+    public List<Highscore> getHighscores(Song s, SongInstance si)
     {
-    	Statement st = executeResultQuery("SELECT * FROM highscore WHERE songinstance = (SELECT id FROM songinstance WHERE difficulty=" + si.getDifficulty() + " AND song=(SELECT id FROM song WHERE folder='" + s.getFolder() + "')) ");
+    	String query = "SELECT * FROM highscore WHERE songinstance = (SELECT id FROM songinstance WHERE difficulty='" + si.getDifficulty() + "' AND song=(SELECT id FROM song WHERE folder='" + s.getFolder() + "')) ORDER BY score DESC";
+    	//System.out.println(query);
+    	Statement st = executeResultQuery(query);
     	ResultSet result = null;
     	List<Highscore> hsc = new ArrayList<Highscore>();
 		try {
@@ -62,10 +64,51 @@ public class SQLConnector
 				hsc.add(new Highscore(si, result.getString("username"), result.getInt("score"), result.getDate("date").getTime()));
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
 		}
     	
     	return hsc;
     }
+    
+    public List<Highscore> getHighscoresToday(Song s, SongInstance si)
+    {
+    	Statement st = executeResultQuery("SELECT * FROM highscore WHERE date=CURDATE() AND songinstance = (SELECT id FROM songinstance WHERE difficulty='" + si.getDifficulty() + "' AND song=(SELECT id FROM song WHERE folder='" + s.getFolder() + "')) ORDER BY score DESC");
+    	ResultSet result = null;
+    	List<Highscore> hsc = new ArrayList<Highscore>();
+		try {
+			result = st.getResultSet();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+    	try {
+			while(result.next())
+			{
+				hsc.add(new Highscore(si, result.getString("username"), result.getInt("score"), result.getDate("date").getTime()));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	
+    	return hsc;
+    }
+    
+    public void addHighscore(Song s, SongInstance si, String name, int currentScore) {
+    	if(name.length() <= 5 && currentScore <= Integer.MAX_VALUE)
+		{
+			String query = "INSERT INTO highscore (username, score, date, songinstance) VALUES ('" + name.trim() + "', " + currentScore + ", CURDATE(), (SELECT id FROM songinstance WHERE difficulty='" + si.getDifficulty() + "' AND song=(SELECT id FROM song WHERE folder='" + s.getFolder() + "')))";
+			//System.out.println(query);
+			executeInsertQuery(query);
+		}
+		
+	}
+    
+    public void addPlaydata(Song s, SongInstance si, long time, int enemies_missed, int enemies_hit, int buttons_pressed, int  joystick_moved) {
+    	System.out.println("Inserting PlayData: " + time + ", " + enemies_missed + ", " + enemies_hit + ", " + buttons_pressed + ", " + joystick_moved);
+		String query = "INSERT INTO playdata (enemies_missed, enemies_hit, buttons_pressed, joystick_moved, start_time, play_time, songinstance) VALUES (" + enemies_missed + ", " + enemies_hit + ", " + buttons_pressed + ", " + joystick_moved + ", NOW(), " + time + ", (SELECT id FROM songinstance WHERE difficulty='" + si.getDifficulty() + "' AND song=(SELECT id FROM song WHERE folder='" + s.getFolder() + "')))";
+		//System.out.println(query);
+		executeInsertQuery(query);
+		
+	}
     
     public void update(List<Song> songs)
     {
@@ -82,7 +125,7 @@ public class SQLConnector
 				rs = st.getResultSet();
 				rs.next();
 				id = rs.getInt(1);
-				System.out.println("Song " + id + " added to database");
+				//System.out.println("Song " + id + " added to database");
 				rs.close();
 				st.close();
 			} catch (SQLException e) {
@@ -101,12 +144,12 @@ public class SQLConnector
 	    				rs2 = st2.getResultSet();
 	    				if(rs2.first())
 	    				{
-	    					System.err.println("SongInstance Already Exists ");
+	    					//System.err.println("SongInstance Already Exists ");
 	    				}
 	    				else
 	    				{
 	    					executeInsertQuery("INSERT INTO songinstance (song, enemies, difficulty) VALUES (" + id + ", " + si.getObjects().size() + ", '" + si.getDifficulty() + "');");
-	    					System.out.println("Songinstance Added");
+	    					//System.out.println("Songinstance Added");
 	    				}
 	    				rs.close();
 	    				st.close();
@@ -116,7 +159,9 @@ public class SQLConnector
     			}
     		}
     		else
-    			System.err.println("Insert Failed");
+    		{
+    			//System.err.println("Insert Failed");
+    		}
  
     	}
     }
