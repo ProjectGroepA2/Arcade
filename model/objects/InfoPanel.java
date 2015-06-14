@@ -66,17 +66,9 @@ public class InfoPanel {
 		g2.drawRect(25, 300, 200, 700);
 		
 		g2.drawString(sh.getCurrentSong().getTitle(), 25, 200);
-		if(sh.getCurrentSong().getSubtitle() != "")
-		{
-			g2.drawString(sh.getCurrentSong().getSubtitle(), 25, 230);
+			g2.drawString(sh.getCurrentSongInstance().getDifficulty(), 25, 230);
 			g2.drawString(sh.getCurrentSong().getAuthor(), 25, 260);
 			g2.drawString(time, 25, 290);
-		}
-		else
-		{
-			g2.drawString(sh.getCurrentSong().getAuthor(), 25, 230);
-			g2.drawString(time, 25, 260);
-		}
 		
 		g2.setColor(Color.YELLOW);		
 		g2.fillRect(25, 1000 - 7 * PlayState.comboScore, 200, 0 + 7 * PlayState.comboScore);
