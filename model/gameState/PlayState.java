@@ -4,9 +4,11 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
+import main.Window;
 import model.SongHandler;
 import model.drawObjects.Enemy;
 import model.drawObjects.Player;
@@ -184,6 +186,19 @@ public class PlayState extends GameState {
 			if (player != null)
 				player.draw(g2);
 		} catch (Exception e) {
+		}
+		if(!Window.ON_RASP){
+			int width,height;
+			width = g2.getFontMetrics().stringWidth("");
+			height = g2.getFontMetrics().getHeight();
+			for (int i = 1; i < ButtonHandler.getButtons().size(); i++) {
+				Ellipse2D oval = new Ellipse2D.Double(880+(50*i), 0, 50, 50);
+				g2.setColor(ButtonHandler.getButton(i).getColor());
+				g2.fill(oval);
+				g2.setColor(Color.BLACK);
+				width = g2.getFontMetrics().stringWidth(""+i);
+				g2.drawString(""+i, (int)oval.getCenterX()-width/2,(int)oval.getMaxY()+height);
+			}
 		}
 	}
 
