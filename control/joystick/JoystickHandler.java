@@ -7,8 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import main.Window;
-
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinDigitalInput;
@@ -23,6 +21,7 @@ public class JoystickHandler implements KeyListener{
 
 	List<JoystickListener> listeners;
 	Set<Integer> keys;
+	public static boolean REPEAT = false;
 	public static Joystick j = new Joystick();;
 	
 	public JoystickHandler()
@@ -157,7 +156,7 @@ public class JoystickHandler implements KeyListener{
 			keys.add(e.getKeyCode());
 			updateJoystickPosition();
 			
-			if(!keys.equals(keysCopy))
+			if(REPEAT || !keys.equals(keysCopy) )
 			{
 				onJoystickMoved(j);				
 			}
@@ -173,7 +172,7 @@ public class JoystickHandler implements KeyListener{
 			keys.remove(e.getKeyCode());
 			updateJoystickPosition();
 			
-			if(!keys.equals(keysCopy))
+			if(REPEAT || !keys.equals(keysCopy))
 			{
 				onJoystickMoved(j);				
 			}

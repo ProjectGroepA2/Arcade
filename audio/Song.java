@@ -4,13 +4,8 @@ import image.Images;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Song implements Comparable<Song>{
 
@@ -137,6 +132,11 @@ public class Song implements Comparable<Song>{
 
 	public File getFile() {
 		return file;
+	}
+	
+	public String getFolder()
+	{
+		return file.getParentFile().getName();
 	}
 
 	public void setFile(File file) {

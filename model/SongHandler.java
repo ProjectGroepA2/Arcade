@@ -12,6 +12,7 @@ import audio.Song;
 import audio.SongInstance;
 import audio.io.DirScanner;
 import audio.sorting.SortALPHA;
+import data.io.SQLConnector;
 
 public class SongHandler {
 	
@@ -20,18 +21,21 @@ public class SongHandler {
 	private Song currentSong;
 	private SongInstance currentSongInstance;
 	private int currentIndex;
+	SQLConnector sql;
 	
 	private File dir;
 	
 	private AudioPlayer p;
 
-	public SongHandler()
+	public SongHandler(SQLConnector sql)
 	{
+		this.sql = sql;
+		
 		songs = new ArrayList<Song>();
 		
 		currentSong = null;
 		currentSongInstance = null;
-		currentIndex = 1;
+		currentIndex = 0;
 		
 		p = new AudioPlayer();
 		
@@ -42,7 +46,9 @@ public class SongHandler {
 		
 		songs = DirScanner.scanDirectories(dir);
 		
-		Collections.sort(songs, new SortALPHA());
+		sort(new SortALPHA());
+		
+		sql.update(songs);
 		
 		updatePlayer();
 	}

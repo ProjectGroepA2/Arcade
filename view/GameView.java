@@ -1,8 +1,6 @@
 package view;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -11,7 +9,6 @@ import java.awt.Toolkit;
 import javax.swing.JPanel;
 
 import control.GameStateManager;
-import control.LedHandler;
 
 public class GameView extends JPanel {
 
@@ -20,13 +17,11 @@ public class GameView extends JPanel {
 	 */
 	private static final long serialVersionUID = 1939480784205689618L;
 
-	LedHandler led;
 	GameStateManager gsm;
 
 	// Font fpsfont = new Font("OCR A Extended", Font.BOLD, 60);
 
-	public GameView(LedHandler led, GameStateManager gsm) {
-		this.led = led;
+	public GameView(GameStateManager gsm) {
 		this.gsm = gsm;
 		this.setPreferredSize(new Dimension(1280, 1024));
 	}
