@@ -23,7 +23,8 @@ public class GameOverState extends GameState {
     BufferedImage gameOver = Images.getImage(ImageType.gameover);
     VolatileImage background;
 	Font textFont = new Font("OCR A Extended", Font.BOLD, 70);
-
+	
+	
 	private String endScore = "";
 	
     int frame;
