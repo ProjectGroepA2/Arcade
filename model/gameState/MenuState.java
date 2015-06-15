@@ -14,7 +14,6 @@ import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import model.GameModel;
@@ -31,9 +30,9 @@ import control.GameStateManager.State;
 import control.button.ButtonEvent;
 import control.button.ButtonHandler;
 import control.joystick.Joystick;
+import control.joystick.Joystick.Position;
 import control.joystick.JoystickEvent;
 import control.joystick.JoystickHandler;
-import control.joystick.Joystick.Position;
 import data.io.SQLConnector;
 
 public class MenuState extends GameState {

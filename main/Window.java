@@ -55,7 +55,7 @@ public class Window extends JFrame {
 		ButtonHandler bth = new ButtonHandler();
 		JoystickHandler jsh = new JoystickHandler();
 		
-		SQLConnector sql = new SQLConnector();
+		final SQLConnector sql = new SQLConnector();
 		NetworkHandler ntw = new NetworkHandler("192.168.1.6", 1113, bth, jsh);
 		
 		bth.setNetwork(ntw);

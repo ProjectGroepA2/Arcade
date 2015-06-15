@@ -1,8 +1,6 @@
 package view;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -11,7 +9,6 @@ import java.awt.Toolkit;
 import javax.swing.JPanel;
 
 import control.GameStateManager;
-import control.LedHandler;
 
 public class GameView extends JPanel {
 

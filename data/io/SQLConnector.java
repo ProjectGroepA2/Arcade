@@ -92,14 +92,14 @@ public class SQLConnector
     	return hsc;
     }
     
-    public void addHighscore(Song s, SongInstance si, String name, int currentScore) {
+    public int addHighscore(Song s, SongInstance si, String name, int currentScore) {
     	if(name.length() <= 5 && currentScore <= Integer.MAX_VALUE)
 		{
 			String query = "INSERT INTO highscore (username, score, date, songinstance) VALUES ('" + name.trim() + "', " + currentScore + ", CURDATE(), (SELECT id FROM songinstance WHERE difficulty='" + si.getDifficulty() + "' AND song=(SELECT id FROM song WHERE folder='" + s.getFolder() + "')))";
 			//System.out.println(query);
-			executeInsertQuery(query);
+			return executeInsertQuery(query);
 		}
-		
+    	return -1;		
 	}
     
     public void addPlaydata(Song s, SongInstance si, long time, int enemies_missed, int enemies_hit, int buttons_pressed, int  joystick_moved) {
@@ -166,12 +166,19 @@ public class SQLConnector
     	}
     }
     
-    private void executeInsertQuery(String query)
+    private int executeInsertQuery(String query)
     {
         try{
             Statement s = myConn.createStatement();
-            s.execute(query);
+            s.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+            ResultSet rs = s.getGeneratedKeys();
+            int id = 0;
+            if(rs.next())
+            {
+            	id = rs.getInt(1);
+            }
             s.close();
+            return id;
         }
         catch( SQLException ex)
         {
@@ -183,6 +190,7 @@ public class SQLConnector
         {
            System.out.println("getMeasurement: " + ex.getMessage());
         }
+        return -1;
     }
 
     //Execute a custom query

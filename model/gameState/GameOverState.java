@@ -1,7 +1,6 @@
 package model.gameState;
 
 import image.Images;
-import image.Images.ImageType;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -10,11 +9,21 @@ import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
+import java.awt.image.WritableRenderedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
+import com.google.zxing.WriterException;
 
 import model.GameModel;
 import model.SongHandler;
 import model.objects.InfoPanel;
 import model.objects.highscore.HighscoreName;
+import net.glxn.qrgen.QRCode;
+import net.glxn.qrgen.image.ImageType;
 import control.GameStateManager;
 import control.GameStateManager.State;
 import control.button.ButtonEvent;
@@ -22,14 +31,17 @@ import control.button.ButtonHandler;
 import control.joystick.JoystickEvent;
 import control.joystick.JoystickHandler;
 import data.io.SQLConnector;
+import data.io.WebcamUploader;
 
 public class GameOverState extends GameState {
 
-    BufferedImage gameOver = Images.getImage(ImageType.gameover);
+    BufferedImage gameOver = Images.getImage(Images.ImageType.gameover);
     VolatileImage background;
 	Font textFont = new Font("OCR A Extended", Font.BOLD, 70);
 	HighscoreName hsn;
-	int image_x = 0;		
+	int image_x = 0;	
+	private boolean uploaded;
+	private BufferedImage QRimage;
 	
     int frame;
 
@@ -43,6 +55,7 @@ public class GameOverState extends GameState {
 		createBackground();
 		ButtonHandler.getButton(1).setColor(GameModel.colors[0]);
 		JoystickHandler.REPEAT = true;
+		uploaded = false;
 	}
 
 	@Override
@@ -55,7 +68,12 @@ public class GameOverState extends GameState {
 	public void draw(Graphics2D g2) {
 		g2.drawImage(background, 0, 0, 1280, 1024, null);		
 		g2.drawImage(gameOver.getSubimage(image_x, 0, 40, 26),  640-122, 400, 245, 130, null);
-		hsn.drawName(g2);
+		if(!uploaded)
+			hsn.drawName(g2);
+		else if(QRimage != null){
+			g2.drawImage(QRimage, 400, 600, 400, 400, null);
+		}
+			
 	}
 	
 	@Override
@@ -63,13 +81,31 @@ public class GameOverState extends GameState {
 		//System.out.println("Name: "+hsn.getName());
 		switch(e.getButton().getButtonID()){
 		case 1:
-		case 0:
 			if(hsn.getName().trim().length() >= 3)
 			{
-				sql.addHighscore(sh.getCurrentSong(), sh.getCurrentSongInstance(), hsn.getName(), PlayState.currentScore);
-				gsm.setState(State.MENU_STATE);
+				if(!uploaded){
+					int id = sql.addHighscore(sh.getCurrentSong(), sh.getCurrentSongInstance(), hsn.getName(), PlayState.currentScore);
+					try {
+						WebcamUploader.takePictureAndUpload(id);
+					} catch (IOException e2) {
+						e2.printStackTrace();
+					}
+					 		
+					try {
+						QRimage = WebcamUploader.createQRImage("http://portfolio.jancokock.me/colorstrike/message.php?id="+id, 400);
+					} catch (WriterException | IOException e1) {
+						e1.printStackTrace();
+					}
+					uploaded = true;
+
+					System.out.println(id);
+				}else{
+					gsm.setState(State.MENU_STATE);
+				}
 			}
-			break;
+			break;			
+		case 2:
+			gsm.setState(State.MENU_STATE);
 		}
 		
 		
