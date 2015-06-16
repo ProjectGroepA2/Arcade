@@ -30,13 +30,11 @@ public class TitleState extends GameState {
 	GradientPaint gp = new GradientPaint(300, 0, new Color(0, 0, 1, 0.6f), 980, 1024, new Color(0, 0, 1, 0.2f));
 
 	
-    int index = 0;
-    int varx = 0;
-    int frame;
-
-    
-    int indexKast = 0;
-    int xKast=0;
+    private int index 		= 0,
+    			varx 		= 0,
+    			frame,
+    			indexKast 	= 0,
+				xKast	  	= 0;
     
 	public TitleState(GameStateManager gsm, SongHandler sh, SQLConnector sql){
 		super(gsm, sh, sql);
@@ -55,18 +53,21 @@ public class TitleState extends GameState {
         indexKast++;
 	}
 
-	@Override
 	public void draw(Graphics2D g2) {
-		g2.drawImage(background, 0, 0, 1280, 1024, null);
-		int image_x = ((frame / 6) % 6) * 49;
-		g2.drawImage(pressStart.getSubimage(image_x, 0, 49, 26),  640-122, 512, 245, 130, null);
-		
-		
-		
-		xKast = indexKast/10;
-		xKast%=4;
-		//g2.drawImage(kast.getSubimage(xKast*300,0,300,400), 640-122,650,300,400,null);
-		g2.drawImage(kast.getSubimage(xKast*300,0,300,400), 100,300,300,400,null);
+		// Scherm beelt wat kleurrijke rectangles op het scherm.
+		if (frame > 0) {
+			g2.drawImage(background, 0, 0, 1280, 1024, null);
+			createBackground();
+		}
+		if (frame > 160) {
+			// Code die de arcadekast en 'Press Start' toont.
+			int image_x = ((frame / 6) % 6) * 49;
+			g2.drawImage(pressStart.getSubimage(image_x, 0, 49, 26), 640 - 122, 512, 245, 130, null);
+
+			xKast = indexKast / 10;
+			xKast %= 4;
+			g2.drawImage(kast.getSubimage(xKast * 300, 0, 300, 400), 100, 300, 300, 400, null);
+		}
 	}
 
 	@Override
@@ -92,35 +93,47 @@ public class TitleState extends GameState {
 	public void createBackground() {
 		background = Images.initVolatileImage(1280, 1024, Transparency.OPAQUE);
 		Graphics2D g2 = background.createGraphics();
-		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2.setRenderingHints(rh);
-		g2.setColor(new Color(1, 1, 1, 0.3f));
-		g2.fillRect(0, 0, 1280, 1024);
 
-		g2.setColor(new Color(0, 1, 0, 0.7f));
-		g2.fillRect(0, 0, 100, 1024);
-		g2.fillRect(1180, 0, 100, 1024);
+		if (frame > 0) {
+			RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g2.setRenderingHints(rh);
+		}
+		if (frame > 20) {
+			g2.setColor(new Color(1, 1, 1, 0.3f));
+			g2.fillRect(0, 0, 1280, 1024);
+		}
+		if (frame > 40) {
+			g2.setColor(new Color(0, 1, 0, 0.7f));
+			g2.fillRect(0, 0, 100, 1024);
+			g2.fillRect(1180, 0, 100, 1024);
+		}
+		if (frame > 60) {
+			g2.setColor(new Color(1, 1, 0, 0.7f));
+			g2.fillRect(100, 0, 100, 1024);
+			g2.fillRect(1080, 0, 100, 1024);
+		}
+		if (frame > 80) {
+			g2.setColor(new Color(1, 0, 0, 0.7f));
+			g2.fillRect(200, 0, 100, 1024);
+			g2.fillRect(980, 0, 100, 1024);
+		}
+		if (frame > 100) {
+			g2.setPaint(gp);
+			g2.fillRect(300, 0, 680, 1024);
+		}
+		if (frame > 120) {
+			g2.setFont(textFont);
+			g2.setColor(Color.WHITE);
+			g2.drawString("©2015 Team Hamtaro", 550, 1012);
+		}
+		if (frame > 140) {
+			g2.setColor(Color.RED);
+			g2.setFont(textFont2);
+			g2.drawString("Color", 385, 212);
+			g2.drawString("Strike", 390, 342);
+			g2.dispose();
+		}
 
-		g2.setColor(new Color(1, 1, 0, 0.7f));
-		g2.fillRect(100, 0, 100, 1024);
-		g2.fillRect(1080, 0, 100, 1024);
-
-		g2.setColor(new Color(1, 0, 0, 0.7f));
-		g2.fillRect(200, 0, 100, 1024);
-		g2.fillRect(980, 0, 100, 1024);
-
-		g2.setPaint(gp);
-		g2.fillRect(300, 0, 680, 1024);
-
-		g2.setFont(textFont);
-		g2.setColor(Color.WHITE);
-		g2.drawString("©2015 Team Hamtaro", 550, 1012);
-
-		g2.setColor(Color.RED);
-		g2.setFont(textFont2);
-		g2.drawString("Color", 385, 212);
-		g2.drawString("Strike", 390, 342);
-		g2.dispose();
 		background.createGraphics();
 	}
 
