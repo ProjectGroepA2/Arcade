@@ -3,7 +3,9 @@ package control;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 
 import control.button.ButtonHandler;
 import control.joystick.Joystick.Position;
@@ -78,7 +80,6 @@ public class NetworkHandler implements Runnable{
 	{
 		send = str.getBytes();
 		try {
-			System.out.println(send);
 			udpsend.send(new DatagramPacket(send, send.length, adr, port));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -104,7 +105,6 @@ public class NetworkHandler implements Runnable{
 				e.printStackTrace();
 			}                   
 			String sentence = new String( receivePacket.getData());  
-			System.out.println("RECEIVED: " + sentence); 
 
 					
 			sentence = sentence.trim();
@@ -116,7 +116,6 @@ public class NetworkHandler implements Runnable{
 			for(int i = 0; i < 7; i++){
 				if(control[i] != ButtonHandler.getButton(i).pressed)
 				{
-					System.out.println("PRESS BITCH " + controls[i]);
 					ButtonHandler.getButton(i).pressed = control[i];
 					if(control[i] == 0)
 						bth.buttonPress(ButtonHandler.getButton(i));
