@@ -54,6 +54,7 @@ public class GameOverState extends GameState {
 	public void init() {
 		createBackground();
 		ButtonHandler.getButton(1).setColor(GameModel.colors[0]);
+		ButtonHandler.getButton(2).setColor(GameModel.colors[2]);
 		JoystickHandler.REPEAT = true;
 		uploaded = false;
 	}
