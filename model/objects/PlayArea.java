@@ -2,13 +2,17 @@ package model.objects;
 
 import image.Images;
 
+import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
+import java.awt.Stroke;
 import java.awt.Transparency;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.VolatileImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +29,15 @@ public class PlayArea {
 	private VolatileImage background;
 	private boolean hit = false;
 	private int count = 0,maxCount = 100,pathID = -1;
+	private Stroke stroke = new BasicStroke(5);
+	
+	private Rectangle2D backgroundPlay = new Rectangle2D.Double(256, 0, 1024, 1024);
+	
 	
 	public PlayArea(double xToRight,double heightOfGameScreen,double widthOfGameScreen, int sizeOctagon) {
 		super();
 		paths = new ArrayList<Path>();		
-		setHitAreaColor(Color.RED);
+		setHitAreaColor(Color.WHITE);
 		//make the polygons
 		int amountOfAngles = 8;
 		double middlePointX = widthOfGameScreen/2+xToRight;
@@ -80,11 +88,14 @@ public class PlayArea {
 		
 		//drawing into buffer
 		background = Images.initVolatileImage(1280,1024, Transparency.BITMASK);
-		Graphics2D g2 = background.createGraphics();
+		Graphics2D g2 = background.createGraphics();		
 		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	    g2.setRenderingHints(rh);
-	    Line2D current;		
+//	    g2.setColor(Color.WHITE);
+//	    g2.fillRect(256, 0, 1024, 1024);
+	    Line2D current;	
 		g2.setColor(Color.BLACK);
+		g2.setStroke(stroke);
 		for(int i = 0; i < paths.size(); i++){
 			current = paths.get(i);			
 			g2.draw(current);
@@ -104,7 +115,10 @@ public class PlayArea {
 				hit = false;
 			}
 		}		
-		if(pathID >= 0 && pathColor != null){
+		if(pathID >= 0 && pathColor != null){	
+			g2.setColor(new Color(pathColor.getRed(), pathColor.getGreen(), pathColor.getBlue(),50));
+			g2.fill(backgroundPlay);
+			g2.setStroke(stroke);
 			g2.setColor(pathColor);
 			g2.draw(paths.get(pathID));
 		}
