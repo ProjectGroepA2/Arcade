@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
+import main.Window;
 import audio.Song;
 
 public class MenuButton {
@@ -50,9 +51,9 @@ public class MenuButton {
 		}
 		else{
 			g2d.setColor(color.darker().darker());
-			g2d.fillRect(x-5, y-5,890,80);
+			g2d.fillRect(x-5, y-5,990,80);
 			g2d.setColor(color);
-			g2d.fillRect(x,y,880,70);
+			g2d.fillRect(x,y,980,70);
 		}
 
 		//draw text
@@ -60,7 +61,14 @@ public class MenuButton {
 		Font textFont = new Font("OCR A Extended", Font.BOLD,60);
 		g2d.setFont(textFont);
 		if(selected)
+		{
 			g2d.drawString(song.getTitle(),  x+50, y+63);
+			
+			Font textFont2 = new Font("OCR A Extended", Font.PLAIN,30);
+			g2d.setFont(textFont2);
+			g2d.drawString("# Played: " + song.getTimesPlayed(), Window.WIDTH - 450 - Math.min(song.getAuthor().length()*16, 570), y+yy+45);
+			g2d.drawString("Author: " + song.getAuthor(), Window.WIDTH - 200 - Math.min(song.getAuthor().length()*16, 570) , y+yy+45);
+		}
 		else
 			g2d.drawString(song.getTitle(),  x+50, y+57);
 	}
