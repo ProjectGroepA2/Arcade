@@ -162,7 +162,8 @@ public class PlayState extends GameState {
 
 	private void endGame() {
 		gsm.setState(State.GAMEOVER_STATE);
-		sql.addPlaydata(sh.getCurrentSong(), sh.getCurrentSongInstance(), sh.getProgress()/1000, enemies_missed, enemies_hit, buttons_pressed, joystick_moved);
+		if(sh.getProgress()/1000 < 5000)	
+			sql.addPlaydata(sh.getCurrentSong(), sh.getCurrentSongInstance(), sh.getProgress()/1000, enemies_missed, enemies_hit, buttons_pressed, joystick_moved);
 	}
 
 	@Override
