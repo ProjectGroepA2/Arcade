@@ -8,7 +8,12 @@ public class SortPLAYED implements Comparator<Song> {
 
 	@Override
 	public int compare(Song s1, Song s2) {
-		return s1.getAuthor().compareTo(s2.getAuthor());
+		if(s1.getTimesPlayed() < s2.getTimesPlayed())
+			return 1;
+		else if(s1.getTimesPlayed() > s2.getTimesPlayed())
+			return -1;
+		else
+			return s1.getTitle().compareTo(s2.getTitle());
 	}
 
 }
