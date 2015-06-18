@@ -155,4 +155,14 @@ public class Song implements Comparable<Song>{
 	public int compareTo(Song s) {
 		return getTitle().compareTo(s.getTitle());
 	}
+	
+	public int getTimesPlayed()
+	{
+		int timesPlayed = 0;
+		for(SongInstance s : songs)
+		{
+			timesPlayed += s.getTimesPlayed();
+		}
+		return timesPlayed;
+	}
 }
