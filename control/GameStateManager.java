@@ -55,7 +55,6 @@ public class GameStateManager {
 	
 	public void update(float factor){
 		timeOfNoAction += factor;	
-		System.out.println(timeOfNoAction);
 		if(timeOfNoAction > maxTimeToHaveNoAction){
 			setState(State.TITLE_STATE);
 			timeOfNoAction = 0;
