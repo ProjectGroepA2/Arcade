@@ -18,6 +18,8 @@ public class PreGameState extends GameState {
 	double index2 = 3;
 	double index = 3;
 	double timer;
+	int grootte = 150;
+	BasicStroke s = new BasicStroke(20);
 	
 	BufferedImage screenshot;
 	
@@ -41,24 +43,38 @@ public class PreGameState extends GameState {
 			gsm.setState(control.GameStateManager.State.PLAY_STATE);
 		}
 		
+		if(grootte > 270)
+			grootte = 150;
+		grootte+=2;
 	}
 
 	@Override
 	public void draw(Graphics2D g2) {
 		g2.drawImage(screenshot,0,0,1280,1024,null);
-		Font textFont = new Font("OCR A Extended", Font.BOLD,200);
-		BasicStroke s = new BasicStroke(20);
+		Font textFont = new Font("OCR A Extended", Font.BOLD,grootte);		
 		g2.setFont(textFont);
 		g2.setStroke(s);
-		g2.setColor(Color.BLACK);
-		g2.drawString("" + index,  325, 400);
-		if(index < 1)
-			g2.drawString("GO!!!",325,600);
-		else if (index < 2)
-			g2.drawString("SET", 450,600);
-		else
-			g2.drawString("READY", 325, 600);
-		
+		g2.setColor(Color.RED);
+		String text = "" + index;
+		int width = g2.getFontMetrics().stringWidth(text);		
+		g2.drawString(text,  325, 400);
+		if(index < 1){
+			text = "GO!!!";
+//			width = g2.getFontMetrics().stringWidth("GO!!!");
+//			g2.drawString("GO!!!",325,600);
+		}
+		else if (index < 2){
+			text = "SET";
+//			width = g2.getFontMetrics().stringWidth("SET");
+//			g2.drawString("SET", 450,600);
+		}
+		else{
+			text = "READY";
+//			width = g2.getFontMetrics().stringWidth("READY");
+//			g2.drawString("READY", 325, 600);
+		}
+		width =  g2.getFontMetrics().stringWidth(text);
+		g2.drawString(text, (256+1024/2)-width/2, 600);
 	}
 	
 
