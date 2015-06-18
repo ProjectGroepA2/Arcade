@@ -40,7 +40,7 @@ public class MenuState extends GameState {
 	private ArrayList<DifficultyButton> buttons2;
 	private int selected, oldselected;
 	private List<Song> songs;
-	SQLConnector sql = new SQLConnector();
+	SQLConnector sql;
 
 	private int animationcounter;
 	private boolean subscreen, startanimation;
@@ -70,6 +70,7 @@ public class MenuState extends GameState {
 		this.songs = sh.getSongs();
 		startanimation = true;
 		subscreen = false;
+		this.sql = sql;
 		
 		selected = 0;
 		oldselected = -1;
@@ -141,11 +142,11 @@ public class MenuState extends GameState {
 	public void draw(Graphics2D g2) {
 
 		buttons.clear();		
-		buttons.add(new MenuButton(400,250,GameModel.colors[kleurButton1],selectedToSong(selected-2)));
-		buttons.add(new MenuButton(400,390,GameModel.colors[kleurButton2],selectedToSong(selected-1)));
-		buttons.add(new MenuButton(360,525,920,80,GameModel.colors[kleurButton3],selectedToSong(selected)));
-		buttons.add(new MenuButton(400,670,GameModel.colors[kleurButton4],selectedToSong(selected+1)));
-		buttons.add(new MenuButton(400,810,GameModel.colors[kleurButton5],selectedToSong(selected+2)));
+		buttons.add(new MenuButton(300,260,GameModel.colors[kleurButton1],selectedToSong(selected-2)));
+		buttons.add(new MenuButton(300,380,GameModel.colors[kleurButton2],selectedToSong(selected-1)));
+		buttons.add(new MenuButton(260,520,1020,80,GameModel.colors[kleurButton3],selectedToSong(selected)));
+		buttons.add(new MenuButton(300,680,GameModel.colors[kleurButton4],selectedToSong(selected+1)));
+		buttons.add(new MenuButton(300,800,GameModel.colors[kleurButton5],selectedToSong(selected+2)));
 		buttons.get(2).setSelected(true);
 		
 		
@@ -415,51 +416,6 @@ public class MenuState extends GameState {
 		{
 			g2.drawString("No Highscores found", 30, 400);
 		}
-		
-		/*
-		List<Highscore> highscores = sql.getHighscores(selectedToSong(selected), sh.getCurrentSong().getSongs().get(difSelect));
-		List<Highscore> dailyHighs = new ArrayList<Highscore>();
-		int highest = 0;
-		int oldHighest = 0;
-		
-		Date date = new Date();
-		int time = date.getDay();
-		int dailyHighest = 0;
-		int oldDailyHighest = 0;
-		
-		
-		String name = "";
-		String dailyName = "";
-		
-		for(Highscore h:highscores){
-			
-			oldHighest = h.getScore();
-			if(oldHighest > highest){
-				highest = oldHighest;
-				name = h.getName();
-			}
-			
-			
-			if(time == h.getDate().getDay())
-				dailyHighs.add(h);
-			for(int i = 0; i < dailyHighs.size(); i ++){
-				oldDailyHighest = dailyHighs.get(i).getDate().getDay();
-				if(oldDailyHighest > dailyHighest){
-					dailyHighest = oldDailyHighest;
-					dailyName = h.getName();
-				}
-			}	
-		}
-		
-		
-		g2.setColor(Color.WHITE);
-		g2.drawString("Author: " + selectedToSong(selected).getAuthor(), 30, 200);
-		g2.drawString("Overall Highscore: " + highest , 30, 300);
-		g2.drawString("Overall Highscore by: " + name, 30, 400);
-		g2.drawString("Daily Highscore: " + dailyHighest, 30, 500);
-		g2.drawString("Daily Highscore by: : " + dailyName, 30, 600);
-		
-		*/
 		
 		
 		for(DifficultyButton b : buttons2){
