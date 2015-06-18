@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 
 public class HighscoreName {
 
-	private final char[] characters = " abcdefghijklmnopqrstuvwxyz0123456789†".toUpperCase().toCharArray();
+	private final char[] characters = " abcdefghijklmnopqrstuvwxyz0123456789+-?!".toUpperCase().toCharArray();
 	private int spacing = 10;
 	private HighscoreLetter[] letters;
 	private Font font;
