@@ -12,6 +12,7 @@ import control.joystick.JoystickHandler;
 public class NetworkHandler implements Runnable{
 	
 	DatagramSocket udp;
+	DatagramSocket udpsend;
 	
 	String host;
 	int port;
@@ -24,6 +25,8 @@ public class NetworkHandler implements Runnable{
 	
 	ButtonHandler bth;
 	JoystickHandler jth;
+	
+	InetAddress adr;
 	
 	public NetworkHandler(String host, int port, ButtonHandler bth, JoystickHandler jth)
 	{
@@ -38,8 +41,19 @@ public class NetworkHandler implements Runnable{
 		send = new byte[1024];
 		receive = new byte[1024];
 		
-			try {
-				udp = new DatagramSocket(1112);
+		try {
+			adr = InetAddress.getByName("192.168.1.5");
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+//			try {
+//				udp = new DatagramSocket(1112);
+//			} catch (SocketException e) {
+//				e.printStackTrace();
+//			}
+			 try {
+				udpsend = new DatagramSocket();
 			} catch (SocketException e) {
 				e.printStackTrace();
 			}
@@ -64,7 +78,8 @@ public class NetworkHandler implements Runnable{
 	{
 		send = str.getBytes();
 		try {
-			udp.send(new DatagramPacket(send, send.length));
+			System.out.println(send);
+			udpsend.send(new DatagramPacket(send, send.length, adr, port));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -84,22 +99,20 @@ public class NetworkHandler implements Runnable{
 		{
 			DatagramPacket receivePacket = new DatagramPacket(receive, receive.length);     
 			try {
-				udp.receive(receivePacket);
+				udpsend.receive(receivePacket);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}                   
 			String sentence = new String( receivePacket.getData());  
-			
-			if(sentence.length() != 21)
-				return;
-			
 			System.out.println("RECEIVED: " + sentence); 
-			
+
+					
+			sentence = sentence.trim();
 			String[] controls = sentence.split("\\|");
 			int[] control = new int[controls.length];
-			for(int i=0; i<controls.length; i++)
+			for(int i=0; i<controls.length; i++){
 				control[i] = Integer.parseInt(controls[i]);
-			
+			}
 			for(int i = 0; i < 7; i++){
 				if(control[i] != ButtonHandler.getButton(i).pressed)
 				{
