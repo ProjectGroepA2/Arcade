@@ -6,6 +6,7 @@ import java.util.List;
 public class SongInstance {
 
 	private String difficulty;
+	private int timesPlayed;
 	
 	private List<ObjectInstance> objects;
 	private List<ButtonInstance> buttons;
@@ -13,6 +14,7 @@ public class SongInstance {
 	public SongInstance(String difficulty)
 	{
 		this.difficulty = difficulty;
+		this.timesPlayed = 0;
 		
 		objects = new ArrayList<ObjectInstance>();
 		buttons = new ArrayList<ButtonInstance>();
@@ -82,5 +84,18 @@ public class SongInstance {
 		}
 		
 		return b;
+	}
+
+	public int getTimesPlayed() {
+		return timesPlayed;
+	}
+
+	public void setTimesPlayed(int timesPlayed) {
+		this.timesPlayed = timesPlayed;
+	}
+	
+	public void played()
+	{
+		timesPlayed++;
 	}
 }
