@@ -11,7 +11,9 @@ import model.gameState.MenuState;
 import model.gameState.PlayState;
 import model.gameState.TitleState;
 import control.button.Button;
+import control.button.ButtonEvent;
 import control.button.ButtonHandler;
+import control.joystick.JoystickEvent;
 import control.joystick.JoystickHandler;
 import data.io.SQLConnector;
 
@@ -21,6 +23,7 @@ public class GameStateManager {
 	public GameState currentState;
 	private int index = 0;
 	public int fps;
+	private float timeOfNoAction = 0,maxTimeToHaveNoAction = 45000;
 	
 	public enum State {
 		TITLE_STATE,
@@ -38,8 +41,7 @@ public class GameStateManager {
 		setState(State.TITLE_STATE);
 	}
 	
-	public void setState(State st)
-	{
+	public void setState(State st)	{
 		currentState = gamestates.get(st.ordinal());
 		init();
 	}
@@ -51,7 +53,13 @@ public class GameStateManager {
 		init();
 	}
 	
-	public void update(float factor){		
+	public void update(float factor){
+		timeOfNoAction += factor;	
+		System.out.println(timeOfNoAction);
+		if(timeOfNoAction > maxTimeToHaveNoAction){
+			setState(State.TITLE_STATE);
+			timeOfNoAction = 0;
+		}
 		currentState.update(factor);
 		fps = (int) (60/(factor/10));
 	}
@@ -64,5 +72,22 @@ public class GameStateManager {
 			b.setColor(Color.BLACK);
 		}
 		currentState.init();
+	}
+
+	public void buttonPressed(ButtonEvent e) {
+		timeOfNoAction = 0;
+		currentState.buttonPressed(e);
+		
+	}
+
+	public void buttonReleased(ButtonEvent e) {
+		timeOfNoAction = 0;
+		currentState.buttonReleased(e);
+		
+	}
+
+	public void onJoystickMoved(JoystickEvent e) {
+		timeOfNoAction = 0;
+		currentState.onJoystickMoved(e);		
 	}
 }
