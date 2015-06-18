@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sun.crypto.provider.RSACipher;
+
 import model.objects.highscore.Highscore;
 import audio.Song;
 import audio.SongInstance;
@@ -22,7 +24,7 @@ public class SQLConnector
         this("178.62.254.153", "3306","colorstrike","csadmin","aardbei123");
     }
 
-    //Start connection with Databse
+    //Start connection with Database
     public SQLConnector(String host, String port, String dbName, String userName, String password)
     {
         try
@@ -156,6 +158,17 @@ public class SQLConnector
 	    			} catch (SQLException e) {
 	    				e.printStackTrace();
 	    			}
+	    			
+	    			Statement st3 = executeResultQuery("SELECT COUNT(1) FROM playdata WHERE songinstance = (SELECT id FROM songinstance WHERE difficulty='" + si.getDifficulty() + "' AND song=(SELECT id FROM song WHERE folder='" + s.getFolder() + "'))");
+	    			try {
+						ResultSet rs3 = st3.getResultSet();
+						rs3.next();
+						int i = rs3.getInt(1);
+		    			si.setTimesPlayed(i);
+		    			System.out.println(s.getTitle() + " - " + si.getDifficulty() + ": " + i);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
     			}
     		}
     		else
