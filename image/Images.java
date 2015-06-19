@@ -32,7 +32,7 @@ public class Images {
 		   	images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/aanwijzers4sho.png"))));
 		   	images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/kast.png"))));
 		   	images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/gameover.png"))));
-		    images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/help.png"))));
+		    images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/gameover.png"))));			// HELP, MAAR NOG GEEN JUIST PLAATJE
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
