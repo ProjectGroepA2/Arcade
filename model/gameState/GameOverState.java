@@ -49,6 +49,13 @@ public class GameOverState extends GameState {
 		createBackground();
 		ButtonHandler.getButton(1).setColor(GameModel.colors[0]);
 		ButtonHandler.getButton(2).setColor(GameModel.colors[2]);
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 		JoystickHandler.REPEAT = true;
 		uploaded = false;
 	}
