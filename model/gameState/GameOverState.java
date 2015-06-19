@@ -76,6 +76,9 @@ public class GameOverState extends GameState {
 	public void buttonPressed(ButtonEvent e) {
 		//System.out.println("Name: "+hsn.getName());
 		switch(e.getButton().getButtonID()){
+		case 0:
+			gsm.setState(State.TITLE_STATE);
+			break;
 		case 1:
 			if(hsn.getName().trim().length() >= 3)
 			{
@@ -101,6 +104,7 @@ public class GameOverState extends GameState {
 			break;			
 		case 2:
 			gsm.setState(State.MENU_STATE);
+			break;
 		}
 		
 		
