@@ -44,7 +44,8 @@ public class InfoPanel {
 //		time = progress + ":" +  time;
 		
 		long progress = (sh.getProgress() / 1000);
-		String millis = ((progress) % 1000) + "".length() > 3 ? ("" +((progress) % 1000)).substring(0, 2) : "" + ((progress) % 1000);
+		
+		String millis =  (((progress) % 1000) + "").length() > 2 ? ("" +((progress) % 1000)).substring(0, 2) : "" + ((progress) % 1000);
 		String second = ((progress / 1000) % 60 + "").length() <= 1 ? "0" +((progress / 1000) % 60) : "" + ((progress / 1000) % 60);
 		String minute = ((progress / (1000 * 60)) % 60 + "").length() <= 1 ? "0" +((progress / (1000 * 60)) % 60) : "" + ((progress / (1000 * 60)) % 60);
 		time = minute + ":" + second + ":" + millis;
