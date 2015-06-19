@@ -28,7 +28,7 @@ public class PlayArea {
 	private Color hitAreaColor,pathColor = null;
 	private VolatileImage background;
 	private boolean hit = false;
-	private int count = 0,maxCount = 100,pathID = -1;
+	private int count = 0,maxCount = 100,pathID = -1, oldPathId = pathID;
 	private Stroke stroke = new BasicStroke(5);
 	
 	private Rectangle2D backgroundPlay = new Rectangle2D.Double(256, 0, 1024, 1024);
@@ -86,24 +86,7 @@ public class PlayArea {
 		paths.add(new Path(outsideHitAreaBorder.xpoints[5] - angleX,outsideHitAreaBorder.ypoints[5] - angleY				,outsideHitAreaBorder.xpoints[5],outsideHitAreaBorder.ypoints[5]));//left	 	-top
 		
 		
-		//drawing into buffer
-		background = Images.initVolatileImage(1280,1024, Transparency.BITMASK);
-		Graphics2D g2 = background.createGraphics();		
-		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-	    g2.setRenderingHints(rh);
-//	    g2.setColor(Color.WHITE);
-//	    g2.fillRect(256, 0, 1024, 1024);
-	    Line2D current;	
-		g2.setColor(Color.BLACK);
-		g2.setStroke(stroke);
-		for(int i = 0; i < paths.size(); i++){
-			current = paths.get(i);			
-			g2.draw(current);
-		}
-		g2.draw(innerHitAreaBorder);
-		g2.draw(outsideHitAreaBorder);
-		g2.dispose();
-		background.createGraphics();
+		generateBackground();
 	}	
 	
 	public void draw(Graphics2D g2){		
@@ -115,12 +98,9 @@ public class PlayArea {
 				hit = false;
 			}
 		}		
-		if(pathID >= 0 && pathColor != null){	
-			g2.setColor(new Color(pathColor.getRed(), pathColor.getGreen(), pathColor.getBlue(),50));
-			g2.fill(backgroundPlay);
-			g2.setStroke(stroke);
-			g2.setColor(pathColor);
-			g2.draw(paths.get(pathID));
+		if( oldPathId != pathID){	
+			generateBackground();
+			oldPathId = pathID;
 		}
 	}
 	
@@ -157,5 +137,34 @@ public class PlayArea {
 	public void pathPainted(int pathID,Color pathColor){
 		this.pathID = pathID;
 		this.pathColor = pathColor;
+	}
+	
+	public void generateBackground(){
+		//drawing into buffer
+		background = Images.initVolatileImage(1280,1024, Transparency.BITMASK);
+		Graphics2D g2 = background.createGraphics();		
+		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	    g2.setRenderingHints(rh);
+ 
+		Line2D current;	
+		g2.setColor(Color.BLACK);
+		g2.setStroke(stroke);
+		for(int i = 0; i < paths.size(); i++){
+			current = paths.get(i);			
+			g2.draw(current);
+		}
+		g2.draw(innerHitAreaBorder);
+		g2.draw(outsideHitAreaBorder);
+		
+	    if(pathID >= 0 && pathColor != null ){
+		    g2.setColor(new Color(pathColor.getRed(), pathColor.getGreen(), pathColor.getBlue(),50));
+			g2.fill(backgroundPlay);
+			g2.setStroke(stroke);
+			g2.setColor(pathColor);
+			g2.draw(paths.get(pathID));
+	    }
+	    
+		g2.dispose();
+		background.createGraphics();
 	}
 }

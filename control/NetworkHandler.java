@@ -160,8 +160,10 @@ public class NetworkHandler implements Runnable{
 					jth.onJoystickMoved(JoystickHandler.j);
 				}
 			}else {
-				JoystickHandler.j.setPosition(Position.CENTER);
-				
+				if(JoystickHandler.j.getPos() != Position.CENTER){
+					JoystickHandler.j.setPosition(Position.CENTER);
+					jth.onJoystickMoved(JoystickHandler.j);
+				}
 			}
 		}
 			
