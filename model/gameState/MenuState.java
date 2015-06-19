@@ -46,11 +46,10 @@ public class MenuState extends GameState {
 	private VolatileImage mainScreenBackground, subScreenBackground, subScreenForeground;
 
 	private int difSelect=0, oldDifSelect = -1;
-
-	Font textFont 		= new Font("OCR A Extended", Font.BOLD, 50);
-	Font textFontSmall 	= new Font("OCR A Extended", Font.BOLD, 15);
-	Font textFont2 	    = new Font("OCR A Extended", Font.BOLD, 50);
-
+	Font textFont = new Font("OCR A Extended", Font.BOLD, 50);
+	Font textFont2 = new Font("OCR A Extended", Font.BOLD, 35);
+	Font textFont3 = new Font("OCR A Extended", Font.BOLD, 20);
+	Font textFontSmall = new Font("OCR A Extended", Font.BOLD, 15);
 	BufferedImage aanwijzers = Images.getImage(ImageType.aanwijzers);
 
 	private int index 		 	= 	0,
@@ -91,17 +90,23 @@ public class MenuState extends GameState {
 	}
 	@Override
 	public void init() {
-		if(subscreen) {
+		if(subscreen)
+		{
 			ButtonHandler.getButton(1).setColor(GameModel.colors[0]);
 			ButtonHandler.getButton(2).setColor(GameModel.colors[2]);
 			generateSubScreenForeground();
-		} else {
+		}
+		else
+		{
 			ButtonHandler.getButton(1).setColor(GameModel.colors[0]);
-
+			
 			ButtonHandler.getButton(5).setColor(GameModel.colors[1]);
 			ButtonHandler.getButton(6).setColor(GameModel.colors[4]);
 			JoystickHandler.REPEAT = true;
 		}
+		
+		
+		
 	}
 
 	@Override
@@ -111,14 +116,20 @@ public class MenuState extends GameState {
 			if(animationcounter == 5){
 				startanimation = false;
 			}
+		}else if(subscreen){
+			//nextScreen();
+		}else{
+			//previousScreen();
 		}
-
 	     if(selected != oldselected){
-	    	 for(int i = 0; i < buttons.size(); i++)
+	    	 for(int i = 0; i < buttons.size(); i++){
 		    	 buttons.get(i).setSong(selectedToSong(selected+(i-2)));
+		    	 
+	    	 }
 	    	 oldselected = selected;
 	     }
-	     if(difSelect != oldDifSelect) {
+	     if(difSelect != oldDifSelect)
+	     {
 	    	 oldDifSelect = difSelect;
 	    	 generateSubScreenForeground();
 	     }
@@ -130,15 +141,16 @@ public class MenuState extends GameState {
 	public void draw(Graphics2D g2) {
 
 		buttons.clear();		
-		buttons.add(new MenuButton(300,260,GameModel.colors[kleurButton1],selectedToSong(selected-2)));
-		buttons.add(new MenuButton(300,380,GameModel.colors[kleurButton2],selectedToSong(selected-1)));
-		buttons.add(new MenuButton(260,520,1020,80,GameModel.colors[kleurButton3],selectedToSong(selected)));
-		buttons.add(new MenuButton(300,680,GameModel.colors[kleurButton4],selectedToSong(selected+1)));
-		buttons.add(new MenuButton(300,800,GameModel.colors[kleurButton5],selectedToSong(selected+2)));
+		buttons.add(new MenuButton(400,250,GameModel.colors[kleurButton1],selectedToSong(selected-2)));
+		buttons.add(new MenuButton(400,390,GameModel.colors[kleurButton2],selectedToSong(selected-1)));
+		buttons.add(new MenuButton(360,525,920,80,GameModel.colors[kleurButton3],selectedToSong(selected)));
+		buttons.add(new MenuButton(400,670,GameModel.colors[kleurButton4],selectedToSong(selected+1)));
+		buttons.add(new MenuButton(400,810,GameModel.colors[kleurButton5],selectedToSong(selected+2)));
 		buttons.get(2).setSelected(true);
-
+		
+		
 		g2.setColor(Color.BLACK);
-
+		Font textFont2 = new Font("OCR A Extended", Font.BOLD, 50);
 		g2.setFont(textFont2);
 		if(!subscreen) {
 			g2.drawImage(mainScreenBackground, 0, 0, 1280,1024,null);
@@ -182,7 +194,9 @@ public class MenuState extends GameState {
 				selected = 0;
 				sh.set(songs.indexOf(selectedToSong(selected)));
 				sh.play();	
-			}	
+			}else if(e.getButton().getButtonID() == 3){
+				gsm.setState(control.GameStateManager.State.HELP_STATE);
+			}
 		}
 		
 		if(e.getButton().getButtonID() == 0)
@@ -233,6 +247,8 @@ public class MenuState extends GameState {
 				
 				kleurButton5++;
 				kleurButton5 %= 6;
+				
+				
 
 			}else if(e.getJoystick().getPos() == Joystick.Position.UP){
 				selected--;
@@ -253,7 +269,7 @@ public class MenuState extends GameState {
 					kleurButton5 = 5;
 			}
 			
-			else if(e.getJoystick().getPos() == Joystick.Position.CENTER)
+			else if(e.getJoystick().getPos() == Position.CENTER)
 			{
 				buttons2.clear();
 		 		int instanceNr = 0;
@@ -303,9 +319,14 @@ public class MenuState extends GameState {
 	
 		//select
 		g2.setColor(GameModel.colors[0]);
+		g2.fillOval(20, 860, 30, 30);
+		g2.drawString("Play", 55, 880);
+
+		//help
+		g2.setColor(GameModel.colors[3]);
 		g2.fillOval(20, 900, 30, 30);
-		g2.drawString("Play", 55, 920);
-		
+		g2.drawString("Help", 55, 920);
+
 		//letters
 		g2.setColor(GameModel.colors[1]);
 		g2.fillOval(20, 940, 30, 30);
@@ -318,6 +339,8 @@ public class MenuState extends GameState {
 		g2.dispose();
 	
 		mainScreenBackground.createGraphics();
+		
+		
 	}
 	
 	public void generateSubScreenBackground(){
@@ -351,8 +374,10 @@ public class MenuState extends GameState {
  		g2.setFont(textFont);
 		g2.drawString(selectedToSong(selected).getTitle(), 30, 60);
 		
+ 		g2.setFont(textFont3);
 		g2.setColor(Color.WHITE);
-		g2.drawString("Author: " + selectedToSong(selected).getAuthor(), 30, 200);
+		g2.drawString("Author: " + selectedToSong(selected).getAuthor(), 30, 100);
+		g2.setFont(textFont);
 		
 		boolean highscoresFound = true;
 		int HIGHSCORES_TO_DISPLAY = 5;
@@ -362,19 +387,25 @@ public class MenuState extends GameState {
 		{
 			highscores = sql.getHighscores(selectedToSong(selected), sh.getCurrentSong().getSongs().get(difSelect));
 			if(highscores.isEmpty())
+			{
 				highscoresFound = false;
+			}
 			else
 				g2.drawString("All Time Highscores", 30, 300);
 		}
 		else
 			g2.drawString("Daily Highscore", 30, 300);
+ 			g2.setFont(textFont2);
 		
-		if(highscoresFound) {
+		if(highscoresFound)
+		{
 			HIGHSCORES_TO_DISPLAY = HIGHSCORES_TO_DISPLAY > highscores.size() ? highscores.size() : HIGHSCORES_TO_DISPLAY;
 			
-			for(int i = 0; i<HIGHSCORES_TO_DISPLAY; i++) {
+			for(int i = 0; i<HIGHSCORES_TO_DISPLAY; i++)
+			{
 				Highscore hi = highscores.get(i);
-				g2.drawString(hi.getName() + " - " + hi.getScore(), 30, 400 + i*100);
+				
+				g2.drawString(hi.getName() + " - " + hi.getScore(), 30, 350 + i*100);
 			}
 		}
 		else
@@ -382,7 +413,12 @@ public class MenuState extends GameState {
 			g2.drawString("No Highscores found", 30, 400);
 		}
 		
-		
+		/*
+		List<Highscore> highscores = sql.getHighscores(selectedToSong(selected), sh.getCurrentSong().getSongs().get(difSelect));
+		List<Highscore> dailyHighs = new ArrayList<Highscore>();
+		int highest = 0;
+		int oldHighest = 0;
+		*/
 		for(DifficultyButton b : buttons2){
 			b.draw(g2);
 		}
@@ -429,6 +465,7 @@ public class MenuState extends GameState {
 				animationcounter++;
 			if(buttons.get(button).getX() >= -200)
 				buttonInAnimation(button+1);
+			}
 		}
 	}
 

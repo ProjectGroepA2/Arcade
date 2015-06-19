@@ -7,6 +7,7 @@ import java.util.List;
 import model.SongHandler;
 import model.gameState.GameOverState;
 import model.gameState.GameState;
+import model.gameState.HelpState;
 import model.gameState.MenuState;
 import model.gameState.PlayState;
 import model.gameState.TitleState;
@@ -32,6 +33,7 @@ public class GameStateManager {
 	public enum State {
 		TITLE_STATE,
 		MENU_STATE,
+		HELP_STATE,
 		PLAY_STATE,
 		GAMEOVER_STATE
 	}
@@ -41,6 +43,7 @@ public class GameStateManager {
 		gamestates = new ArrayList<GameState>();
 		gamestates.add(new TitleState(this, sh, sql));
 		gamestates.add(new MenuState(this, sh, sql));
+		gamestates.add(new HelpState(this, sh, sql));
 		gamestates.add(new PlayState(this, sh, sql));
 		gamestates.add(new GameOverState(this, sh, sql));
 		setState(State.TITLE_STATE);
