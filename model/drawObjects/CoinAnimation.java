@@ -1,8 +1,11 @@
 package model.drawObjects;
 
+import model.gameState.PlayState;
+
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
+import java.io.IOException;
 
 /**
  * Created by Bilel on 4-6-2015.
@@ -17,22 +20,22 @@ public class CoinAnimation extends DrawObject {
     private Point2D.Double  coinSetPoint;
 
     // Hoevaak de timer gelopen heeft
-    private static int timerLoops = 0;
+    private static int timerLoops      = 0;
 
     public CoinAnimation(int startX, int startY) {
-        coinSetPoint    = new Point2D.Double(startX, startY);
-        coinShape       = new Ellipse2D.Double(startX, startY, 20, 20);
+        coinSetPoint        = new Point2D.Double(startX, startY);
+        coinShape           = new Ellipse2D.Double(startX, startY, 20, 20);
     }
 
     // Start
     public void start() {
-        timerLoops      = 1;
+        timerLoops          = 1;
     }
 
     public void draw(Graphics2D g2) {
 
         update(timerLoops);                                             // UPDATE
-        g2.setColor(new Color(255, 255, 0, (255 - timerLoops * 5)));    // GEEL
+        g2.setColor(new Color(255, 255, 0));    // GEEL
         g2.draw(coinShape);                                             // MUNTJE TEKENEN
         g2.fill(coinShape);
 
@@ -49,8 +52,11 @@ public class CoinAnimation extends DrawObject {
 
         // Coin omlaag verschuiven doordat Y * loops omlaag gaat.
         // Per frame verschuift het balletje delta 10 op Y-as.
-        coinShape.setFrame(coinSetPoint.getX(), coinSetPoint.getY() + 10 * timerLoops,
-                coinShape.getWidth(), coinShape.getHeight());
+        try {
+            coinShape.setFrame(coinSetPoint.getX(), coinSetPoint.getY() + (1000 - 7 * PlayState.comboScore) / 50 * timerLoops,
+                    coinShape.getWidth(), coinShape.getHeight());
+        } catch (ArithmeticException a) { a.printStackTrace(); }
+
         timerLoops++;
     }
 

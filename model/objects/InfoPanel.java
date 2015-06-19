@@ -44,8 +44,7 @@ public class InfoPanel {
 //		time = progress + ":" +  time;
 		
 		long progress = (sh.getProgress() / 1000);
-		
-		String millis =  (((progress) % 1000) + "").length() > 2 ? ("" +((progress) % 1000)).substring(0, 2) : "" + ((progress) % 1000);
+		String millis = ((progress) % 1000) + "".length() > 3 ? ("" +((progress) % 1000)).substring(0, 2) : "" + ((progress) % 1000);
 		String second = ((progress / 1000) % 60 + "").length() <= 1 ? "0" +((progress / 1000) % 60) : "" + ((progress / 1000) % 60);
 		String minute = ((progress / (1000 * 60)) % 60 + "").length() <= 1 ? "0" +((progress / (1000 * 60)) % 60) : "" + ((progress / (1000 * 60)) % 60);
 		time = minute + ":" + second + ":" + millis;
@@ -93,11 +92,6 @@ public class InfoPanel {
 		g2.drawString(sh.getCurrentSongInstance().getDifficulty(), 25, 230);
 		g2.drawString(sh.getCurrentSong().getAuthor(), 25, 260);
 		g2.drawString(time, 25, 290);
-		
-//	    GradientPaint gp = new GradientPaint(300, 0, new Color(200,200,255), 256, 1024, Color.WHITE);
-//	    g2.setPaint(gp);
-//		g2.fillRect(x, y, 256, 1024);
-			
 			
 		g2.setColor(Color.BLACK);
 		g2.fillRect(25, 1000 - 7 * tempComboScore, 200, 7 * tempComboScore);
