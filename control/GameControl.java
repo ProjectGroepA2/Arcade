@@ -32,13 +32,11 @@ public class GameControl implements JoystickListener, ButtonListener, ActionList
 
 	@Override
 	public void buttonPressed(ButtonEvent e) {	
-//		System.out.println("Game control, button pressed: "+e.getButton().getButtonID());
 		gsm.buttonPressed(e);
 	}
 
 	@Override
 	public void buttonReleased(ButtonEvent e) {	
-//		System.out.println("Game control, button released: "+e.getButton().getButtonID());
 		gsm.buttonReleased(e);
 	}
 

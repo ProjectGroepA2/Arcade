@@ -222,7 +222,6 @@ public class MenuState extends GameState {
 					difSelect = 0;
 				}
 				
-				//System.out.println(difSelect);
 			}
 			else if(e.getJoystick().getPos() == Position.CENTER)	
 			{

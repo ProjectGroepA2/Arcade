@@ -107,8 +107,6 @@ public class PlayState extends GameState {
 		if(progress > sh.getCurrentSongInstance().getEndTime() + Enemy.secondsToEnd*1000*2)
 			endGame();
 
-//		System.out.println(progress - oldProgress + " / " + area.paths.get(player.getIndex()).getEnemysInPath().size());
-
 		oldProgress = progress;
 
 		Enemy closedEnemy = null;
@@ -120,7 +118,6 @@ public class PlayState extends GameState {
 			while (enemyIterator.hasNext()) {
 
 				Enemy e = enemyIterator.next();
-//				System.out.println("Path: "+e.getIndex()+"\tDistance: "+(Enemy.distanceToOctagon-e.getDistanceFromStart()));				
 				if (e.getDistanceFromStart() > Enemy.distanceToOctagon + (sizeOfEnemy * 1.5)) {
 					enemyIterator.remove();
 					lifePoints -= 5;

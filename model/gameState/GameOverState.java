@@ -94,7 +94,6 @@ public class GameOverState extends GameState {
 					}
 					uploaded = true;
 
-					System.out.println(id);
 				}else{
 					gsm.setState(State.MENU_STATE);
 				}

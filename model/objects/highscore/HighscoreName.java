@@ -18,7 +18,6 @@ public class HighscoreName {
 		int marge = (int) (Math.floor(nameLength/2)-1)*spacing;
 		x -= (double)HighscoreLetter.charLength*(nameLength/2.0) + marge;
 		
-		System.out.println(x);
 		for(int i = 0; i < letters.length; i++){			
 				letters[i] = new HighscoreLetter(characters, x+(HighscoreLetter.charLength*i)+(spacing*i), y);		
 		}
