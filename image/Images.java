@@ -32,7 +32,7 @@ public class Images {
 		   	images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/aanwijzers4sho.png"))));
 		   	images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/kast.png"))));
 		   	images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/gameover.png"))));
-		   	images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/gameover.png"))));
+		    images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/help.png"))));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -100,7 +100,8 @@ public class Images {
 	public static VolatileImage initVolatileImage(int width, int height, int opc){
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsConfiguration gc = ge.getDefaultScreenDevice().getDefaultConfiguration();
-		VolatileImage image = gc.createCompatibleVolatileImage(width, height, opc);
+		VolatileImage image = null;
+		image = gc.createCompatibleVolatileImage(width, height, opc);
 		int valid = image.validate(gc);
 	    if (valid == VolatileImage.IMAGE_INCOMPATIBLE)
 	    	image = initVolatileImage(width, height, opc);
