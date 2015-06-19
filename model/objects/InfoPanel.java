@@ -11,6 +11,7 @@ import java.awt.Transparency;
 import java.awt.image.VolatileImage;
 
 import model.SongHandler;
+import model.drawObjects.CoinAnimation;
 import model.gameState.PlayState;
 
 public class InfoPanel {
@@ -20,6 +21,9 @@ public class InfoPanel {
 	private VolatileImage infoPanel;
 	private SongHandler sh;
 	private String time;
+
+	private CoinAnimation coinAnimation = new CoinAnimation(125, 300);
+	private int tempComboScore;
 	
 	public InfoPanel(int x, int y, SongHandler sh){
 		this.x = x;
@@ -52,6 +56,7 @@ public class InfoPanel {
 		Graphics2D g2 = infoPanel.createGraphics();
 		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	    g2.setRenderingHints(rh);	
+	    g2.setColor(Color.BLACK);
 	    
 	    
 //	    g2.setColor(Color.GRAY);
@@ -67,12 +72,23 @@ public class InfoPanel {
 		g2.setColor(Color.GREEN);
 		g2.fillRect(25, 100, (int)(2 * PlayState.lifePoints), 30);
 		
-		g2.setColor(Color.BLACK);
+		g2.setColor(Color.ORANGE);
 		g2.drawString("Score: " + totalHighscore, 25, 75);
 		g2.drawRect(25, 100, 200, 30);
 		g2.drawRect(25, 300, 200, 700);
 		
 		g2.drawString(sh.getCurrentSong().getTitle(), 25, 200);
+		g2.drawString(sh.getCurrentSongInstance().getDifficulty(), 25, 230);
+		g2.drawString(sh.getCurrentSong().getAuthor(), 25, 260);
+		g2.drawString(time, 25, 290);
+
+		if (!coinAnimation.areWeDoneYet()) {
+			coinAnimation.draw(g2);
+			// Score pas updaten wanneer coin klaar is met afspelen
+			if (coinAnimation.isLastLoop())
+				tempComboScore = PlayState.comboScore;
+		} else
+			tempComboScore = PlayState.comboScore;
 		g2.drawString(sh.getCurrentSongInstance().getDifficulty(), 25, 230);
 		g2.drawString(sh.getCurrentSong().getAuthor(), 25, 260);
 		g2.drawString(time, 25, 290);
@@ -83,9 +99,13 @@ public class InfoPanel {
 			
 			
 		g2.setColor(Color.YELLOW);		
-		g2.fillRect(25, 1000 - 7 * PlayState.comboScore, 200, 0 + 7 * PlayState.comboScore);
+		g2.fillRect(25, 1000 - 7 * tempComboScore, 200, 7 * tempComboScore);
 		g2.dispose();
 		infoPanel.createGraphics();
+	}
+
+	public void throwACoin() {
+		coinAnimation.start();		// Teller weer op 0 zetten
 	}
 	
 	public void draw(Graphics2D g2){

@@ -40,9 +40,13 @@ public class GameStateManager {
 		gamestates.add(new GameOverState(this, sh, sql));
 		setState(State.TITLE_STATE);
 	}
-	
-	public void setState(State st)	{
+
+	public void setState(State st)
+	{
+		if (st.ordinal() > 0)
+			currentState.stopAudio();
 		currentState = gamestates.get(st.ordinal());
+
 		init();
 	}
 

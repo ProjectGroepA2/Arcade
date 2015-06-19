@@ -223,6 +223,7 @@ public class PlayState extends GameState {
 					enemies_hit++;
 					enemysInPath.remove();
 					notHit = false;
+					infoPanel.throwACoin(); // Coin Animatie starten bij hit
 					break;
 				}
 			}
