@@ -2,12 +2,7 @@ package model.objects;
 
 import image.Images;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GradientPaint;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.Transparency;
+import java.awt.*;
 import java.awt.image.VolatileImage;
 
 import model.SongHandler;
@@ -22,8 +17,10 @@ public class InfoPanel {
 	private SongHandler sh;
 	private String time;
 
-	private CoinAnimation coinAnimation = new CoinAnimation(125, 300);
 	private int tempComboScore;
+
+	private CoinAnimation coinAnimation = new CoinAnimation(125, 300);
+
 	
 	public InfoPanel(int x, int y, SongHandler sh){
 		this.x = x;
@@ -58,33 +55,44 @@ public class InfoPanel {
 	    g2.setRenderingHints(rh);	
 	    g2.setColor(Color.BLACK);
 	    
-	    
 //	    g2.setColor(Color.GRAY);
 	    GradientPaint gp = new GradientPaint(0, 0, new Color(245,245,245), 256, 1024, Color.WHITE);
 	    g2.setPaint(gp);
 		g2.fillRect(x, y, 256, 1024);
-		
+
+		// Score balk
 		g2.setColor(Color.BLACK);
 		g2.drawRect(x, y, 255, 1023);
-		
+
 		Font scoreFont = new Font("OCR A Extended", Font.BOLD, 30);
 		g2.setFont(scoreFont);
 		g2.setColor(Color.GREEN);
 		g2.fillRect(25, 100, (int)(2 * PlayState.lifePoints), 30);
-		
+
+		// Laatste punten in-/decrease tonen.
+		if (PlayState.sinceScoreChanged < 75 && PlayState.sinceScoreChanged != 0) {
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float)(1 - (PlayState.sinceScoreChanged * 0.01))));
+			g2.setColor(Color.RED);
+			g2.drawString("+" + PlayState.lastScoreChange, 205, 40);
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+		}
+
 		g2.setColor(Color.ORANGE);
 		g2.drawString("Score: " + totalHighscore, 25, 75);
+
+		// BALK
 		g2.drawRect(25, 100, 200, 30);
 		g2.drawRect(25, 300, 200, 700);
-		
+
 		g2.drawString(sh.getCurrentSong().getTitle(), 25, 200);
 		g2.drawString(sh.getCurrentSongInstance().getDifficulty(), 25, 230);
 		g2.drawString(sh.getCurrentSong().getAuthor(), 25, 260);
 		g2.drawString(time, 25, 290);
 
+		// Controlen of coin animatie nodig is
 		if (!coinAnimation.areWeDoneYet()) {
 			coinAnimation.draw(g2);
-			// Score pas updaten wanneer coin klaar is met afspelen
+			// Score pas updaten wanneer coin in zijn laatste draw loop zit
 			if (coinAnimation.isLastLoop())
 				tempComboScore = PlayState.comboScore;
 		} else
@@ -101,7 +109,7 @@ public class InfoPanel {
 	}
 
 	public void throwACoin() {
-		coinAnimation.start();		// Teller weer op 0 zetten
+		coinAnimation.start();		// Teller weer op 1 zetten
 	}
 	
 	public void draw(Graphics2D g2){

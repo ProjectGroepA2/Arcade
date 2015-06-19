@@ -117,14 +117,12 @@ public class MenuState extends GameState {
 			//previousScreen();
 		}*/
 	     if(selected != oldselected){
-	    	 for(int i = 0; i < buttons.size(); i++){
+	    	 for(int i = 0; i < buttons.size(); i++)
 		    	 buttons.get(i).setSong(selectedToSong(selected+(i-2)));
-		    	 
-	    	 }
+
 	    	 oldselected = selected;
 	     }
-	     if(difSelect != oldDifSelect)
-	     {
+	     if(difSelect != oldDifSelect) {
 	    	 oldDifSelect = difSelect;
 	    	 generateSubScreenForeground();
 	     }

@@ -37,6 +37,8 @@ public class PlayState extends GameState {
 	public static int sizeOfEnemy = 40;
 	public static int currentScore = 0;
 	public static int comboScore = 0;
+	public static int lastScoreChange = 0;
+	public static int sinceScoreChanged = 75;
 	public static double lifePoints = 100;
 	
 	private int enemies_hit = 0;
@@ -71,9 +73,7 @@ public class PlayState extends GameState {
 		joystick_moved = 0;
 		
 		for(Path p : area.paths)
-		{
 			p.getEnemysInPath().clear();
-		}
 
 		for (int i = 1; i < ButtonHandler.getButtons().size(); i++) {
 			Button b = ButtonHandler.getButton(i);
@@ -108,28 +108,27 @@ public class PlayState extends GameState {
 			endGame();
 
 		oldProgress = progress;
-
 		Enemy closedEnemy = null;
 		player.update(factor);
-		for (Path path : area.paths) {
 
+		for (Path path : area.paths) {
 			Iterator<Enemy> enemyIterator = path.getEnemysInPath().iterator();
 
 			while (enemyIterator.hasNext()) {
-
 				Enemy e = enemyIterator.next();
 				if (e.getDistanceFromStart() > Enemy.distanceToOctagon + (sizeOfEnemy * 1.5)) {
 					enemyIterator.remove();
 					lifePoints -= 5;
+					lastScoreChange = -5;
+					sinceScoreChanged = 1;
 					comboScore /= 2;
 					enemies_missed++;
 				}
-				if(closedEnemy == null){
+				if(closedEnemy == null)
 					closedEnemy = e;
-				}
-				if((Enemy.distanceToOctagon-closedEnemy.getDistanceFromStart()) > (Enemy.distanceToOctagon-e.getDistanceFromStart())){
+				if((Enemy.distanceToOctagon-closedEnemy.getDistanceFromStart()) > (Enemy.distanceToOctagon-e.getDistanceFromStart()))
 						closedEnemy = e;
-				}
+
 				e.update(factor);
 			}
 		}
@@ -139,27 +138,25 @@ public class PlayState extends GameState {
 		infoPanel.updateIPanel();
 		
 		if(lifePoints <= 0)
-		{
 			endGame();
-		}
-		if(comboScore >= 100)
-		{
-			comboScore = 0;
-			currentScore += 500;
+
+		if(comboScore >= 100) {
+			comboScore 			= 	0;
+			currentScore 	   += 	500;
+			sinceScoreChanged 	= 	1;
+			lastScoreChange 	= 	500;
 		}
 
-		
 		area.count();
-		if(closedEnemy == null){
+		if(closedEnemy == null)
 			area.pathPainted(-1, null);
-		}else{
+		else
 			area.pathPainted(closedEnemy.getIndex(), closedEnemy.getColor());
-		}
+
 	}
 
 	private void endGame() {
-		if(sh.getProgress()/1000 > 5000)	
-		{
+		if(sh.getProgress()/1000 > 5000) {
 			sql.addPlaydata(sh.getCurrentSong(), sh.getCurrentSongInstance(), sh.getProgress()/1000, enemies_missed, enemies_hit, buttons_pressed, joystick_moved);
 			sh.getCurrentSongInstance().played();
 		}
@@ -176,6 +173,7 @@ public class PlayState extends GameState {
 			infoPanel.draw(g2);
 			g2.setClip(borderRect);
 			area.draw(g2);
+			sinceScoreChanged++;
 
 			for (Path p : area.paths) {
 				if (p.getEnemysInPath() != null) {
@@ -187,14 +185,13 @@ public class PlayState extends GameState {
 					}
 				}
 			}
-
 			if (player != null)
 				player.draw(g2);
+
 		} catch (Exception e) {
 		}
 		if(!Window.ON_RASP){
 			int width,height;
-			width = g2.getFontMetrics().stringWidth("");
 			height = g2.getFontMetrics().getHeight();
 			for (int i = 1; i < ButtonHandler.getButtons().size(); i++) {
 				Ellipse2D oval = new Ellipse2D.Double(880+(50*i), 0, 50, 50);
@@ -217,6 +214,8 @@ public class PlayState extends GameState {
 				if (e.getButton().getColor().equals(enemy.getColor())) {
 					currentScore += enemy.getDistanceFromStart() - Enemy.distanceToOctagon;
 					comboScore += 5;
+					lastScoreChange = 5;
+					sinceScoreChanged = 1;
 					lifePoints = Math.min(lifePoints+10, 100);
 					area.setHitAreaColor(enemy.getColor());
 					area.hit();
@@ -235,15 +234,11 @@ public class PlayState extends GameState {
 		if(notHit)
 		{
 			if(area.paths.get(player.getIndex()).getEnemysInPath().size() > 0)
-			{
 				lifePoints -= 1.5;
-			}
 		}
 		
 		if(e.getButton().getButtonID() == 0)
-		{
 			endGame();
-		}
 		else
 			buttons_pressed++;
 	}
