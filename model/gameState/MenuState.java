@@ -39,29 +39,29 @@ public class MenuState extends GameState {
 	private ArrayList<DifficultyButton> buttons2;
 	private int selected, oldselected;
 	private List<Song> songs;
-	SQLConnector sql;
+	private SQLConnector sql;
 
 	private int animationcounter;
 	private boolean subscreen, startanimation;
 	private VolatileImage mainScreenBackground, subScreenBackground, subScreenForeground;
-	
-	int yPosDiffButton = 900;
+
 	private int difSelect=0, oldDifSelect = -1;
-	Font textFont = new Font("OCR A Extended", Font.BOLD, 50);
-	Font textFontSmall = new Font("OCR A Extended", Font.BOLD, 15);
+
+	Font textFont 		= new Font("OCR A Extended", Font.BOLD, 50);
+	Font textFontSmall 	= new Font("OCR A Extended", Font.BOLD, 15);
+
 	BufferedImage aanwijzers = Images.getImage(ImageType.aanwijzers);
-	int index = 0;
-	
-	
-	
-	int kleurButton1 = 0;
-	int kleurButton2 = 1;
-	int kleurButton3 = 2;
-	int kleurButton4 = 3;
-	int kleurButton5 = 4;
-	
-	
-	
+
+	private int index 		 	= 	0,
+				getDifSelect 	= 	0,
+				getOldDifSelect = 	-1,
+				yPosDiffButton	= 	900,
+				kleurButton1 	= 	0,
+				kleurButton2 	= 	1,
+				kleurButton3 	= 	2,
+				kleurButton4 	= 	3,
+				kleurButton5 	= 	4;
+
 	public MenuState(GameStateManager gsm, SongHandler sh, SQLConnector sql) {	
 		super(gsm, sh, sql);
 		buttons = new ArrayList<MenuButton>();
@@ -96,17 +96,13 @@ public class MenuState extends GameState {
 			ButtonHandler.getButton(2).setColor(GameModel.colors[2]);
 			generateSubScreenForeground();
 		}
-		else
-		{
+		else {
 			ButtonHandler.getButton(1).setColor(GameModel.colors[0]);
-			
+
 			ButtonHandler.getButton(5).setColor(GameModel.colors[1]);
 			ButtonHandler.getButton(6).setColor(GameModel.colors[4]);
 			JoystickHandler.REPEAT = true;
 		}
-		
-		
-		
 	}
 
 	@Override
@@ -245,8 +241,6 @@ public class MenuState extends GameState {
 				
 				kleurButton5++;
 				kleurButton5 %= 6;
-				
-				
 
 			}else if(e.getJoystick().getPos() == Joystick.Position.UP){
 				selected--;

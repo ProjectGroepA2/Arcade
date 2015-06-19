@@ -89,11 +89,12 @@ public class InfoPanel {
 				tempComboScore = PlayState.comboScore;
 		} else
 			tempComboScore = PlayState.comboScore;
+
 		g2.drawString(sh.getCurrentSongInstance().getDifficulty(), 25, 230);
 		g2.drawString(sh.getCurrentSong().getAuthor(), 25, 260);
 		g2.drawString(time, 25, 290);
 			
-		g2.setColor(Color.BLACK);
+		g2.setColor(Color.YELLOW);
 		g2.fillRect(25, 1000 - 7 * tempComboScore, 200, 7 * tempComboScore);
 		g2.dispose();
 		infoPanel.createGraphics();

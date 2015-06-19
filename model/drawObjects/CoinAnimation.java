@@ -38,7 +38,6 @@ public class CoinAnimation extends DrawObject {
         g2.setColor(new Color(255, 255, 0));    // GEEL
         g2.draw(coinShape);                                             // MUNTJE TEKENEN
         g2.fill(coinShape);
-
     }
 
     // Wordt na elke paint aangeroepen
@@ -53,7 +52,7 @@ public class CoinAnimation extends DrawObject {
         // Coin omlaag verschuiven doordat Y * loops omlaag gaat.
         // Per frame verschuift het balletje delta 10 op Y-as.
         try {
-            coinShape.setFrame(coinSetPoint.getX(), coinSetPoint.getY() + (1000 - 7 * PlayState.comboScore) / 50 * timerLoops,
+            coinShape.setFrame(coinSetPoint.getX(), coinSetPoint.getY() + (1000 - 7 * PlayState.comboScore) / 20 * timerLoops,
                     coinShape.getWidth(), coinShape.getHeight());
         } catch (ArithmeticException a) { a.printStackTrace(); }
 
@@ -62,7 +61,7 @@ public class CoinAnimation extends DrawObject {
 
     // Zijn we al begonnen/klaar?
     public boolean areWeDoneYet() {
-        if (timerLoops > 49 || timerLoops == 0) {
+        if (timerLoops > 19 || timerLoops == 0) {
             timerLoops = 0;
             return true;
         }
