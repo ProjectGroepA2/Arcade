@@ -98,7 +98,7 @@ public class InfoPanel {
 //		g2.fillRect(x, y, 256, 1024);
 			
 			
-		g2.setColor(Color.YELLOW);		
+		g2.setColor(Color.BLACK);
 		g2.fillRect(25, 1000 - 7 * tempComboScore, 200, 7 * tempComboScore);
 		g2.dispose();
 		infoPanel.createGraphics();
