@@ -24,6 +24,7 @@ public class GameStateManager {
 	private int index = 0;
 	public int fps;
 	private float timeOfNoAction = 0,maxTimeToHaveNoAction = 45000;
+	private SongHandler sh;
 	
 	public enum State {
 		TITLE_STATE,
@@ -33,6 +34,7 @@ public class GameStateManager {
 	}
 	
 	public GameStateManager(SongHandler sh, SQLConnector sql){
+		this.sh = sh;
 		gamestates = new ArrayList<GameState>();
 		gamestates.add(new TitleState(this, sh, sql));
 		gamestates.add(new MenuState(this, sh, sql));
@@ -48,6 +50,9 @@ public class GameStateManager {
 		currentState = gamestates.get(st.ordinal());
 
 		init();
+//		System.out.println("Current song: "+sh.getCurrentSongInstance());		
+//		sh.set(sh.getCurrentSongInstance());
+//		sh.play();
 	}
 
 	public void next() {
