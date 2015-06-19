@@ -9,21 +9,15 @@ import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
-import java.awt.image.WritableRenderedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
-import com.google.zxing.WriterException;
 
 import model.GameModel;
 import model.SongHandler;
 import model.objects.InfoPanel;
 import model.objects.highscore.HighscoreName;
-import net.glxn.qrgen.QRCode;
-import net.glxn.qrgen.image.ImageType;
+
+import com.google.zxing.WriterException;
+
 import control.GameStateManager;
 import control.GameStateManager.State;
 import control.button.ButtonEvent;
@@ -72,7 +66,8 @@ public class GameOverState extends GameState {
 		if(!uploaded)
 			hsn.drawName(g2);
 		else if(QRimage != null){
-			g2.drawImage(QRimage, 400, 600, 400, 400, null);
+			g2.drawImage(QRimage, (1280/2)-(QRimage.getWidth()/2), 600,null);
+			//1280 is de breedte van de panel
 		}
 			
 	}

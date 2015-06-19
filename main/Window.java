@@ -91,6 +91,7 @@ public class Window extends JFrame {
 		jsh.addJoystickListener(control);
 		
 		//Display
+		setResizable(false);
 		pack();
 		setVisible(true);
 	}
