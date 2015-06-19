@@ -16,10 +16,8 @@ import audio.SongInstance;
 
 public class SQLConnector
 {
-
     private Connection myConn = null;
-    
-    public SQLConnector()
+    public 	SQLConnector()
     {
         this("178.62.254.153", "3306","colorstrike","csadmin","aardbei123");
     }
@@ -52,7 +50,7 @@ public class SQLConnector
     	//System.out.println(query);
     	Statement st = executeResultQuery(query);
     	ResultSet result = null;
-    	List<Highscore> hsc = new ArrayList<Highscore>();
+    	List<Highscore> hsc = new ArrayList<>();
 
 		try {
 			result = st.getResultSet();
@@ -73,7 +71,7 @@ public class SQLConnector
     {
     	Statement st = executeResultQuery("SELECT * FROM highscore WHERE date=CURDATE() AND songinstance = (SELECT id FROM songinstance WHERE difficulty='" + si.getDifficulty() + "' AND song=(SELECT id FROM song WHERE folder='" + s.getFolder() + "')) ORDER BY score DESC");
     	ResultSet result = null;
-    	List<Highscore> hsc = new ArrayList<Highscore>();
+    	List<Highscore> hsc = new ArrayList<>();
 		try {
 			result = st.getResultSet();
 		} catch (SQLException e1) {
@@ -92,8 +90,7 @@ public class SQLConnector
     }
     
     public int addHighscore(Song s, SongInstance si, String name, int currentScore) {
-    	if(name.length() <= 5 && currentScore <= Integer.MAX_VALUE)
-		{
+    	if(name.length() <= 5 && currentScore <= Integer.MAX_VALUE)	{
 			String query = "INSERT INTO highscore (username, score, date, songinstance) VALUES ('" + name.trim() + "', " + currentScore + ", CURDATE(), (SELECT id FROM songinstance WHERE difficulty='" + si.getDifficulty() + "' AND song=(SELECT id FROM song WHERE folder='" + s.getFolder() + "')))";
 			//System.out.println(query);
 			return executeInsertQuery(query);
@@ -106,7 +103,6 @@ public class SQLConnector
 		String query = "INSERT INTO playdata (enemies_missed, enemies_hit, buttons_pressed, joystick_moved, start_time, play_time, songinstance) VALUES (" + enemies_missed + ", " + enemies_hit + ", " + buttons_pressed + ", " + joystick_moved + ", NOW(), " + time + ", (SELECT id FROM songinstance WHERE difficulty='" + si.getDifficulty() + "' AND song=(SELECT id FROM song WHERE folder='" + s.getFolder() + "')))";
 		//System.out.println(query);
 		executeInsertQuery(query);
-		
 	}
     
     public void update(List<Song> songs)
@@ -131,22 +127,15 @@ public class SQLConnector
 				System.out.println("Empty return set");
 			}
     	
-    		if(id != -1)
-    		{
-    			for(SongInstance si : s.getSongs())
-    			{
+    		if(id != -1) {
+    			for(SongInstance si : s.getSongs()) {
 	    			Statement st2 = executeResultQuery("SELECT id FROM songinstance WHERE song=" + id + " AND difficulty='" + si.getDifficulty() + "'");
 	        		
 	        		ResultSet rs2 = null;
 	        		
 	    			try {
 	    				rs2 = st2.getResultSet();
-	    				if(rs2.first())
-	    				{
-	    					//System.err.println("SongInstance Already Exists ");
-	    				}
-	    				else
-	    				{
+	    				if(!rs2.first()) {
 	    					executeInsertQuery("INSERT INTO songinstance (song, enemies, difficulty) VALUES (" + id + ", " + si.getObjects().size() + ", '" + si.getDifficulty() + "');");
 	    					//System.out.println("Songinstance Added");
 	    				}
@@ -168,10 +157,6 @@ public class SQLConnector
 					}
     			}
     		}
-    		else
-    		{
-    			//System.err.println("Insert Failed");
-    		}
  
     	}
     }
@@ -182,11 +167,11 @@ public class SQLConnector
             Statement s = myConn.createStatement();
             s.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = s.getGeneratedKeys();
+
             int id = 0;
             if(rs.next())
-            {
             	id = rs.getInt(1);
-            }
+
             s.close();
             return id;
         }
@@ -207,11 +192,9 @@ public class SQLConnector
     private Statement executeResultQuery(String query)
     {   
         Statement s = null;
-        
-        try{
+        try {
             s = myConn.createStatement();
             s.executeQuery(query);
-            
         }
         catch( SQLException ex)
         {
@@ -219,8 +202,7 @@ public class SQLConnector
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
         }
-        catch( Exception ex)
-        {
+        catch( Exception ex) {
            System.out.println("getMeasurement: " + ex.getMessage());
         }
         
@@ -232,10 +214,8 @@ public class SQLConnector
     public void finalize() throws Throwable
     {
         // Close database connection
-        if( myConn != null )
-        {
-            try
-            {
+        if( myConn != null ) {
+            try {
                 myConn.close();
                 System.out.println("Database connection terminated");
             }

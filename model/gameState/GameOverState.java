@@ -105,6 +105,9 @@ public class GameOverState extends GameState {
 		case 2:
 			gsm.setState(State.MENU_STATE);
 			break;
+		case 3:
+			gsm.setState(State.HELP_STATE);
+			break;
 		}
 		
 		

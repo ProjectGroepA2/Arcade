@@ -35,17 +35,15 @@ public class AudioPlayer{
 		} catch (JavaLayerException | FileNotFoundException e1) {
 			e1.printStackTrace();
 		}
-		 Thread thread = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				if(clip != null){
+		Thread thread = new Thread(() -> {
+				while (clip != null){
 					try {
 						clip.play();
 					} catch (JavaLayerException e) {
 						e.printStackTrace();
 					}
 				}
-			}});
+			});
 		 thread.start();
 	}
 
@@ -54,14 +52,13 @@ public class AudioPlayer{
 		{
 			clip.close();
 			clip = null;
+
 			try {
 				if(fis != null)
 					fis.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			if(thread != null && thread.isAlive())
-				thread.stop();
 		}
 	}
 	

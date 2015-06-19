@@ -8,12 +8,14 @@ import model.objects.Path;
 
 public class Enemy extends DrawObject {
 
-	public static final double distanceToOctagon = 1000,secondsToEnd = 5.0;	
-	private int length;
-	private double lengthOf1Side,distanceFromStart;//lengthOf1Side wordt alleen gebruikt als de lijn een schuine lijn is.	
-	public Line2D enemy;
-	private Color c;	
-	private Path path;
+	public static final double 	distanceToOctagon 	= 	1000,
+								secondsToEnd 		= 	5.0;
+	private int 	length;
+	private double 	lengthOf1Side,
+					distanceFromStart;	//lengthOf1Side wordt alleen gebruikt als de lijn een schuine lijn is.
+	public 	Line2D 	enemy;
+	private Color 	c;
+	private Path	path;
 	
 	public Enemy(int pathID,int lengthOfEnemy,Color c,Path path){
 		super();		
@@ -89,9 +91,7 @@ public class Enemy extends DrawObject {
 		double angleX,angleY;
 		angleX = Math.cos(Math.toRadians(45))*distanceFromStart;
 		angleY = Math.sin(Math.toRadians(45))*distanceFromStart;
-		
-		
-		
+
 		switch(index){
 		case 0:
 			y1 = path.getY1() +  distanceFromStart;

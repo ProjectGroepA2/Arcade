@@ -7,14 +7,14 @@ import control.NetworkHandler;
 
 public class Button {
 
-	private Color color;
-	private int ledID,
-				buttonID;
-	private NetworkHandler ntw;
-	public int pressed;
+	private 	Color 			color;
+	private 	int 			ledID,
+								buttonID;
+	public		int				pressed;
+
+	private		NetworkHandler	ntw;
 	
-	public Button(int buttonID, int ledID, NetworkHandler ntw)
-	{
+	public Button(int buttonID, int ledID, NetworkHandler ntw) {
 		color = new Color(255,255,255);
 		this.ledID = ledID;
 		this.buttonID = buttonID;
@@ -23,17 +23,14 @@ public class Button {
 		setLed();
 	}
 	
-	private void setLed()
-	{
-		if(Window.ON_RASP)
-		{
+	private void setLed() {
+		if(Window.ON_RASP) {
 			ntw.setLed(ledID, color.getGreen(), color.getRed(), color.getBlue());
 			ntw.show();
 		}
 	}
 	
-	public void setColor(Color newColor)
-	{
+	public void setColor(Color newColor) {
 		color = newColor;
 		setLed();
 	}

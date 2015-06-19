@@ -53,8 +53,6 @@ public class MenuState extends GameState {
 	BufferedImage aanwijzers = Images.getImage(ImageType.aanwijzers);
 
 	private int index 		 	= 	0,
-				getDifSelect 	= 	0,
-				getOldDifSelect = 	-1,
 				yPosDiffButton	= 	900,
 				kleurButton1 	= 	0,
 				kleurButton2 	= 	1,
@@ -64,8 +62,8 @@ public class MenuState extends GameState {
 
 	public MenuState(GameStateManager gsm, SongHandler sh, SQLConnector sql) {	
 		super(gsm, sh, sql);
-		buttons = new ArrayList<MenuButton>();
-		buttons2 = new ArrayList<DifficultyButton>();
+		buttons = new ArrayList<>();
+		buttons2 = new ArrayList<>();
 		this.songs = sh.getSongs();
 		startanimation = true;
 		subscreen = false;
@@ -90,23 +88,19 @@ public class MenuState extends GameState {
 	}
 	@Override
 	public void init() {
-		if(subscreen)
-		{
+		if(subscreen) {
 			ButtonHandler.getButton(1).setColor(GameModel.colors[0]);
 			ButtonHandler.getButton(2).setColor(GameModel.colors[2]);
 			generateSubScreenForeground();
 		}
-		else
-		{
+		else {
 			ButtonHandler.getButton(1).setColor(GameModel.colors[0]);
 			
 			ButtonHandler.getButton(5).setColor(GameModel.colors[1]);
 			ButtonHandler.getButton(6).setColor(GameModel.colors[4]);
 			JoystickHandler.REPEAT = true;
 		}
-		
-		
-		
+
 	}
 
 	@Override
@@ -116,11 +110,11 @@ public class MenuState extends GameState {
 			if(animationcounter == 5){
 				startanimation = false;
 			}
-		}else if(subscreen){
+		}/*else if(subscreen){
 			//nextScreen();
 		}else{
 			//previousScreen();
-		}
+		}*/
 	     if(selected != oldselected){
 	    	 for(int i = 0; i < buttons.size(); i++){
 		    	 buttons.get(i).setSong(selectedToSong(selected+(i-2)));
@@ -214,25 +208,20 @@ public class MenuState extends GameState {
 		if(subscreen){		
 			if(e.getJoystick().getPos() == Joystick.Position.DOWN){
 				difSelect--;
-				if(difSelect < 0){
+				if(difSelect < 0)
 					difSelect += buttons2.size();
-				}
-			}else if(e.getJoystick().getPos() == Joystick.Position.UP){
-				difSelect++;
-				if(difSelect > buttons2.size()-1){
+				else if(e.getJoystick().getPos() == Joystick.Position.UP)
+					difSelect++;
+				if(difSelect > buttons2.size()-1)
 					difSelect = 0;
-				}
-				
 			}
-			else if(e.getJoystick().getPos() == Joystick.Position.CENTER)	
-			{
+			else if(e.getJoystick().getPos() == Joystick.Position.CENTER)
 				sh.set(selectedToSong(selected).getSongs().get(difSelect));
-			}
 			//generateSubScreenForeground();			
 		}else{										//Screen for selecting song
 			if(e.getJoystick().getPos() == Joystick.Position.DOWN){
 				selected++;
-				
+
 				kleurButton1++;
 				kleurButton1 %= 6;
 				
@@ -247,8 +236,6 @@ public class MenuState extends GameState {
 				
 				kleurButton5++;
 				kleurButton5 %= 6;
-				
-				
 
 			}else if(e.getJoystick().getPos() == Joystick.Position.UP){
 				selected--;
@@ -269,7 +256,7 @@ public class MenuState extends GameState {
 					kleurButton5 = 5;
 			}
 			
-			else if(e.getJoystick().getPos() == Position.CENTER)
+			else if(e.getJoystick().getPos() == Joystick.Position.CENTER)
 			{
 				buttons2.clear();
 		 		int instanceNr = 0;
@@ -386,17 +373,16 @@ public class MenuState extends GameState {
 		if(highscores.isEmpty())
 		{
 			highscores = sql.getHighscores(selectedToSong(selected), sh.getCurrentSong().getSongs().get(difSelect));
+
 			if(highscores.isEmpty())
-			{
 				highscoresFound = false;
-			}
 			else
 				g2.drawString("All Time Highscores", 30, 300);
 		}
 		else
 			g2.drawString("Daily Highscore", 30, 300);
- 			g2.setFont(textFont2);
-		
+
+		g2.setFont(textFont2);
 		if(highscoresFound)
 		{
 			HIGHSCORES_TO_DISPLAY = HIGHSCORES_TO_DISPLAY > highscores.size() ? highscores.size() : HIGHSCORES_TO_DISPLAY;
@@ -409,9 +395,7 @@ public class MenuState extends GameState {
 			}
 		}
 		else
-		{
 			g2.drawString("No Highscores found", 30, 400);
-		}
 		
 		/*
 		List<Highscore> highscores = sql.getHighscores(selectedToSong(selected), sh.getCurrentSong().getSongs().get(difSelect));
@@ -419,9 +403,8 @@ public class MenuState extends GameState {
 		int highest = 0;
 		int oldHighest = 0;
 		*/
-		for(DifficultyButton b : buttons2){
+		for(DifficultyButton b : buttons2)
 			b.draw(g2);
-		}
 		
 		g2.setFont(textFontSmall);
 		
@@ -465,7 +448,6 @@ public class MenuState extends GameState {
 				animationcounter++;
 			if(buttons.get(button).getX() >= -200)
 				buttonInAnimation(button+1);
-			}
 		}
 	}
 
@@ -475,7 +457,6 @@ public class MenuState extends GameState {
 			return songs.get(songs.size()+s);
 		else
 			return songs.get(s);
-
 	}
 	
 }

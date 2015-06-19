@@ -25,8 +25,8 @@ public class GameStateManager {
 	public 	GameState 	currentState;
 	private SongHandler sh;
 
-	private int index = 0;
-	public 	int fps;
+	private int 	index 					= 0;
+	public 	int 	fps;
 	private float 	timeOfNoAction 			= 0,
 					maxTimeToHaveNoAction 	= 45000;
 
@@ -40,7 +40,7 @@ public class GameStateManager {
 	
 	public GameStateManager(SongHandler sh, SQLConnector sql){
 		this.sh = sh;
-		gamestates = new ArrayList<GameState>();
+		gamestates = new ArrayList<>();
 		gamestates.add(new TitleState(this, sh, sql));
 		gamestates.add(new MenuState(this, sh, sql));
 		gamestates.add(new HelpState(this, sh, sql));
@@ -51,18 +51,10 @@ public class GameStateManager {
 
 	public void setState(State st)
 	{
-		if (st.ordinal() > 0)
+		if (currentState != null)
 			currentState.stopAudio();
 
 		currentState = gamestates.get(st.ordinal());
-
-		init();
-	}
-
-	public void next() {
-		index++;
-		index %= gamestates.size();
-		currentState = gamestates.get(index);
 		init();
 	}
 	
@@ -89,13 +81,11 @@ public class GameStateManager {
 	public void buttonPressed(ButtonEvent e) {
 		timeOfNoAction = 0;
 		currentState.buttonPressed(e);
-		
 	}
 
 	public void buttonReleased(ButtonEvent e) {
 		timeOfNoAction = 0;
 		currentState.buttonReleased(e);
-		
 	}
 
 	public void onJoystickMoved(JoystickEvent e) {

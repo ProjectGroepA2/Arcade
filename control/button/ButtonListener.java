@@ -1,6 +1,6 @@
 package control.button;
 
 public interface ButtonListener {
-	public void buttonPressed(ButtonEvent e);
-	public void buttonReleased(ButtonEvent e);
+	void buttonPressed(ButtonEvent e);
+	void buttonReleased(ButtonEvent e);
 }

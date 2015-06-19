@@ -17,10 +17,9 @@ import main.Main;
 
 public class Images {
 
-	public static ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
+	public static ArrayList<BufferedImage> images = new ArrayList<>();
 
 	public Images() {
-
 	}
 
 	static {
@@ -33,7 +32,7 @@ public class Images {
 		   	images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/aanwijzers4sho.png"))));
 		   	images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/kast.png"))));
 		   	images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/gameover.png"))));
-		   	images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/help.png"))));
+		   	images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/gameover.png"))));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -44,7 +43,9 @@ public class Images {
 	}
 
 	public enum ImageType {
-		pulse,cursor,pressstart,colorstrike,background,aanwijzers,kast,gameover,help
+		pulse, 			cursor, 		pressstart,
+		colorstrike, 	background, 	aanwijzers,
+		kast, 			gameover, 		help
 	}
 
 	public static BufferedImage readImage(File f) {
@@ -99,8 +100,7 @@ public class Images {
 	public static VolatileImage initVolatileImage(int width, int height, int opc){
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsConfiguration gc = ge.getDefaultScreenDevice().getDefaultConfiguration();
-		VolatileImage image = null;
-		image = gc.createCompatibleVolatileImage(width, height, opc);
+		VolatileImage image = gc.createCompatibleVolatileImage(width, height, opc);
 		int valid = image.validate(gc);
 	    if (valid == VolatileImage.IMAGE_INCOMPATIBLE)
 	    	image = initVolatileImage(width, height, opc);

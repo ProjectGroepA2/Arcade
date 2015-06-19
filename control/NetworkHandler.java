@@ -16,10 +16,10 @@ public class NetworkHandler implements Runnable{
 	private DatagramSocket udp;
 
 	private String 	host;
-	private int port;
+	private int 	port;
 
 	private boolean running;
-	private Thread t;
+	private Thread  t;
 
 	private byte[] 	send,
 					receive;

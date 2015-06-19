@@ -20,13 +20,12 @@ import data.io.SQLConnector;
 
 public class HelpState extends GameState {
 
-    BufferedImage help = Images.getImage(ImageType.help);
-    VolatileImage background;
-	Font textFontSmall = new Font("OCR A Extended", Font.BOLD, 15);
+    private BufferedImage help = Images.getImage(ImageType.help);
+    private VolatileImage background;
+	private Font textFontSmall = new Font("OCR A Extended", Font.BOLD, 15);
 
-	
-    int index = 0;
-    int frame;
+    int index = 0,
+    	frame;
 
     
 	public HelpState(GameStateManager gsm, SongHandler sh, SQLConnector sql){
@@ -41,23 +40,18 @@ public class HelpState extends GameState {
 
 	@Override
 	public void update(float factor) {
-
         frame++;
 	}
 
 	@Override
 	public void draw(Graphics2D g2) {
 		g2.drawImage(background, 0, 0, 1280, 1024, null);
-
 	}
 
 	@Override
 	public void buttonPressed(ButtonEvent e) {
-
-		if(e.getButton().getButtonID() == 2) {
+		if(e.getButton().getButtonID() == 2)
 			gsm.setState(State.MENU_STATE);
-		}
-
 	}
 
 	@Override
