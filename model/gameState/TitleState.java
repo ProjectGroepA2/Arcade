@@ -21,13 +21,15 @@ import data.io.SQLConnector;
 
 public class TitleState extends GameState {
 
-    BufferedImage pressStart = Images.getImage(ImageType.pressstart);
-    BufferedImage colorStrike = Images.getImage(ImageType.colorstrike);
-    BufferedImage kast = Images.getImage(ImageType.kast);
-    VolatileImage background;
-	Font textFont = new Font("OCR A Extended", Font.BOLD, 15);
-	Font textFont2 = new Font("OCR A Extended", Font.BOLD, 130);
-	GradientPaint gp = new GradientPaint(300, 0, new Color(0, 0, 1, 0.6f), 980, 1024, new Color(0, 0, 1, 0.2f));
+	private BufferedImage 	pressStart 	= 	Images.getImage(ImageType.pressstart),
+							colorStrike = 	Images.getImage(ImageType.colorstrike),
+							kast 		= 	Images.getImage(ImageType.kast);
+	private VolatileImage 	background;
+
+	private Font 			textFont 	= 	new Font("OCR A Extended", Font.BOLD, 15),
+							textFont2 	=	new Font("OCR A Extended", Font.BOLD, 130);
+
+	private GradientPaint gp = new GradientPaint(300, 0, new Color(0, 0, 1, 0.6f), 980, 1024, new Color(0, 0, 1, 0.2f));
 
 	
     private int index 		= 0,
@@ -48,7 +50,6 @@ public class TitleState extends GameState {
 
 	@Override
 	public void update(float factor) {
-
         frame++;
         indexKast++;
 	}
@@ -78,7 +79,6 @@ public class TitleState extends GameState {
 			gsm.setState(State.MENU_STATE);
 			break;
 		}
-
 	}
 
 	@Override

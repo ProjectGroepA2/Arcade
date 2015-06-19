@@ -7,10 +7,10 @@ import control.NetworkHandler;
 
 public class Button {
 
-	Color color;
-	int ledID;
-	int buttonID;
-	NetworkHandler ntw;
+	private Color color;
+	private int ledID,
+				buttonID;
+	private NetworkHandler ntw;
 	public int pressed;
 	
 	public Button(int buttonID, int ledID, NetworkHandler ntw)

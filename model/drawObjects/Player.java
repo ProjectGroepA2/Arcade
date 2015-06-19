@@ -29,31 +29,26 @@ public class Player extends DrawObject {
 	}
 	
 	public void draw(Graphics2D g2){//		
-		subImgX = (indexCursor % 8)*100;
-		subImgY = (indexCursor / 8)*100;
-		
-		subImgXBeat = (indexBeat % 9)*100;
-		
-		
+		subImgX 	= 	(indexCursor % 8) *	100;
+		subImgY 	= 	(indexCursor / 8) *	100;
+		subImgXBeat = 	(indexBeat % 9  ) *	100;
+
 		BufferedImage subImg2 = pulse.getSubimage(subImgXBeat,0,100,100);
 		g2.drawImage(subImg2, transform, null);	
-		
-		
+
 		BufferedImage subImg = img.getSubimage(subImgX,subImgY,100,100);
-		g2.drawImage(subImg, transform, null);		
-		
+		g2.drawImage(subImg, transform, null);
 	}
 	
 	public void update(float update){
         if(beat){
             indexBeat++;
-            if(indexBeat >= 9)
-            {
+            if(indexBeat >= 9) {
             	indexBeat = 0;
             	beat = false;
             }
           }
-        
+
         indexCursor++;
 		indexCursor%=32;
         
@@ -68,7 +63,6 @@ public class Player extends DrawObject {
 	public void setBeat() {
 		beat = true;
 		indexBeat = 0;
-		
 	}
 }
 	

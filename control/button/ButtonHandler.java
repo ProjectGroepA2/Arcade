@@ -20,19 +20,15 @@ import control.NetworkHandler;
 
 public class ButtonHandler implements KeyListener{
 
-	List<ButtonListener> listeners;
-	static List<Button> buttons;
-	NetworkHandler ntw;
+	private List<ButtonListener> listeners;
+	public  static List<Button> buttons;
+	private NetworkHandler ntw;
 	
 	public ButtonHandler()
 	{
 		this.ntw = null;
-		
 		listeners = new ArrayList<ButtonListener>();
 		buttons = new ArrayList<Button>();
-	
-//		if (Window.ON_RASP)
-//			addGpioListeners();
 		
 	}
 	
@@ -48,7 +44,6 @@ public class ButtonHandler implements KeyListener{
         inputpins.add(gpio.provisionDigitalInputPin(RaspiPin.GPIO_12, "6"));
         inputpins.add(gpio.provisionDigitalInputPin(RaspiPin.GPIO_06, "0"));
 
-        
         for(GpioPinDigitalInput p:inputpins){
         	  p.addListener(new GpioPinListenerDigital() {
                   @Override
@@ -82,12 +77,12 @@ public class ButtonHandler implements KeyListener{
 	}
 	 
 	public void buttonRelease(Button b) {
-		if(Window.ON_RASP)
-		{
+		if(Window.ON_RASP) {
 			ntw.setLed(b.getLedID(), b.getColor().getGreen(), b.getColor().getRed(), b.getColor().getBlue());
 			ntw.show();
 		}
 		ButtonEvent e = new ButtonEvent(b, System.currentTimeMillis());
+
 	    for (ButtonListener bt : listeners)
 	        bt.buttonReleased(e);
 	}
@@ -161,12 +156,9 @@ public class ButtonHandler implements KeyListener{
 	public static Button getButton(int id)
 	{
 		for(Button b : buttons)
-		{
 			if(b.getButtonID() == id)
-			{
 				return b;
-			}
-		}
+
 		return null;
 	}
 

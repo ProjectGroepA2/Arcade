@@ -15,19 +15,18 @@ import control.joystick.JoystickListener;
 public class GameControl implements JoystickListener, ButtonListener, ActionListener {
 	
 	private long lastTime = System.currentTimeMillis();
-	GameModel model;
-	GameView view;
-	GameStateManager gsm;
-	Timer update;
+	private GameModel model;
+	private GameView view;
+	private GameStateManager gsm;
+	private Timer update;
 	
-	public GameControl(final GameModel model, final GameView view,GameStateManager gsm)
-	{
+	public GameControl(final GameModel model, final GameView view,GameStateManager gsm)	{
 		this.model = model;
 		this.view = view;
 		this.gsm = gsm;
+
 		view.setIgnoreRepaint(true);
-		update = new Timer(1000/60,this);
-		update.start();
+		(update = new Timer(1000/60,this)).start();
 	}
 
 	@Override

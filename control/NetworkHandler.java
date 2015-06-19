@@ -12,20 +12,20 @@ import control.joystick.Joystick.Position;
 import control.joystick.JoystickHandler;
 
 public class NetworkHandler implements Runnable{
-	
-	DatagramSocket udp;
-	
-	String host;
-	int port;
-	
-	boolean running;
-	Thread t;
-	
-	byte[] send;
-	byte[] receive;
-	
-	ButtonHandler bth;
-	JoystickHandler jth;
+
+	private DatagramSocket udp;
+
+	private String 	host;
+	private int port;
+
+	private boolean running;
+	private Thread t;
+
+	private byte[] 	send,
+					receive;
+
+	private ButtonHandler bth;
+	private JoystickHandler jth;
 	
 	public NetworkHandler(String host, int port, ButtonHandler bth, JoystickHandler jth)
 	{
@@ -62,10 +62,7 @@ public class NetworkHandler implements Runnable{
 		send(cmd);
 	}
 	
-	private void send(String str)
-	{
-
-	}
+	private void send(String str)	{	}
 	
 	public void close()
 	{

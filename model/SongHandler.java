@@ -22,7 +22,7 @@ public class SongHandler {
 	private Song currentSong;
 	private SongInstance currentSongInstance;
 	private int currentIndex;
-	SQLConnector sql;
+	private SQLConnector sql;
 	
 	private File dir;
 	
@@ -33,7 +33,6 @@ public class SongHandler {
 		this.sql = sql;
 		
 		songs = new ArrayList<Song>();
-		
 		currentSong = null;
 		currentSongInstance = null;
 		currentIndex = 0;

@@ -31,8 +31,7 @@ public class GameModel {
 
 		if (Window.ON_RASP) {
 			count++;
-			if(count>15)
-			{
+			if(count>15) {
 				for (int i = 7; i < 54; i++) {
 					ntw.setLed(i, c.getRed(), c.getGreen(), c.getBlue());
 				}

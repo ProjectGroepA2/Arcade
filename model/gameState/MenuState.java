@@ -49,6 +49,7 @@ public class MenuState extends GameState {
 
 	Font textFont 		= new Font("OCR A Extended", Font.BOLD, 50);
 	Font textFontSmall 	= new Font("OCR A Extended", Font.BOLD, 15);
+	Font textFont2 	    = new Font("OCR A Extended", Font.BOLD, 50);
 
 	BufferedImage aanwijzers = Images.getImage(ImageType.aanwijzers);
 
@@ -90,13 +91,11 @@ public class MenuState extends GameState {
 	}
 	@Override
 	public void init() {
-		if(subscreen)
-		{
+		if(subscreen) {
 			ButtonHandler.getButton(1).setColor(GameModel.colors[0]);
 			ButtonHandler.getButton(2).setColor(GameModel.colors[2]);
 			generateSubScreenForeground();
-		}
-		else {
+		} else {
 			ButtonHandler.getButton(1).setColor(GameModel.colors[0]);
 
 			ButtonHandler.getButton(5).setColor(GameModel.colors[1]);
@@ -112,20 +111,14 @@ public class MenuState extends GameState {
 			if(animationcounter == 5){
 				startanimation = false;
 			}
-		}else if(subscreen){
-			//nextScreen();
-		}else{
-			//previousScreen();
 		}
+
 	     if(selected != oldselected){
-	    	 for(int i = 0; i < buttons.size(); i++){
+	    	 for(int i = 0; i < buttons.size(); i++)
 		    	 buttons.get(i).setSong(selectedToSong(selected+(i-2)));
-		    	 
-	    	 }
 	    	 oldselected = selected;
 	     }
-	     if(difSelect != oldDifSelect)
-	     {
+	     if(difSelect != oldDifSelect) {
 	    	 oldDifSelect = difSelect;
 	    	 generateSubScreenForeground();
 	     }
@@ -143,10 +136,9 @@ public class MenuState extends GameState {
 		buttons.add(new MenuButton(300,680,GameModel.colors[kleurButton4],selectedToSong(selected+1)));
 		buttons.add(new MenuButton(300,800,GameModel.colors[kleurButton5],selectedToSong(selected+2)));
 		buttons.get(2).setSelected(true);
-		
-		
+
 		g2.setColor(Color.BLACK);
-		Font textFont2 = new Font("OCR A Extended", Font.BOLD, 50);
+
 		g2.setFont(textFont2);
 		if(!subscreen) {
 			g2.drawImage(mainScreenBackground, 0, 0, 1280,1024,null);
@@ -244,33 +236,21 @@ public class MenuState extends GameState {
 
 			}else if(e.getJoystick().getPos() == Joystick.Position.UP){
 				selected--;
-				kleurButton1--;
-				if(kleurButton1 < 0){
-					kleurButton1 = 5;
-				}
-				
-				kleurButton2--;
-				if(kleurButton2 < 0){
-					kleurButton2 = 5;
-				}
-				
-				kleurButton3--;
-				if(kleurButton3 < 0){
-					kleurButton3 = 5;
-				}
-					
-				kleurButton4--;
-				if(kleurButton4 < 0){
-					kleurButton4 = 5;
-				}
-				
-				kleurButton5--;
-				if(kleurButton5 < 0){
-					kleurButton5 = 5;
-				}
-				
 
-				
+				if(--kleurButton1 < 0)
+					kleurButton1 = 5;
+
+				if(--kleurButton2 < 0)
+					kleurButton2 = 5;
+
+				if(--kleurButton3 < 0)
+					kleurButton3 = 5;
+
+				if(--kleurButton4 < 0)
+					kleurButton4 = 5;
+
+				if(--kleurButton5 < 0)
+					kleurButton5 = 5;
 			}
 			
 			else if(e.getJoystick().getPos() == Joystick.Position.CENTER)
@@ -301,9 +281,9 @@ public class MenuState extends GameState {
 		g2.setPaint(new GradientPaint(0, 0, new Color(0,0,1, 0.6f),1280,1024 ,new Color(0,0,1, 0.2f)));
 		g2.fillRect(0, 0, 1280, 1024);	
 		g2.setPaint(new GradientPaint(0, 0, new Color(1,1,0, 0.6f),1280,1024 ,new Color(0,0,1, 0.2f)));
-		
-	 
-		Polygon triangle2 = new Polygon(); 
+
+		Polygon triangle2 = new Polygon();
+
 		triangle2.addPoint(0, 0);
 		triangle2.addPoint(0, 1024/4+50);
 		triangle2.addPoint(1280/2+50, 0);
@@ -338,8 +318,6 @@ public class MenuState extends GameState {
 		g2.dispose();
 	
 		mainScreenBackground.createGraphics();
-		
-		
 	}
 	
 	public void generateSubScreenBackground(){
@@ -384,23 +362,18 @@ public class MenuState extends GameState {
 		{
 			highscores = sql.getHighscores(selectedToSong(selected), sh.getCurrentSong().getSongs().get(difSelect));
 			if(highscores.isEmpty())
-			{
 				highscoresFound = false;
-			}
 			else
 				g2.drawString("All Time Highscores", 30, 300);
 		}
 		else
 			g2.drawString("Daily Highscore", 30, 300);
 		
-		if(highscoresFound)
-		{
+		if(highscoresFound) {
 			HIGHSCORES_TO_DISPLAY = HIGHSCORES_TO_DISPLAY > highscores.size() ? highscores.size() : HIGHSCORES_TO_DISPLAY;
 			
-			for(int i = 0; i<HIGHSCORES_TO_DISPLAY; i++)
-			{
+			for(int i = 0; i<HIGHSCORES_TO_DISPLAY; i++) {
 				Highscore hi = highscores.get(i);
-				
 				g2.drawString(hi.getName() + " - " + hi.getScore(), 30, 400 + i*100);
 			}
 		}
@@ -443,50 +416,29 @@ public class MenuState extends GameState {
 		g2.fillPolygon(p2);
 
 		g2.drawString("Down", 55, 1000);	
-		
-		
-		
+
 	    g2.dispose();
 	    subScreenForeground.createGraphics();
 	}
 	
 	public void buttonInAnimation(int button){
-		if(button >= 0 && button < buttons.size() ){
+		if(button >= 0 && button < buttons.size()){
 			buttons.get(button).setX(buttons.get(button).getX()+40);
-			if(buttons.get(button).getX() >= 320){
+
+			if(buttons.get(button).getX() >= 320)
 				animationcounter++;
-			}
-			if(buttons.get(button).getX() >= -200){
+			if(buttons.get(button).getX() >= -200)
 				buttonInAnimation(button+1);
-			}
 		}
 	}
 
-	/*
-	public void nextScreen(){
-		if(buttons.get(0).getX() > -700){
-			for(MenuButton b:buttons){
-				b.setX(b.getX()-100);
-			}
-		}
-	}
-	
-	public void previousScreen(){
-		if(buttons.get(0).getX() < 300){
-			for(MenuButton b:buttons){
-				b.setX(b.getX()+100);
-			}
-		}
-	}
-	*/
-	
 	public Song selectedToSong(int s){
 		s %= songs.size();
-		if(s < 0){
+		if(s < 0)
 			return songs.get(songs.size()+s);
-		}else{
+		else
 			return songs.get(s);
-		}
+
 	}
 	
 }

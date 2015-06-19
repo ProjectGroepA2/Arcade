@@ -20,12 +20,15 @@ import data.io.SQLConnector;
 public class GameStateManager {
 
 	private List<GameState> gamestates;
-	public GameState currentState;
-	private int index = 0;
-	public int fps;
-	private float timeOfNoAction = 0,maxTimeToHaveNoAction = 45000;
+
+	public 	GameState 	currentState;
 	private SongHandler sh;
-	
+
+	private int index = 0;
+	public 	int fps;
+	private float 	timeOfNoAction 			= 0,
+					maxTimeToHaveNoAction 	= 45000;
+
 	public enum State {
 		TITLE_STATE,
 		MENU_STATE,
@@ -47,12 +50,10 @@ public class GameStateManager {
 	{
 		if (st.ordinal() > 0)
 			currentState.stopAudio();
+
 		currentState = gamestates.get(st.ordinal());
 
 		init();
-//		System.out.println("Current song: "+sh.getCurrentSongInstance());		
-//		sh.set(sh.getCurrentSongInstance());
-//		sh.play();
 	}
 
 	public void next() {

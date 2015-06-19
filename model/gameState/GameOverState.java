@@ -29,11 +29,11 @@ import data.io.WebcamUploader;
 
 public class GameOverState extends GameState {
 
-    BufferedImage gameOver = Images.getImage(Images.ImageType.gameover);
-    VolatileImage background;
-	Font textFont = new Font("OCR A Extended", Font.BOLD, 70);
-	HighscoreName hsn;
-	int image_x = 0;	
+	private BufferedImage gameOver = Images.getImage(Images.ImageType.gameover);
+	private VolatileImage background;
+	private Font textFont = new Font("OCR A Extended", Font.BOLD, 70);
+	private HighscoreName hsn;
+	private int image_x = 0;
 	private boolean uploaded;
 	private BufferedImage QRimage;
 	

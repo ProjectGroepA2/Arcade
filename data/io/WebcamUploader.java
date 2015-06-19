@@ -23,7 +23,9 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 public class WebcamUploader {
-	public static void takePictureAndUpload(int id) throws IOException{
+
+        public static void takePictureAndUpload(int id) throws IOException{
+
 		Runtime.getRuntime().exec("streamer -c /dev/video0 -b 16 -o" + System.getProperty( "user.home" ) + "/ColorStrike/picture.jpeg");
 		
 		HttpURLConnection httpUrlConnection = (HttpURLConnection)new URL("http://178.62.254.153/colorstrike/images/photoupload.php?filename="+id+".jpeg").openConnection();

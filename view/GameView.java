@@ -12,12 +12,9 @@ import control.GameStateManager;
 
 public class GameView extends JPanel {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1939480784205689618L;
 
-	GameStateManager gsm;
+	private GameStateManager gsm;
 
 	// Font fpsfont = new Font("OCR A Extended", Font.BOLD, 60);
 

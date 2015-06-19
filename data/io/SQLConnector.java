@@ -27,8 +27,7 @@ public class SQLConnector
     //Start connection with Database
     public SQLConnector(String host, String port, String dbName, String userName, String password)
     {
-        try
-        {
+        try  {
             String url = "jdbc:mysql://" + host + ":" + port + "/"+ dbName + "?user="
             + userName
             + "&password="
@@ -36,8 +35,7 @@ public class SQLConnector
             Class.forName("com.mysql.jdbc.Driver").newInstance ();
             myConn = DriverManager.getConnection(url);
         }
-        catch( SQLException ex)
-        {
+        catch( SQLException ex) {
                 System.out.println("SQLException: " + ex.getMessage());
                 System.out.println("SQLState: " + ex.getSQLState());
                 System.out.println("VendorError: " + ex.getErrorCode());
@@ -55,6 +53,7 @@ public class SQLConnector
     	Statement st = executeResultQuery(query);
     	ResultSet result = null;
     	List<Highscore> hsc = new ArrayList<Highscore>();
+
 		try {
 			result = st.getResultSet();
 		} catch (SQLException e1) {
@@ -62,9 +61,7 @@ public class SQLConnector
 		}
     	try {
 			while(result.next())
-			{
 				hsc.add(new Highscore(si, result.getString("username"), result.getInt("score"), result.getDate("date").getTime()));
-			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -131,7 +128,7 @@ public class SQLConnector
 				rs.close();
 				st.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				System.out.println("Empty return set");
 			}
     	
     		if(id != -1)
