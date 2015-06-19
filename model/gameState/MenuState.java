@@ -30,6 +30,7 @@ import control.GameStateManager.State;
 import control.button.ButtonEvent;
 import control.button.ButtonHandler;
 import control.joystick.Joystick;
+import control.joystick.Joystick.Position;
 import control.joystick.JoystickEvent;
 import control.joystick.JoystickHandler;
 import data.io.SQLConnector;
@@ -465,7 +466,6 @@ public class MenuState extends GameState {
 				animationcounter++;
 			if(buttons.get(button).getX() >= -200)
 				buttonInAnimation(button+1);
-			}
 		}
 	}
 
