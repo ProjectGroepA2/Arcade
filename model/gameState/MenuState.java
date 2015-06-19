@@ -223,7 +223,7 @@ public class MenuState extends GameState {
 				}
 				
 			}
-			else if(e.getJoystick().getPos() == Position.CENTER)	
+			else if(e.getJoystick().getPos() == Joystick.Position.CENTER)	
 			{
 				sh.set(selectedToSong(selected).getSongs().get(difSelect));
 			}
