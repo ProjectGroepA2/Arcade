@@ -121,7 +121,6 @@ public class PlayArea {
 
 		return paths.get(index);
 	}
-	
 
 	public void setHitAreaColor(Color color) {	
 		hitAreaColor = color;	

@@ -8,12 +8,16 @@ import java.awt.geom.Point2D;
 import java.io.IOException;
 
 /**
- * Created by Bilel on 4-6-2015.
- *
  * CoinAnimation klasse: Weergeeft een balletje (resembleerd een muntje) dat omlaag valt.
  *      Je hoeft alleen achter elkaar de paint(Graphics2D) methode aan te roepen, deze roep automatisch een 'reposition' aan,
  *      waardoor je het balletje alleen snel achter elkaar hoeft te repainten.
- */
+ *
+ * *    Init (startX, startY):  Punt waar de animatie begint met vallen
+ *
+ *      start(): aanroepen om te starten
+ * *
+ * *
+ **/
 public class CoinAnimation extends DrawObject {
 
     private Ellipse2D       coinShape;
@@ -33,26 +37,20 @@ public class CoinAnimation extends DrawObject {
     }
 
     public void draw(Graphics2D g2) {
-
         update(timerLoops);                                             // UPDATE
         g2.setColor(new Color(255, 255, 0));    // GEEL
         g2.draw(coinShape);                                             // MUNTJE TEKENEN
         g2.fill(coinShape);
+        System.out.println("ok");
     }
 
     // Wordt na elke paint aangeroepen
     public void update(float factor) {
 
-        // Alleen tekenen wanner de animatie ingesteld is om te tekenen (zie: areWeDoneYet()), anders doei.
-        if (areWeDoneYet()) {
-            System.out.println("Call initCoin(int startX, startY) first!");
-            return;
-        }
-
         // Coin omlaag verschuiven doordat Y * loops omlaag gaat.
         // Per frame verschuift het balletje delta 10 op Y-as.
         try {
-            coinShape.setFrame(coinSetPoint.getX(), coinSetPoint.getY() + (1000 - 35 * PlayState.comboMulitplier) / 20 * timerLoops,
+            coinShape.setFrame(coinSetPoint.getX(), coinSetPoint.getY() + (1000 - 35 * PlayState.comboMulitplier) / 25 * timerLoops,
                     coinShape.getWidth(), coinShape.getHeight());
         } catch (ArithmeticException a) { a.printStackTrace(); }
 
@@ -61,7 +59,7 @@ public class CoinAnimation extends DrawObject {
 
     // Zijn we al begonnen/klaar?
     public boolean areWeDoneYet() {
-        if (timerLoops > 19 || timerLoops == 0) {
+        if (timerLoops > 24 || timerLoops == 0) {
             timerLoops = 0;
             return true;
         }
@@ -69,6 +67,6 @@ public class CoinAnimation extends DrawObject {
     }
 
     // Zitten we in de laatste loop?
-    public boolean isLastLoop() { return (timerLoops == 49) ? true : false;  }
+    public boolean isLastLoop() { return (timerLoops == 24) ? true : false;  }
 
 }

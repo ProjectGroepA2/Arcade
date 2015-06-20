@@ -37,7 +37,7 @@ public class PlayState extends GameState {
 
 	public static int sizeOfEnemy = 40;
 	public static int currentScore = 0;
-	public static int comboMulitplier = 1;
+	public static int comboMulitplier = 0;
 	public static int lastScoreChange = 0;
 	public static int sinceScoreChanged = 75;
 	public static double lifePoints = 100;
@@ -120,7 +120,7 @@ public class PlayState extends GameState {
 					lastScoreChange = -5;
 					lifePoints -= lastScoreChange;
 					sinceScoreChanged = 1;
-					comboMulitplier = 1;
+					comboMulitplier = 0;
 					enemies_missed++;
 				}
 				if(closedEnemy == null)
@@ -133,15 +133,13 @@ public class PlayState extends GameState {
 		}
 
 		lifePoints -= 0.002 * factor;
-		
 		infoPanel.updateIPanel();
-		
-		if(lifePoints <= 0) {				// STERF!
-			currentScore = 0;		comboMulitplier = 0;			endGame();
-		}
+
+		if(lifePoints <= 0) 				// STERF!
+			endGame();
 
 		if(comboMulitplier >= 20) {			// '20' hit streak voor bonuspunten
-			comboMulitplier 	= 	1;
+			comboMulitplier 	= 	0;
 			sinceScoreChanged 	= 	1;
 			lastScoreChange 	= 	500;
 			currentScore 	   += 	lastScoreChange;
@@ -160,6 +158,8 @@ public class PlayState extends GameState {
 			sql.addPlaydata(sh.getCurrentSong(), sh.getCurrentSongInstance(), sh.getProgress()/1000, enemies_missed, enemies_hit, buttons_pressed, joystick_moved);
 			sh.getCurrentSongInstance().played();
 		}
+
+		comboMulitplier = 0;
 		
 		if(currentScore == 0)
 			gsm.setState(State.MENU_STATE);
@@ -212,9 +212,9 @@ public class PlayState extends GameState {
 			Enemy enemy = enemysInPath.next();
 			if (enemy.getDistanceFromStart() > Enemy.distanceToOctagon || enemy.getDistanceFromStart() > Enemy.distanceToOctagon + sizeOfEnemy) {
 				if (e.getButton().getColor().equals(enemy.getColor())) {
+					comboMulitplier++;
 					lastScoreChange = 5 * comboMulitplier;
 					currentScore += lastScoreChange;
-					comboMulitplier++;
 					sinceScoreChanged = 1;
 					area.enemyDied((Point2D.Double) enemy.getEnemy().getP1());
 					lifePoints = Math.min(lifePoints+10, 100);

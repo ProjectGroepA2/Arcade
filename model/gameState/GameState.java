@@ -18,8 +18,6 @@ public abstract class GameState  {
 		this.gsm = gsm;
 		this.sh = sh;
 		this.sql = sql;
-
-		int kleurButton1 = 0;
 	}
 	
 	public abstract void init();

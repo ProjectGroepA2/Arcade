@@ -19,7 +19,7 @@ public class InfoPanel {
 	private SongHandler sh;
 	private String time;
 
-	private int tempComboScore;
+	private int tempComboMulitplier;
 
 	private CoinAnimation coinAnimation = new CoinAnimation(125, 300);
 
@@ -89,16 +89,16 @@ public class InfoPanel {
 			coinAnimation.draw(g2);
 			// Score pas updaten wanneer coin in zijn laatste draw loop zit
 			if (coinAnimation.isLastLoop())
-				tempComboScore = PlayState.currentScore;
+				tempComboMulitplier = PlayState.comboMulitplier;
 		} else
-			tempComboScore = PlayState.currentScore;
+			tempComboMulitplier = PlayState.comboMulitplier;
 
 		g2.drawString(sh.getCurrentSongInstance().getDifficulty(), 25, 230);
 		g2.drawString(sh.getCurrentSong().getAuthor(), 25, 260);
 		g2.drawString(time, 25, 290);
 			
 		g2.setColor(Color.YELLOW);
-		g2.fillRect(25, (int)(1000 - PlayState.comboMulitplier * 35), 200, 35 * ((int)PlayState.comboMulitplier));
+		g2.fillRect(25, 1000 - tempComboMulitplier * 35, 200, 35 * tempComboMulitplier);
 		g2.dispose();
 		infoPanel.createGraphics();
 	}

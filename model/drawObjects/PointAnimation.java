@@ -8,20 +8,17 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
-/**
- * Created by Bilel on 20-6-2015.
- */
 public class PointAnimation extends DrawObject {
 
-    LinkedList<Point2D.Double> puntenPos = new LinkedList<>();
-    LinkedList<Integer> puntenGain = new LinkedList<>();
-    LinkedList<Integer> iterations = new LinkedList<>();
+    LinkedList<Point2D.Double>  puntenPos   =   new LinkedList<>();
+    LinkedList<Integer>         puntenGain  =   new LinkedList<>();
+    LinkedList<Integer>         iterations  =   new LinkedList<>();
 
     public PointAnimation() {    }
 
     public void enemyDied(Point2D.Double p) {
         puntenPos.add(new Point2D.Double(p.getX(), p.getY()));
-        puntenGain.add(new Integer(PlayState.lastScoreChange));
+        puntenGain.add(PlayState.lastScoreChange);
         iterations.add(0);
     }
 

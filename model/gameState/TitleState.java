@@ -34,9 +34,9 @@ public class TitleState extends GameState {
 	
     private int index 		= 0,
     			varx 		= 0,
-    			frame,
     			indexKast 	= 0,
-				xKast	  	= 0;
+				xKast	  	= 0,
+				frame;
     
 	public TitleState(GameStateManager gsm, SongHandler sh, SQLConnector sql){
 		super(gsm, sh, sql);
