@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
@@ -36,7 +37,7 @@ public class PlayState extends GameState {
 
 	public static int sizeOfEnemy = 40;
 	public static int currentScore = 0;
-	public static int comboScore = 0;
+	public static int comboMulitplier = 1;
 	public static int lastScoreChange = 0;
 	public static int sinceScoreChanged = 75;
 	public static double lifePoints = 100;
@@ -62,9 +63,7 @@ public class PlayState extends GameState {
 	@Override
 	public void init() {
 		init = true;
-		lifePoints = 100;
 		currentScore = 0;
-		comboScore = 0;
 		oldProgress = 0;
 		
 		enemies_hit = 0;
@@ -121,7 +120,7 @@ public class PlayState extends GameState {
 					lifePoints -= 5;
 					lastScoreChange = -5;
 					sinceScoreChanged = 1;
-					comboScore /= 2;
+					comboMulitplier = 1;
 					enemies_missed++;
 				}
 				if(closedEnemy == null)
@@ -137,13 +136,15 @@ public class PlayState extends GameState {
 		
 		infoPanel.updateIPanel();
 		
-		if(lifePoints <= 0)
+		if(lifePoints <= 0) {				// STERF!
+			currentScore = 0;
 			endGame();
+		}
 
-		if(comboScore >= 100) {
-			comboScore 			= 	0;
-			currentScore 	   += 	500;
+		if(comboMulitplier >= 20) {			// '20' hit streak voor bonuspunten
+			comboMulitplier 	= 	1;
 			sinceScoreChanged 	= 	1;
+			currentScore 	   += 	500;
 			lastScoreChange 	= 	500;
 		}
 
@@ -212,9 +213,10 @@ public class PlayState extends GameState {
 			Enemy enemy = enemysInPath.next();
 			if (enemy.getDistanceFromStart() > Enemy.distanceToOctagon || enemy.getDistanceFromStart() > Enemy.distanceToOctagon + sizeOfEnemy) {
 				if (e.getButton().getColor().equals(enemy.getColor())) {
-					currentScore += enemy.getDistanceFromStart() - Enemy.distanceToOctagon;
-					comboScore += 5;
-					lastScoreChange = 5;
+					currentScore += 5 * comboMulitplier;
+					lastScoreChange = 5 * comboMulitplier;
+					comboMulitplier ++;
+					area.enemyDied((Point2D.Double) enemy.getEnemy().getP1());
 					sinceScoreChanged = 1;
 					lifePoints = Math.min(lifePoints+10, 100);
 					area.setHitAreaColor(enemy.getColor());
@@ -227,12 +229,10 @@ public class PlayState extends GameState {
 				}
 			}
 		}
-		
 
 		player.setBeat();
 
-		if(notHit)
-		{
+		if(notHit) {
 			if(area.paths.get(player.getIndex()).getEnemysInPath().size() > 0)
 				lifePoints -= 1.5;
 		}

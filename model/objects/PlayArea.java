@@ -12,12 +12,14 @@ import java.awt.Stroke;
 import java.awt.Transparency;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.VolatileImage;
 import java.util.ArrayList;
 import java.util.List;
 
 import model.drawObjects.Enemy;
+import model.drawObjects.PointAnimation;
 import model.gameState.PlayState;
 
 public class PlayArea {
@@ -32,6 +34,8 @@ public class PlayArea {
 				maxCount = 100,
 				pathID = -1,
 				oldPathId = pathID;
+
+	private PointAnimation pointAnimation = new PointAnimation();
 	private Stroke stroke = new BasicStroke(5);
 	
 	private Rectangle2D backgroundPlay = new Rectangle2D.Double(256, 0, 1024, 1024);
@@ -109,6 +113,9 @@ public class PlayArea {
 			generateBackground();
 			oldPathId = pathID;
 		}
+
+		pointAnimation.draw(g2);
+
 	}
 	
 	public Line2D getLine(int index){
@@ -172,4 +179,6 @@ public class PlayArea {
 		g2.dispose();
 		background.createGraphics();
 	}
+
+	public void enemyDied(Point2D.Double p) { pointAnimation.enemyDied(p); }
 }
