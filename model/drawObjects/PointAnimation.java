@@ -17,9 +17,7 @@ public class PointAnimation extends DrawObject {
     LinkedList<Integer> puntenGain = new LinkedList<>();
     LinkedList<Integer> iterations = new LinkedList<>();
 
-    public PointAnimation() {
-
-    }
+    public PointAnimation() {    }
 
     public void enemyDied(Point2D.Double p) {
         puntenPos.add(new Point2D.Double(p.getX(), p.getY()));
@@ -29,13 +27,11 @@ public class PointAnimation extends DrawObject {
 
     @Override
     public void draw(Graphics2D g2) {
-        for (int x = 0; x < puntenPos.size(); x++) {
-            Font scoreFont = new Font("OCR A Extended", Font.BOLD, 40);
-            g2.setFont(scoreFont);
-            g2.drawString("" + puntenGain.get(x), (int) puntenPos.get(x).getX(), (int) puntenPos.get(x).getY());
+            for (int x = 0; x < puntenPos.size(); x++) {
+                g2.drawString("" + puntenGain.get(x), (int) puntenPos.get(x).getX(), (int) puntenPos.get(x).getY());
 
-            update(0);
-        }
+                update(0);
+            }
     }
 
     @Override
@@ -49,7 +45,6 @@ public class PointAnimation extends DrawObject {
                 puntenPos.remove(x);
                 iterations.remove(x);
                 puntenGain.remove(x);
-                System.out.println("removed");
             }
         }
     }

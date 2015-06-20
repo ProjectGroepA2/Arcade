@@ -2,14 +2,7 @@ package model.objects;
 
 import image.Images;
 
-import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.RenderingHints;
-import java.awt.Stroke;
-import java.awt.Transparency;
+import java.awt.*;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
@@ -114,6 +107,8 @@ public class PlayArea {
 			oldPathId = pathID;
 		}
 
+		Font scoreFont = new Font("OCR A Extended", Font.BOLD, 40);
+		g2.setFont(scoreFont);
 		pointAnimation.draw(g2);
 
 	}

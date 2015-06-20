@@ -117,8 +117,8 @@ public class PlayState extends GameState {
 				Enemy e = enemyIterator.next();
 				if (e.getDistanceFromStart() > Enemy.distanceToOctagon + (sizeOfEnemy * 1.5)) {
 					enemyIterator.remove();
-					lifePoints -= 5;
 					lastScoreChange = -5;
+					lifePoints -= lastScoreChange;
 					sinceScoreChanged = 1;
 					comboMulitplier = 1;
 					enemies_missed++;
@@ -137,15 +137,14 @@ public class PlayState extends GameState {
 		infoPanel.updateIPanel();
 		
 		if(lifePoints <= 0) {				// STERF!
-			currentScore = 0;
-			endGame();
+			currentScore = 0;		comboMulitplier = 0;			endGame();
 		}
 
 		if(comboMulitplier >= 20) {			// '20' hit streak voor bonuspunten
 			comboMulitplier 	= 	1;
 			sinceScoreChanged 	= 	1;
-			currentScore 	   += 	500;
 			lastScoreChange 	= 	500;
+			currentScore 	   += 	lastScoreChange;
 		}
 
 		area.count();
@@ -213,11 +212,11 @@ public class PlayState extends GameState {
 			Enemy enemy = enemysInPath.next();
 			if (enemy.getDistanceFromStart() > Enemy.distanceToOctagon || enemy.getDistanceFromStart() > Enemy.distanceToOctagon + sizeOfEnemy) {
 				if (e.getButton().getColor().equals(enemy.getColor())) {
-					currentScore += 5 * comboMulitplier;
 					lastScoreChange = 5 * comboMulitplier;
-					comboMulitplier ++;
-					area.enemyDied((Point2D.Double) enemy.getEnemy().getP1());
+					currentScore += lastScoreChange;
+					comboMulitplier++;
 					sinceScoreChanged = 1;
+					area.enemyDied((Point2D.Double) enemy.getEnemy().getP1());
 					lifePoints = Math.min(lifePoints+10, 100);
 					area.setHitAreaColor(enemy.getColor());
 					area.hit();
