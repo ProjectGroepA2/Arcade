@@ -49,6 +49,8 @@ public class PlayState extends GameState {
 	
 	private boolean init = false;
 
+	private boolean prestateShown = false;
+
 	private long oldProgress = 0;
 
 	public PlayState(GameStateManager gsm, SongHandler sh, SQLConnector sql) {
@@ -89,7 +91,12 @@ public class PlayState extends GameState {
 	public void update(float factor) {
 		if(init)
 			return;
-		
+
+		if (!prestateShown) {
+			gsm.setState(control.GameStateManager.State.PRE_GAME_STATE);
+			prestateShown = true;
+		}
+
 		long progress = (long) ((sh.getProgress() / 1000) + (Enemy.secondsToEnd * 1000));
 
 		for (ButtonInstance bu : sh.getCurrentSongInstance().getButtonsBetween(oldProgress, progress)) {
@@ -160,6 +167,7 @@ public class PlayState extends GameState {
 		}
 
 		comboMulitplier = 0;
+		prestateShown = false;
 		
 		if(currentScore == 0)
 			gsm.setState(State.MENU_STATE);

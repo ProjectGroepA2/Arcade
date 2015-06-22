@@ -5,12 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.SongHandler;
-import model.gameState.GameOverState;
-import model.gameState.GameState;
-import model.gameState.HelpState;
-import model.gameState.MenuState;
-import model.gameState.PlayState;
-import model.gameState.TitleState;
+import model.gameState.*;
 import control.button.Button;
 import control.button.ButtonEvent;
 import control.button.ButtonHandler;
@@ -35,7 +30,8 @@ public class GameStateManager {
 		MENU_STATE,
 		HELP_STATE,
 		PLAY_STATE,
-		GAMEOVER_STATE
+		GAMEOVER_STATE,
+		PRE_GAME_STATE
 	}
 	
 	public GameStateManager(SongHandler sh, SQLConnector sql){
@@ -46,6 +42,7 @@ public class GameStateManager {
 		gamestates.add(new HelpState(this, sh, sql));
 		gamestates.add(new PlayState(this, sh, sql));
 		gamestates.add(new GameOverState(this, sh, sql));
+		gamestates.add(new PreGameState(this, sh, sql));
 		setState(State.TITLE_STATE);
 	}
 
