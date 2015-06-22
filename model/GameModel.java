@@ -20,7 +20,6 @@ public class GameModel {
 
 		for (int i = 1; i < ButtonHandler.getButtons().size(); i++) {
 			ButtonHandler.getButtons().get(i).setColor(colors[i - 1]);
-			;
 		}
 	}
 

@@ -37,10 +37,12 @@ public class CoinAnimation extends DrawObject {
     }
 
     public void draw(Graphics2D g2) {
+        Color oldColor = g2.getColor();
         update(timerLoops);                                             // UPDATE
         g2.setColor(new Color(255, 255, 0));    // GEEL
         g2.draw(coinShape);                                             // MUNTJE TEKENEN
         g2.fill(coinShape);
+        g2.setColor(oldColor);
     }
 
     // Wordt na elke paint aangeroepen
