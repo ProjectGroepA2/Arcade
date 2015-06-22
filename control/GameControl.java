@@ -26,7 +26,8 @@ public class GameControl implements JoystickListener, ButtonListener, ActionList
 		this.gsm = gsm;
 
 		view.setIgnoreRepaint(true);
-		(update = new Timer(1000/60,this)).start();
+		update = new Timer(1000/60,this);
+		update.start();
 	}
 
 	@Override
