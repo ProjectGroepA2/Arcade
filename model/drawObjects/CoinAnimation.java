@@ -41,7 +41,6 @@ public class CoinAnimation extends DrawObject {
         g2.setColor(new Color(255, 255, 0));    // GEEL
         g2.draw(coinShape);                                             // MUNTJE TEKENEN
         g2.fill(coinShape);
-        System.out.println("ok");
     }
 
     // Wordt na elke paint aangeroepen

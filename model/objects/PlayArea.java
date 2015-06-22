@@ -110,7 +110,6 @@ public class PlayArea {
 		Font scoreFont = new Font("OCR A Extended", Font.BOLD, 40);
 		g2.setFont(scoreFont);
 		pointAnimation.draw(g2);
-
 	}
 	
 	public Line2D getLine(int index){

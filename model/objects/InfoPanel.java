@@ -75,6 +75,7 @@ public class InfoPanel {
 		g2.setColor(Color.ORANGE);
 		g2.drawString("Score: " + totalHighscore, 25, 75);
 
+		g2.setColor(Color.BLACK);
 		// BALK
 		g2.drawRect(25, 100, 200, 30);
 		g2.drawRect(25, 300, 200, 700);
