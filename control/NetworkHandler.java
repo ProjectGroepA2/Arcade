@@ -12,20 +12,20 @@ import control.joystick.Joystick.Position;
 import control.joystick.JoystickHandler;
 
 public class NetworkHandler implements Runnable{
-	
-	DatagramSocket udp;
-	
-	String host;
-	int port;
-	
-	boolean running;
-	Thread t;
-	
-	byte[] send;
-	byte[] receive;
-	
-	ButtonHandler bth;
-	JoystickHandler jth;
+
+	private DatagramSocket udp;
+
+	private String 	host;
+	private int 	port;
+
+	private boolean running;
+	private Thread  t;
+
+	private byte[] 	send,
+					receive;
+
+	private ButtonHandler bth;
+	private JoystickHandler jth;
 	
 	public NetworkHandler(String host, int port, ButtonHandler bth, JoystickHandler jth)
 	{
@@ -64,7 +64,14 @@ public class NetworkHandler implements Runnable{
 	
 	private void send(String str)
 	{
-
+		try {
+			DatagramPacket sendPacket = new DatagramPacket(str.getBytes(), str.length(), InetAddress.getByName(host), 1113);
+			udp.send(sendPacket);
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}  
 	}
 	
 	public void close()
@@ -160,8 +167,10 @@ public class NetworkHandler implements Runnable{
 					jth.onJoystickMoved(JoystickHandler.j);
 				}
 			}else {
-				JoystickHandler.j.setPosition(Position.CENTER);
-				
+				if(JoystickHandler.j.getPos() != Position.CENTER){
+					JoystickHandler.j.setPosition(Position.CENTER);
+					jth.onJoystickMoved(JoystickHandler.j);
+				}
 			}
 		}
 			
