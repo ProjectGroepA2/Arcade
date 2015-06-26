@@ -178,7 +178,7 @@ public class MenuState extends GameState {
 			}
 			if(e.getButton().getButtonID() == 1){
 				sh.close();
-				gsm.setState(control.GameStateManager.State.PLAY_STATE);
+				gsm.setState(control.GameStateManager.State.PRE_GAME_STATE);
 			}
 		}else{										//Screen for selecting song
 			if(e.getButton().getButtonID() == 1){
