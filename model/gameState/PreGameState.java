@@ -35,8 +35,6 @@ public class PreGameState extends GameState {
 
 	@Override
 	public void update(float factor) {
-//		timer = timer +factor/1000;
-//		index -= timer;
 		index2 -= factor/1000;
 		index = (double) Math.round(index2*1000)/1000;
 		if(index <= 0){
@@ -60,18 +58,12 @@ public class PreGameState extends GameState {
 		g2.drawString(text,  325, 400);
 		if(index < 1){
 			text = "GO!!!";
-//			width = g2.getFontMetrics().stringWidth("GO!!!");
-//			g2.drawString("GO!!!",325,600);
 		}
 		else if (index < 2){
 			text = "SET";
-//			width = g2.getFontMetrics().stringWidth("SET");
-//			g2.drawString("SET", 450,600);
 		}
 		else{
 			text = "READY";
-//			width = g2.getFontMetrics().stringWidth("READY");
-//			g2.drawString("READY", 325, 600);
 		}
 		width =  g2.getFontMetrics().stringWidth(text);
 		g2.drawString(text, (256+1024/2)-width/2, 600);
