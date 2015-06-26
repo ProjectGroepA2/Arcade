@@ -36,21 +36,21 @@ public class Window extends JFrame {
 		setSize(WIDTH, HEIGHT);
 		
 		//Create Events
-		Window.ON_RASP = ON_RASP;
-		if(ON_RASP){ //Only on the raspberry pi
-			GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			GraphicsDevice[] devices =  graphicsEnvironment.getScreenDevices();
-
-			if (!devices[0].isFullScreenSupported ()){
-			     throw new UnsupportedOperationException ("Fullscreen mode is unsupported.");
-			}else{
-				devices[0].setFullScreenWindow(this);
-			}			
-			//Remove cursor
-			BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-			Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
-			this.setCursor(blankCursor);
-		}
+//		Window.ON_RASP = ON_RASP;
+//		if(ON_RASP){ //Only on the raspberry pi
+//			GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+//			GraphicsDevice[] devices =  graphicsEnvironment.getScreenDevices();
+//
+//			if (!devices[0].isFullScreenSupported ()){
+//			     throw new UnsupportedOperationException ("Fullscreen mode is unsupported.");
+//			}else{
+//				devices[0].setFullScreenWindow(this);
+//			}			
+//			//Remove cursor
+//			BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+//			Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
+//			this.setCursor(blankCursor);
+//		}
 		
 		ButtonHandler bth = new ButtonHandler();
 		JoystickHandler jsh = new JoystickHandler();

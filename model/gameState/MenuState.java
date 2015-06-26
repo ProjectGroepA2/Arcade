@@ -49,6 +49,8 @@ public class MenuState extends GameState {
 	int yPosDiffButton = 900;
 	private int difSelect=0, oldDifSelect = -1;
 	Font textFont = new Font("OCR A Extended", Font.BOLD, 50);
+	Font textFont2 = new Font("OCR A Extended", Font.BOLD, 35);
+	Font textFont3 = new Font("OCR A Extended", Font.BOLD, 20);
 	Font textFontSmall = new Font("OCR A Extended", Font.BOLD, 15);
 	BufferedImage aanwijzers = Images.getImage(ImageType.aanwijzers);
 	int index = 0;
@@ -195,7 +197,9 @@ public class MenuState extends GameState {
 				selected = 0;
 				sh.set(songs.indexOf(selectedToSong(selected)));
 				sh.play();	
-			}	
+			}else if(e.getButton().getButtonID() == 3){
+				gsm.setState(control.GameStateManager.State.HELP_STATE);
+			}
 		}
 		
 		if(e.getButton().getButtonID() == 0)
@@ -327,12 +331,17 @@ public class MenuState extends GameState {
 		g2.drawString("Main Menu", 32, 60);
 		
 		g2.setFont(textFontSmall);
-	
+		
 		//select
 		g2.setColor(GameModel.colors[0]);
+		g2.fillOval(20, 860, 30, 30);
+		g2.drawString("Play", 55, 880);
+
+		//help
+		g2.setColor(GameModel.colors[3]);
 		g2.fillOval(20, 900, 30, 30);
-		g2.drawString("Play", 55, 920);
-		
+		g2.drawString("Help", 55, 920);
+
 		//letters
 		g2.setColor(GameModel.colors[1]);
 		g2.fillOval(20, 940, 30, 30);
@@ -380,8 +389,10 @@ public class MenuState extends GameState {
  		g2.setFont(textFont);
 		g2.drawString(selectedToSong(selected).getTitle(), 30, 60);
 		
+ 		g2.setFont(textFont3);
 		g2.setColor(Color.WHITE);
-		g2.drawString("Author: " + selectedToSong(selected).getAuthor(), 30, 200);
+		g2.drawString("Author: " + selectedToSong(selected).getAuthor(), 30, 100);
+		g2.setFont(textFont);
 		
 		boolean highscoresFound = true;
 		int HIGHSCORES_TO_DISPLAY = 5;
@@ -399,6 +410,7 @@ public class MenuState extends GameState {
 		}
 		else
 			g2.drawString("Daily Highscore", 30, 300);
+ 			g2.setFont(textFont2);
 		
 		if(highscoresFound)
 		{
@@ -408,7 +420,7 @@ public class MenuState extends GameState {
 			{
 				Highscore hi = highscores.get(i);
 				
-				g2.drawString(hi.getName() + " - " + hi.getScore(), 30, 400 + i*100);
+				g2.drawString(hi.getName() + " - " + hi.getScore(), 30, 350 + i*100);
 			}
 		}
 		else

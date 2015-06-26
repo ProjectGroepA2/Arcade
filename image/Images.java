@@ -34,7 +34,7 @@ public class Images {
 		   	images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/kast.png"))));
 		   	images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/gameover.png"))));
 		   	images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/screenshot.png"))));
-		   	
+		   	images.add(toCompatibleImage(ImageIO.read(Main.class.getResource("/image/help.png"))));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -45,7 +45,7 @@ public class Images {
 	}
 
 	public enum ImageType {
-		pulse,cursor,pressstart,colorstrike,background,aanwijzers,kast,gameover, screenshot
+		pulse,cursor,pressstart,colorstrike,background,aanwijzers,kast,gameover, screenshot, help
 	}
 
 	public static BufferedImage readImage(File f) {
