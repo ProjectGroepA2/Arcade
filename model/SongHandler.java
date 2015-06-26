@@ -11,7 +11,6 @@ import audio.AudioPlayer;
 import audio.Song;
 import audio.SongInstance;
 import audio.io.DirScanner;
-import audio.sorting.SortALPHA;
 import audio.sorting.SortPLAYED;
 import data.io.SQLConnector;
 
@@ -73,7 +72,9 @@ public class SongHandler {
 	{
 		currentSongInstance = si;
 	}
-	
+	public boolean isPlaying(){
+		return getProgress() > 0 ? true : false;
+	}
 	
 	private void updatePlayer()
 	{

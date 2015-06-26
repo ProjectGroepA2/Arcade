@@ -48,6 +48,9 @@ public class GameStateManager {
 	}
 	
 	public void setState(State st)	{
+		if (st.ordinal() > 0 && !(currentState instanceof TitleState))
+			currentState.stopAudio();
+
 		currentState = gamestates.get(st.ordinal());
 		init();
 	}

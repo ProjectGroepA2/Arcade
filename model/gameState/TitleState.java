@@ -40,18 +40,20 @@ public class TitleState extends GameState {
     
 	public TitleState(GameStateManager gsm, SongHandler sh, SQLConnector sql){
 		super(gsm, sh, sql);
+		if(!sh.isPlaying())
+			sh.play();
 		createBackground();
 	}
 
 	@Override
 	public void init() {
-		sh.play();
+		if(!sh.isPlaying())
+			sh.play();
 	}
 
 	@Override
 	public void update(float factor) {
-
-        frame++;
+        frame+=5;
         indexKast++;
 	}
 
@@ -114,7 +116,7 @@ public class TitleState extends GameState {
 
 		g2.setFont(textFont);
 		g2.setColor(Color.WHITE);
-		g2.drawString("©2015 Team Hamtaro", 550, 1012);
+		g2.drawString("ï¿½2015 Team Hamtaro", 550, 1012);
 
 		g2.setColor(Color.RED);
 		g2.setFont(textFont2);

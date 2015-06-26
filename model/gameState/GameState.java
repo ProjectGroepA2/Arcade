@@ -26,4 +26,5 @@ public abstract class GameState  {
 	public abstract void buttonPressed(ButtonEvent e);	
 	public abstract void buttonReleased(ButtonEvent e);	
 	public abstract void onJoystickMoved(JoystickEvent e);
+	public void stopAudio() { 	sh.close();   }
 }
