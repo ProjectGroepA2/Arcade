@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
@@ -219,8 +220,10 @@ public class PlayState extends GameState {
 					comboScore += 5;
 					lifePoints = Math.min(lifePoints+10, 100);
 					area.setHitAreaColor(enemy.getColor());
+					area.enemyDied((Point2D.Double) enemy.getEnemy().getP1());
 					area.hit();
 					enemies_hit++;
+					infoPanel.throwACoin(); // Coin Animatie starten bij hit
 					enemysInPath.remove();
 					notHit = false;
 					break;

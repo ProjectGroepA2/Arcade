@@ -2,22 +2,17 @@ package model.objects;
 
 import image.Images;
 
-import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.RenderingHints;
-import java.awt.Stroke;
-import java.awt.Transparency;
+import java.awt.*;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.VolatileImage;
 import java.util.ArrayList;
 import java.util.List;
 
 import model.drawObjects.Enemy;
+import model.drawObjects.PointAnimation;
 import model.gameState.PlayState;
 
 public class PlayArea {
@@ -30,6 +25,7 @@ public class PlayArea {
 	private boolean hit = false;
 	private int count = 0,maxCount = 100,pathID = -1;
 	private Stroke stroke = new BasicStroke(5);
+	private PointAnimation pointAnimation = new PointAnimation();
 	
 	private Rectangle2D backgroundPlay = new Rectangle2D.Double(256, 0, 1024, 1024);
 	
@@ -122,8 +118,14 @@ public class PlayArea {
 			g2.setColor(pathColor);
 			g2.draw(paths.get(pathID));
 		}
+
+		Font scoreFont = new Font("OCR A Extended", Font.BOLD, 40);
+		Font tempFont = g2.getFont();
+		g2.setFont(scoreFont);
+		pointAnimation.draw(g2);
+		g2.setFont(tempFont);
 	}
-	
+
 	public Line2D getLine(int index){
 		if(index < 0){
 			index = 0;
@@ -158,4 +160,6 @@ public class PlayArea {
 		this.pathID = pathID;
 		this.pathColor = pathColor;
 	}
+
+	public void enemyDied(Point2D.Double p) { pointAnimation.enemyDied(p); }
 }

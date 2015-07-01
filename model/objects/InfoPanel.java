@@ -11,6 +11,7 @@ import java.awt.Transparency;
 import java.awt.image.VolatileImage;
 
 import model.SongHandler;
+import model.drawObjects.CoinAnimation;
 import model.gameState.PlayState;
 
 public class InfoPanel {
@@ -20,6 +21,10 @@ public class InfoPanel {
 	private VolatileImage infoPanel;
 	private SongHandler sh;
 	private String time;
+
+	private int tempComboMulitplier;
+
+	private CoinAnimation coinAnimation = new CoinAnimation(125, 300);
 	
 	public InfoPanel(int x, int y, SongHandler sh){
 		this.x = x;
@@ -80,14 +85,27 @@ public class InfoPanel {
 //	    GradientPaint gp = new GradientPaint(300, 0, new Color(200,200,255), 256, 1024, Color.WHITE);
 //	    g2.setPaint(gp);
 //		g2.fillRect(x, y, 256, 1024);
-			
-			
-		g2.setColor(Color.YELLOW);		
+
+		g2.setColor(Color.YELLOW);
+		// Controlen of coin animatie nodig is
+		if (!coinAnimation.areWeDoneYet()) {
+			coinAnimation.draw(g2);
+			// Score pas updaten wanneer coin in zijn laatste draw loop zit
+			if (coinAnimation.isLastLoop())
+				tempComboMulitplier = PlayState.comboScore;
+		} else
+			tempComboMulitplier = PlayState.comboScore;
+
+
 		g2.fillRect(25, 1000 - 7 * PlayState.comboScore, 200, 0 + 7 * PlayState.comboScore);
 		g2.dispose();
 		infoPanel.createGraphics();
 	}
-	
+
+	public void throwACoin() {
+		coinAnimation.start();		// Teller weer op 1 zetten
+	}
+
 	public void draw(Graphics2D g2){
 		g2.drawImage(infoPanel, 0, 0, 256,1024,null);
 	}
