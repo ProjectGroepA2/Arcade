@@ -24,7 +24,9 @@ import model.objects.highscore.Highscore;
 import audio.Song;
 import audio.SongInstance;
 import audio.sorting.SortALPHA;
+import audio.sorting.SortAUTHOR;
 import audio.sorting.SortPLAYED;
+import audio.sorting.SortSCORE;
 import control.GameStateManager;
 import control.GameStateManager.State;
 import control.button.ButtonEvent;
@@ -102,9 +104,12 @@ public class MenuState extends GameState {
 		else
 		{
 			ButtonHandler.getButton(1).setColor(GameModel.colors[0]);
+			ButtonHandler.getButton(2).setColor(GameModel.colors[3]);
 			
-			ButtonHandler.getButton(5).setColor(GameModel.colors[1]);
-			ButtonHandler.getButton(6).setColor(GameModel.colors[4]);
+			ButtonHandler.getButton(3).setColor(GameModel.colors[1]);
+			ButtonHandler.getButton(4).setColor(GameModel.colors[2]);
+			ButtonHandler.getButton(5).setColor(GameModel.colors[4]);
+			ButtonHandler.getButton(6).setColor(GameModel.colors[5]);
 			JoystickHandler.REPEAT = true;
 		}
 		
@@ -187,18 +192,24 @@ public class MenuState extends GameState {
 				subscreen = true;
 				gsm.init();
 				generateSubScreenForeground();
-			}else if(e.getButton().getButtonID() == 5){
-				sh.sort(new SortALPHA());
-				selected = 0;
-				sh.set(songs.indexOf(selectedToSong(selected)));
-				sh.play();	
-			}else if(e.getButton().getButtonID() == 6){
-				sh.sort(new SortPLAYED());
-				selected = 0;
-				sh.set(songs.indexOf(selectedToSong(selected)));
-				sh.play();	
-			}else if(e.getButton().getButtonID() == 3){
+			}else if(e.getButton().getButtonID() == 2){
 				gsm.setState(control.GameStateManager.State.HELP_STATE);
+			}
+			else
+			{
+				if(e.getButton().getButtonID() == 3){
+					sh.sort(new SortALPHA());
+				}else if(e.getButton().getButtonID() == 4){
+					sh.sort(new SortAUTHOR());	
+				}else if(e.getButton().getButtonID() == 5){
+					sh.sort(new SortPLAYED());	
+				}else if(e.getButton().getButtonID() == 6){
+					sh.sort(new SortSCORE());	
+				}
+				
+				selected = 0;
+				sh.set(songs.indexOf(selectedToSong(selected)));
+				sh.play();	
 			}
 		}
 		
@@ -334,23 +345,34 @@ public class MenuState extends GameState {
 		
 		//select
 		g2.setColor(GameModel.colors[0]);
-		g2.fillOval(20, 860, 30, 30);
-		g2.drawString("Play", 55, 880);
+		g2.fillOval(20, 780, 30, 30);
+		g2.drawString("Play", 55, 800);
 
 		//help
 		g2.setColor(GameModel.colors[3]);
-		g2.fillOval(20, 900, 30, 30);
-		g2.drawString("Help", 55, 920);
+		g2.fillOval(20, 820, 30, 30);
+		g2.drawString("Help", 55, 840);
 
 		//letters
 		g2.setColor(GameModel.colors[1]);
-		g2.fillOval(20, 940, 30, 30);
-		g2.drawString("A-Z", 55, 960);
+		g2.fillOval(20, 860, 30, 30);
+		g2.drawString("A-Z", 55, 880);
+		
+		//most played
+		g2.setColor(GameModel.colors[2]);
+		g2.fillOval(20, 900, 30, 30);
+		g2.drawString("Author", 55, 920);		
 		
 		//most played
 		g2.setColor(GameModel.colors[4]);
+		g2.fillOval(20, 940, 30, 30);
+		g2.drawString("Most Played", 55, 960);		
+		
+		//most played
+		g2.setColor(GameModel.colors[5]);
 		g2.fillOval(20, 980, 30, 30);
-		g2.drawString("Most Played", 55, 1000);		
+		g2.drawString("Highest Score", 55, 1000);
+		
 		g2.dispose();
 	
 		mainScreenBackground.createGraphics();
