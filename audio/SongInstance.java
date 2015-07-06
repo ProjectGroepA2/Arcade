@@ -7,6 +7,7 @@ public class SongInstance {
 
 	private String difficulty;
 	private int timesPlayed;
+	private int highestScore;
 	
 	private List<ObjectInstance> objects;
 	private List<ButtonInstance> buttons;
@@ -15,6 +16,7 @@ public class SongInstance {
 	{
 		this.difficulty = difficulty;
 		this.timesPlayed = 0;
+		this.highestScore = 0;
 		
 		objects = new ArrayList<ObjectInstance>();
 		buttons = new ArrayList<ButtonInstance>();
@@ -92,6 +94,14 @@ public class SongInstance {
 
 	public void setTimesPlayed(int timesPlayed) {
 		this.timesPlayed = timesPlayed;
+	}
+	
+	public int getHighestScore() {
+		return highestScore;
+	}
+
+	public void setHighestScore(int highestScore) {
+		this.highestScore = highestScore;
 	}
 	
 	public void played()
