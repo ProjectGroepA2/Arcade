@@ -169,6 +169,18 @@ public class SQLConnector
 					} catch (SQLException e) {
 						e.printStackTrace();
 					}
+	    			
+	    			Statement st4 = executeResultQuery("SELECT MAX(`score`) as score FROM `highscore` WHERE `songinstance`=(SELECT id FROM songinstance WHERE song=" + id + " AND difficulty='" + si.getDifficulty() + "')");
+	    			try {
+						ResultSet rs4 = st4.getResultSet();
+						if(rs4.next())
+						{
+							int i = rs4.getInt(1);
+			    			si.setHighestScore(i);
+						}
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
     			}
     		}
     		else
