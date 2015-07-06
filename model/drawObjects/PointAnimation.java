@@ -8,15 +8,17 @@ import java.util.LinkedList;
 
 public class PointAnimation extends DrawObject {
 
-    LinkedList<Point2D.Double>  puntenPos   =   new LinkedList<>();
-    LinkedList<Integer>         puntenGain  =   new LinkedList<>();
-    LinkedList<Integer>         iterations  =   new LinkedList<>();
+    LinkedList<Point2D.Double>   puntenPos   =   new LinkedList<>();
+    LinkedList<Integer>          puntenGain  =   new LinkedList<>();
+    LinkedList<Integer>          iterations  =   new LinkedList<>();
+
+    public static double LastPointIncrement = 0;
 
     public PointAnimation() {    }
 
     public void enemyDied(Point2D.Double p) {
         puntenPos.add(new Point2D.Double(p.getX(), p.getY()));
-        puntenGain.add(PlayState.comboScore);
+        puntenGain.add((int)LastPointIncrement);
         iterations.add(0);
     }
 

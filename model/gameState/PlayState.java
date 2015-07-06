@@ -13,6 +13,7 @@ import main.Window;
 import model.SongHandler;
 import model.drawObjects.Enemy;
 import model.drawObjects.Player;
+import model.drawObjects.PointAnimation;
 import model.objects.InfoPanel;
 import model.objects.Path;
 import model.objects.PlayArea;
@@ -216,7 +217,8 @@ public class PlayState extends GameState {
 			Enemy enemy = enemysInPath.next();
 			if (enemy.getDistanceFromStart() > Enemy.distanceToOctagon || enemy.getDistanceFromStart() > Enemy.distanceToOctagon + sizeOfEnemy) {
 				if (e.getButton().getColor().equals(enemy.getColor())) {
-					currentScore += enemy.getDistanceFromStart() - Enemy.distanceToOctagon;
+					PointAnimation.LastPointIncrement = (int)(enemy.getDistanceFromStart() - Enemy.distanceToOctagon);
+					currentScore += PointAnimation.LastPointIncrement;
 					comboScore += 5;
 					lifePoints = Math.min(lifePoints+10, 100);
 					area.setHitAreaColor(enemy.getColor());
@@ -230,7 +232,6 @@ public class PlayState extends GameState {
 				}
 			}
 		}
-		
 
 		player.setBeat();
 

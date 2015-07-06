@@ -50,8 +50,10 @@ public class CoinAnimation extends DrawObject {
         // Coin omlaag verschuiven doordat Y * loops omlaag gaat.
         // Per frame verschuift het balletje delta 10 op Y-as.
         try {
-            coinShape.setFrame(coinSetPoint.getX(), coinSetPoint.getY() + (1000 - 35 * PlayState.comboScore) / 25 * timerLoops,
-                    coinShape.getWidth(), coinShape.getHeight());
+            coinShape.setFrame(coinSetPoint.getX() * timerLoops * 10, coinSetPoint.getY() * timerLoops,
+                                coinShape.getWidth(), coinShape.getHeight());
+/*            coinShape.setFrame(coinSetPoint.getX(), coinSetPoint.getY() + (1000 - 35 * PlayState.comboScore) / 25 * timerLoops,
+                    coinShape.getWidth(), coinShape.getHeight());*/
         } catch (ArithmeticException a) { a.printStackTrace(); }
 
         timerLoops++;
