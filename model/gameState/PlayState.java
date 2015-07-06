@@ -158,7 +158,7 @@ public class PlayState extends GameState {
 	}
 
 	private void endGame() {
-		if(sh.getProgress()/1000 < 5000)	
+		if(sh.getProgress()/1000 > 5000)	
 		{
 			sql.addPlaydata(sh.getCurrentSong(), sh.getCurrentSongInstance(), sh.getProgress()/1000, enemies_missed, enemies_hit, buttons_pressed, joystick_moved);
 			sh.getCurrentSongInstance().played();
