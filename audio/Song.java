@@ -165,4 +165,15 @@ public class Song implements Comparable<Song>{
 		}
 		return timesPlayed;
 	}
+	
+	public int getHighestScore()
+	{
+		int highest = 0;
+		for(SongInstance s : songs)
+		{
+			if(s.getHighestScore() > highest)
+				highest = s.getHighestScore();
+		}
+		return highest;
+	}
 }

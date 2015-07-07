@@ -76,11 +76,6 @@ public class PlayState extends GameState {
 		{
 			p.getEnemysInPath().clear();
 		}
-
-		for (int i = 1; i < ButtonHandler.getButtons().size(); i++) {
-			Button b = ButtonHandler.getButton(i);
-			b.setColor(Color.BLACK);
-		}
 		
 		ButtonHandler.getButton(1).setColor(sh.getCurrentSongInstance().getButtons().get(0).getColor());
 		
@@ -160,7 +155,7 @@ public class PlayState extends GameState {
 	}
 
 	private void endGame() {
-		if(sh.getProgress()/1000 < 5000)	
+		if(sh.getProgress()/1000 > 5000)	
 		{
 			sql.addPlaydata(sh.getCurrentSong(), sh.getCurrentSongInstance(), sh.getProgress()/1000, enemies_missed, enemies_hit, buttons_pressed, joystick_moved);
 			sh.getCurrentSongInstance().played();
