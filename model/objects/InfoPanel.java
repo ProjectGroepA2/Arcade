@@ -59,9 +59,6 @@ public class InfoPanel {
 	    GradientPaint gp = new GradientPaint(0, 0, new Color(245,245,245), 256, 1024, Color.WHITE);
 	    g2.setPaint(gp);
 		
-		Font scoreFont = new Font("OCR A Extended", Font.BOLD, 30);
-		g2.setFont(scoreFont);
-		
 		g2.setColor(Color.GREEN);
 		g2.fillRect(25, 900, (int)(2 * PlayState.lifePoints), 30);
 		
@@ -73,12 +70,24 @@ public class InfoPanel {
 		g2.drawRect(25, 900, 200, 30);
 		g2.drawRect(25, 950, 200, 30);
 		
-		g2.drawString("Score: " + totalHighscore, 25, 75);
-		g2.drawString(sh.getCurrentSong().getTitle(), 25, 125);
-		g2.drawString(sh.getCurrentSong().getAuthor(), 25, 175);
-		g2.drawString("" + highscore, 25, 225);
-		g2.drawString(time, 25, 275);
-			
+		Font scoreFont = new Font("OCR A Extended", Font.BOLD, 35);
+		g2.setFont(scoreFont);
+		g2.drawString("Score: ", 25, 75);
+		
+		Font scoreFont2 = new Font("OCR A Extended", Font.BOLD, 25);
+		g2.setFont(scoreFont2);
+		g2.drawString("Title: ", 25, 185);
+		g2.drawString("Time: ", 25, 265);
+		g2.drawString("Best: ", 25, 345);
+		
+		
+		Font scoreFont3 = new Font("OCR A Extended", Font.BOLD, 35);
+		g2.setFont(scoreFont3);
+		g2.drawString("" + totalHighscore, 25, 105);
+		g2.drawString(sh.getCurrentSong().getTitle(), 25, 215);
+		g2.drawString(time, 25, 295);
+		g2.drawString("" + highscore, 25, 375);
+
 
 		if(!Window.ON_RASP){
 			int width,height;
@@ -86,27 +95,27 @@ public class InfoPanel {
 			height = g2.getFontMetrics().getHeight();
 			
 			
-			Ellipse2D oval1 = new Ellipse2D.Double(15, 700, 50, 50);
+			Ellipse2D oval1 = new Ellipse2D.Double(25, 700, 50, 50);
 			g2.setColor(ButtonHandler.getButton(1).getColor());
 			g2.fill(oval1);
 			
-			Ellipse2D oval2 = new Ellipse2D.Double(75, 700, 50, 50);
+			Ellipse2D oval2 = new Ellipse2D.Double(85, 700, 50, 50);
 			g2.setColor(ButtonHandler.getButton(2).getColor());
 			g2.fill(oval2);
 			
-			Ellipse2D oval3 = new Ellipse2D.Double(135, 700, 50, 50);
+			Ellipse2D oval3 = new Ellipse2D.Double(145, 700, 50, 50);
 			g2.setColor(ButtonHandler.getButton(3).getColor());
 			g2.fill(oval3);
 			
-			Ellipse2D oval4 = new Ellipse2D.Double(40, 760, 50, 50);
+			Ellipse2D oval4 = new Ellipse2D.Double(50, 760, 50, 50);
 			g2.setColor(ButtonHandler.getButton(4).getColor());
 			g2.fill(oval4);
 			
-			Ellipse2D oval5 = new Ellipse2D.Double(100, 760, 50, 50);
+			Ellipse2D oval5 = new Ellipse2D.Double(110, 760, 50, 50);
 			g2.setColor(ButtonHandler.getButton(5).getColor());
 			g2.fill(oval5);
 			
-			Ellipse2D oval6 = new Ellipse2D.Double(160, 760, 50, 50);
+			Ellipse2D oval6 = new Ellipse2D.Double(170, 760, 50, 50);
 			g2.setColor(ButtonHandler.getButton(6).getColor());
 			g2.fill(oval6);
 		}
