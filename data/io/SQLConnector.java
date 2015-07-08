@@ -8,8 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.crypto.provider.RSACipher;
-
 import model.objects.highscore.Highscore;
 import audio.Song;
 import audio.SongInstance;
@@ -46,6 +44,30 @@ public class SQLConnector
         {
             System.out.println("Error : " + ex.getMessage());
         }
+    }
+    
+    public Highscore getHighscore(Song s, SongInstance si)
+    {
+    	String query = "SELECT * FROM highscore WHERE songinstance = (SELECT id FROM songinstance WHERE difficulty='" + si.getDifficulty() + "' AND song=(SELECT id FROM song WHERE folder='" + s.getFolder() + "')) ORDER BY score DESC LIMIT 1";
+    	//System.out.println(query);
+    	Statement st = executeResultQuery(query);
+    	ResultSet result = null;
+		try {
+			result = st.getResultSet();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
+		Highscore hsc = null;
+		
+    	try {
+    		result.next();
+    		hsc = new Highscore(si, result.getString("username"), result.getInt("score"), result.getDate("date").getTime());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	
+		return hsc;
     }
     
     public List<Highscore> getHighscores(Song s, SongInstance si)
@@ -166,6 +188,18 @@ public class SQLConnector
 						int i = rs3.getInt(1);
 		    			si.setTimesPlayed(i);
 		    			System.out.println(s.getTitle() + " - " + si.getDifficulty() + ": " + i);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+	    			
+	    			Statement st4 = executeResultQuery("SELECT MAX(`score`) as score FROM `highscore` WHERE `songinstance`=(SELECT id FROM songinstance WHERE song=" + id + " AND difficulty='" + si.getDifficulty() + "')");
+	    			try {
+						ResultSet rs4 = st4.getResultSet();
+						if(rs4.next())
+						{
+							int i = rs4.getInt(1);
+			    			si.setHighestScore(i);
+						}
 					} catch (SQLException e) {
 						e.printStackTrace();
 					}

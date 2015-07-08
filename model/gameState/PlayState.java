@@ -72,14 +72,11 @@ public class PlayState extends GameState {
 		buttons_pressed = 0;
 		joystick_moved = 0;
 		
+		infoPanel.init(sql.getHighscore(sh.getCurrentSong(), sh.getCurrentSongInstance()).getScore());
+		
 		for(Path p : area.paths)
 		{
 			p.getEnemysInPath().clear();
-		}
-
-		for (int i = 1; i < ButtonHandler.getButtons().size(); i++) {
-			Button b = ButtonHandler.getButton(i);
-			b.setColor(Color.BLACK);
 		}
 		
 		ButtonHandler.getButton(1).setColor(sh.getCurrentSongInstance().getButtons().get(0).getColor());
@@ -160,7 +157,7 @@ public class PlayState extends GameState {
 	}
 
 	private void endGame() {
-		if(sh.getProgress()/1000 < 5000)	
+		if(sh.getProgress()/1000 > 5000)	
 		{
 			sql.addPlaydata(sh.getCurrentSong(), sh.getCurrentSongInstance(), sh.getProgress()/1000, enemies_missed, enemies_hit, buttons_pressed, joystick_moved);
 			sh.getCurrentSongInstance().played();
@@ -194,19 +191,19 @@ public class PlayState extends GameState {
 				player.draw(g2);
 		} catch (Exception e) {
 		}
-		if(!Window.ON_RASP){
-			int width,height;
-			width = g2.getFontMetrics().stringWidth("");
-			height = g2.getFontMetrics().getHeight();
-			for (int i = 1; i < ButtonHandler.getButtons().size(); i++) {
-				Ellipse2D oval = new Ellipse2D.Double(880+(50*i), 0, 50, 50);
-				g2.setColor(ButtonHandler.getButton(i).getColor());
-				g2.fill(oval);
-				g2.setColor(Color.BLACK);
-				width = g2.getFontMetrics().stringWidth(""+i);
-				g2.drawString(""+i, (int)oval.getCenterX()-width/2,(int)oval.getMaxY()+height);
-			}
-		}
+//		if(!Window.ON_RASP){
+//			int width,height;
+//			width = g2.getFontMetrics().stringWidth("");
+//			height = g2.getFontMetrics().getHeight();
+//			for (int i = 1; i < ButtonHandler.getButtons().size(); i++) {
+//				Ellipse2D oval = new Ellipse2D.Double(880+(50*i), 0, 50, 50);
+//				g2.setColor(ButtonHandler.getButton(i).getColor());
+//				g2.fill(oval);
+//				g2.setColor(Color.BLACK);
+//				width = g2.getFontMetrics().stringWidth(""+i);
+//				g2.drawString(""+i, (int)oval.getCenterX()-width/2,(int)oval.getMaxY()+height);
+//			}
+//		}
 	}
 
 	@Override
