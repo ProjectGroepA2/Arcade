@@ -23,7 +23,7 @@ public class InfoPanel {
 	private VolatileImage infoPanel;
 	private SongHandler sh;
 	private String time;
-	private int highscore;
+	private int highscore = 0;
 	
 	public InfoPanel(int x, int y, SongHandler sh){
 		this.x = x;
