@@ -417,7 +417,7 @@ public class MenuState extends GameState {
 		g2.setFont(textFont);
 		
 		boolean highscoresFound = true;
-		int HIGHSCORES_TO_DISPLAY = 5;
+		int HIGHSCORES_TO_DISPLAY = 7;
 		
 		List<Highscore> highscores = sql.getHighscoresToday(selectedToSong(selected), sh.getCurrentSong().getSongs().get(difSelect));
 		if(highscores.isEmpty())
@@ -428,10 +428,10 @@ public class MenuState extends GameState {
 				highscoresFound = false;
 			}
 			else
-				g2.drawString("All Time Highscores", 30, 300);
+				g2.drawString("All Time Highscores", 30, 235);
 		}
 		else
-			g2.drawString("Daily Highscore", 30, 300);
+			g2.drawString("Daily Highscore", 30, 235);
  			g2.setFont(textFont2);
 		
 		if(highscoresFound)
@@ -442,7 +442,7 @@ public class MenuState extends GameState {
 			{
 				Highscore hi = highscores.get(i);
 				
-				g2.drawString(hi.getName() + " - " + hi.getScore(), 30, 350 + i*100);
+				g2.drawString(" " + (i+1) + "#  " + hi.getName() + " - " + hi.getScore(), 30, 290 + i*80);
 			}
 		}
 		else
