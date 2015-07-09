@@ -36,8 +36,8 @@ public class Window extends JFrame {
 		//Create Events
 		Window.ON_ARCADE = ON_ARCADE;
 		if(ON_ARCADE){ //Only on the arcade machine
-		
 			//Remove cursor
+			setUndecorated(true);
 			BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 			Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
 			this.setCursor(blankCursor);
