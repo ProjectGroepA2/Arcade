@@ -240,7 +240,7 @@ public class MenuState extends GameState {
 			}
 			else if(e.getJoystick().getPos() == Joystick.Position.CENTER)	
 			{
-				sh.set(selectedToSong(selected).getSongs().get(difSelect));
+				sh.set(selectedToSong(selected).getSongs().get( (sh.getCurrentSong().getSongs().size()-1) - difSelect));
 			}
 			//generateSubScreenForeground();			
 		}else{										//Screen for selecting song
