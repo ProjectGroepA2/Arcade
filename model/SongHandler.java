@@ -39,7 +39,7 @@ public class SongHandler {
 		
 		p = new AudioPlayer();
 		
-		if(Window.ON_RASP)
+		if(Window.ON_ARCADE)
 			dir = new File(System.getProperty( "user.home" ) + "/ColorStrike/Songs/");
 		else
 			dir = new File(System.getProperty( "user.home" ) + "/Documents/songs/");
