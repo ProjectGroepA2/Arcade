@@ -2,6 +2,13 @@ package model.objects;
 
 import image.Images;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.RenderingHints;
+import java.awt.Stroke;
+import java.awt.Transparency;
 import java.awt.*;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
@@ -24,7 +31,7 @@ public class PlayArea {
 	private VolatileImage background;
 	private boolean hit = false;
 	private int count = 0,maxCount = 100,pathID = -1;
-	private Stroke stroke = new BasicStroke(5);
+	private Stroke stroke = new BasicStroke(5,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND);
 	private PointAnimation pointAnimation = new PointAnimation();
 	
 	private Rectangle2D backgroundPlay = new Rectangle2D.Double(256, 0, 1024, 1024);
@@ -125,7 +132,7 @@ public class PlayArea {
 		pointAnimation.draw(g2);
 		g2.setFont(tempFont);
 	}
-
+	
 	public Line2D getLine(int index){
 		if(index < 0){
 			index = 0;
