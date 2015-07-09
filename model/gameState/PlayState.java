@@ -4,17 +4,16 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
-import main.Window;
 import model.SongHandler;
 import model.drawObjects.Enemy;
 import model.drawObjects.Player;
 import model.objects.InfoPanel;
 import model.objects.Path;
 import model.objects.PlayArea;
+import model.objects.highscore.Highscore;
 import audio.ButtonInstance;
 import audio.ObjectInstance;
 import control.GameStateManager;
@@ -45,6 +44,7 @@ public class PlayState extends GameState {
 	private int joystick_moved = 0;
 	
 	private boolean init = false;
+	private static boolean won = false;
 
 	private long oldProgress = 0;
 
@@ -60,6 +60,7 @@ public class PlayState extends GameState {
 	@Override
 	public void init() {
 		init = true;
+		won = false;
 		lifePoints = 100;
 		currentScore = 0;
 		comboScore = 0;
@@ -69,8 +70,9 @@ public class PlayState extends GameState {
 		enemies_missed = 0;
 		buttons_pressed = 0;
 		joystick_moved = 0;
-		
-		infoPanel.init(sql.getHighscore(sh.getCurrentSong(), sh.getCurrentSongInstance()).getScore());
+		Highscore h = sql.getHighscore(sh.getCurrentSong(), sh.getCurrentSongInstance());
+		if(h != null)
+			infoPanel.init(h.getScore());
 		
 		for(Path p : area.paths)
 		{
@@ -101,8 +103,11 @@ public class PlayState extends GameState {
 		}
 		
 
-		if(progress > sh.getCurrentSongInstance().getEndTime() + Enemy.secondsToEnd*1000*2)
-			endGame();
+		if(progress > sh.getCurrentSongInstance().getEndTime() + Enemy.secondsToEnd*1000*2){
+			won = true;
+			endGame();			
+		}
+			
 
 		oldProgress = progress;
 
@@ -164,7 +169,7 @@ public class PlayState extends GameState {
 		if(currentScore == 0)
 			gsm.setState(State.MENU_STATE);
 		else
-			gsm.setState(State.GAMEOVER_STATE);
+			gsm.setState(State.END_STATE);
 	}
 
 	@Override
@@ -287,5 +292,9 @@ public class PlayState extends GameState {
 		Path path = area.paths.get(pathID);
 		Enemy e = new Enemy(pathID, 1, color, path);
 		path.getEnemysInPath().addLast(e);
+	}	
+	
+	public static boolean won(){
+		return won;
 	}
 }

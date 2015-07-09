@@ -2,7 +2,6 @@ package model.objects;
 
 import image.Images;
 
-import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -29,7 +28,7 @@ public class PlayArea {
 	private VolatileImage background;
 	private boolean hit = false;
 	private int count = 0,maxCount = 100,pathID = -1;
-	private Stroke stroke = new BasicStroke(5);
+	private Stroke stroke = new BasicStroke(5,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND);
 	
 	private Rectangle2D backgroundPlay = new Rectangle2D.Double(256, 0, 1024, 1024);
 	
