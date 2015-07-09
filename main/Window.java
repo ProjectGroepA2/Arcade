@@ -36,8 +36,8 @@ public class Window extends JFrame {
 		setSize(WIDTH, HEIGHT);
 		
 		//Create Events
-//		Window.ON_RASP = ON_RASP;
-//		if(ON_RASP){ //Only on the raspberry pi
+		Window.ON_RASP = ON_RASP;
+		if(ON_RASP){ //Only on the raspberry pi
 //			GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
 //			GraphicsDevice[] devices =  graphicsEnvironment.getScreenDevices();
 //
@@ -47,15 +47,15 @@ public class Window extends JFrame {
 //				devices[0].setFullScreenWindow(this);
 //			}			
 //			//Remove cursor
-//			BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-//			Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
-//			this.setCursor(blankCursor);
-//		}
+			BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+			Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
+			this.setCursor(blankCursor);
+		}
 		
 		ButtonHandler bth = new ButtonHandler();
 		JoystickHandler jsh = new JoystickHandler();
 		
-
+ 
 		final SQLConnector sql = new SQLConnector();
 
 		NetworkHandler ntw = new NetworkHandler("10.42.0.5", 1113, bth, jsh);
@@ -85,8 +85,8 @@ public class Window extends JFrame {
 		});
 		
 		//Create EventListeners
-			addKeyListener(bth);
-			addKeyListener(jsh);
+		addKeyListener(bth);
+		addKeyListener(jsh);
 		bth.addButtonListener(control);
 		jsh.addJoystickListener(control);
 		

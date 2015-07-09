@@ -17,6 +17,7 @@ public class NetworkHandler implements Runnable{
 
 	private String 	host;
 	private int 	port;
+	private long fistpressed;
 
 	private boolean running;
 	private Thread  t;
@@ -111,7 +112,7 @@ public class NetworkHandler implements Runnable{
 			}
 			
 			if(control[7] == 0 && control[8] == 0){
-				if(JoystickHandler.j.getPos() != Position.UP_LEFT)
+				if(JoystickHandler.j.getPos() != Position.UP_LEFT )
 				{
 					JoystickHandler.j.setPosition(Position.UP_LEFT);
 					jth.onJoystickMoved(JoystickHandler.j);
@@ -140,10 +141,18 @@ public class NetworkHandler implements Runnable{
 			}
 			
 			else if(control[7] == 0){
-				if(JoystickHandler.j.getPos() != Position.UP)
+				if(JoystickHandler.j.getPos() != Position.UP || JoystickHandler.REPEAT)
 				{
-					JoystickHandler.j.setPosition(Position.UP);
-					jth.onJoystickMoved(JoystickHandler.j);
+					if(JoystickHandler.j.getPos() != Position.UP)
+					{
+						fistpressed = System.currentTimeMillis();	
+						JoystickHandler.j.setPosition(Position.UP);
+						jth.onJoystickMoved(JoystickHandler.j);
+					}
+					if((fistpressed + 500) < System.currentTimeMillis()){
+						JoystickHandler.j.setPosition(Position.UP);
+						jth.onJoystickMoved(JoystickHandler.j);
+					}
 				}
 			}
 			else if(control[8] == 0){
@@ -161,13 +170,21 @@ public class NetworkHandler implements Runnable{
 				}
 			}
 			else if(control[10] == 0){
-				if(JoystickHandler.j.getPos() != Position.DOWN)
+				if(JoystickHandler.j.getPos() != Position.DOWN || JoystickHandler.REPEAT)
 				{
-					JoystickHandler.j.setPosition(Position.DOWN);
-					jth.onJoystickMoved(JoystickHandler.j);
+					if(JoystickHandler.j.getPos() != Position.DOWN){
+						fistpressed = System.currentTimeMillis();
+						JoystickHandler.j.setPosition(Position.DOWN);
+						jth.onJoystickMoved(JoystickHandler.j);
+					}
+					if((fistpressed + 500) < System.currentTimeMillis()){
+						JoystickHandler.j.setPosition(Position.DOWN);
+						jth.onJoystickMoved(JoystickHandler.j);
+					}
 				}
 			}else {
 				if(JoystickHandler.j.getPos() != Position.CENTER){
+					fistpressed = 0;
 					JoystickHandler.j.setPosition(Position.CENTER);
 					jth.onJoystickMoved(JoystickHandler.j);
 				}
