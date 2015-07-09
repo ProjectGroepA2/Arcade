@@ -25,7 +25,7 @@ public class Button {
 	
 	private void setLed()
 	{
-		if(Window.ON_RASP)
+		if(Window.ON_ARCADE)
 		{
 			ntw.setLed(ledID, color.getGreen(), color.getRed(), color.getBlue());
 			ntw.show();
