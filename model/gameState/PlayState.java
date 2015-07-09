@@ -50,7 +50,7 @@ public class PlayState extends GameState {
 
 	public PlayState(GameStateManager gsm, SongHandler sh, SQLConnector sql) {
 		super(gsm, sh, sql);
-		infoPanel = new InfoPanel(0, 0, sh);
+		infoPanel = new InfoPanel(sh);
 		area = new PlayArea(256, 1024, 1024, 125);
 		player = new Player(1280 - 1024 + 1024 / 2, 1024 / 2);
 		stroke = new BasicStroke(sizeOfEnemy, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
@@ -103,7 +103,7 @@ public class PlayState extends GameState {
 		}
 		
 
-		if(progress > sh.getCurrentSongInstance().getEndTime() + Enemy.secondsToEnd*1000*3){
+		if(progress > sh.getCurrentSongInstance().getEndTime() + Enemy.secondsToEnd*2500){
 			won = true;
 			endGame();			
 		}
