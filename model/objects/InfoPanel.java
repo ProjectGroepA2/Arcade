@@ -75,14 +75,16 @@ public class InfoPanel {
 		g2.drawString("Score: ", 25, 75);
 		
 		g2.drawString(sh.getCurrentSong().getTitle(), 25, 215);
-		g2.drawString(time, 25, 295);
-		g2.drawString("" + highscore, 25, 375);
+		g2.drawString(sh.getCurrentSongInstance().getDifficulty(), 25, 295);
+		g2.drawString(time, 25, 375);
+		g2.drawString("" + highscore, 25, 455);
 		
 		Font scoreFont2 = new Font("OCR A Extended", Font.BOLD, 25);
 		g2.setFont(scoreFont2);
 		g2.drawString("Title: ", 25, 185);
-		g2.drawString("Time: ", 25, 265);
-		g2.drawString("Best: ", 25, 345);
+		g2.drawString("Difficulty: ", 25, 265);
+		g2.drawString("Time: ", 25, 345);
+		g2.drawString("Best: ", 25, 425);
 		
 		
 		Font scoreFont3 = new Font("OCR A Extended", Font.BOLD, 45);
