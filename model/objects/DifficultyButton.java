@@ -27,9 +27,10 @@ public class DifficultyButton {
 		button = Images.initVolatileImage(305, 80, Transparency.OPAQUE);
 		Graphics2D g2 = button.createGraphics();
 		g2.setColor(Color.WHITE);
-		g2.fillRect(0, 0, 300, 75);
+		g2.fillRect(0, 0, 305, 80);
 		g2.setColor(Color.ORANGE);
-		
+		g2.drawRect(0, 0, 304, 79);
+		g2.drawRect(2, 2, 300, 75);
 //		g2.drawRect(0, 0, 300, 75);
 //		g2.drawRect(0-2, 0-2, 304, 79);
 		g2.drawRect(0, 0, 304, 79);
