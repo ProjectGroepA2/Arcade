@@ -32,7 +32,9 @@ public class TitleState extends GameState {
 	
     int index = 0;
     int varx = 0;
-    int frame;
+    
+    int frame = 0;
+    int image_x = 0;
 
     
     int indexKast = 0;
@@ -49,26 +51,35 @@ public class TitleState extends GameState {
 	public void init() {
 		if(!sh.isPlaying())
 			sh.play();
+		
+		frame = 0;
+		image_x = 0;
+		
+		indexKast = 0;
+		xKast = 0;
 	}
 
 	@Override
 	public void update(float factor) {
-        frame+=5;
+		image_x = ((frame / 6) % 6) * 49;
+        frame++;
+        
         indexKast++;
+        xKast = indexKast/10;
+		xKast%=4;
 	}
 
 	@Override
 	public void draw(Graphics2D g2) {
 		g2.drawImage(background, 0, 0, 1280, 1024, null);
-		int image_x = ((frame / 6) % 6) * 49;
+		
 		g2.drawImage(pressStart.getSubimage(image_x, 0, 49, 26),  640-122, 512, 245, 130, null);
 		
-		
-		
-		xKast = indexKast/10;
-		xKast%=4;
-		//g2.drawImage(kast.getSubimage(xKast*300,0,300,400), 640-122,650,300,400,null);
 		g2.drawImage(kast.getSubimage(xKast*600,0,600,800), 490,624,300,400,null);
+		
+		g2.setFont(textFont);
+		g2.setColor(Color.WHITE);
+		g2.drawString("©2015 Team Hamtaro", 550, 1012);
 	}
 
 	@Override
@@ -113,10 +124,6 @@ public class TitleState extends GameState {
 
 		g2.setPaint(gp);
 		g2.fillRect(300, 0, 680, 1024);
-
-		g2.setFont(textFont);
-		g2.setColor(Color.WHITE);
-		g2.drawString("ï¿½2015 Team Hamtaro", 550, 1012);
 
 		g2.setColor(Color.RED);
 		g2.setFont(textFont2);
