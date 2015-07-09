@@ -67,6 +67,8 @@ public class SongInstance {
 	
 	public long getEndTime()
 	{
+		if(objects.size() == 0)
+			return 0;
 		return objects.get(objects.size()-1).getTime();
 	}
 	
