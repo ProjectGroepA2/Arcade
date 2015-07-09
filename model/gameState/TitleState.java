@@ -69,6 +69,14 @@ public class TitleState extends GameState {
 			xKast %= 4;
 			g2.drawImage(kast.getSubimage(xKast * 300, 0, 300, 400), 100, 300, 300, 400, null);
 		}
+		g2.drawImage(background, 0, 0, 1280, 1024, null);
+		int image_x = ((frame / 6) % 6) * 49;
+		g2.drawImage(pressStart.getSubimage(image_x, 0, 49, 26),  640-122, 512, 245, 130, null);
+
+		xKast = indexKast/10;
+		xKast%=4;
+		//g2.drawImage(kast.getSubimage(xKast*300,0,300,400), 640-122,650,300,400,null);
+		g2.drawImage(kast.getSubimage(xKast*600,0,600,800), 490,624,300,400,null);
 	}
 
 	@Override

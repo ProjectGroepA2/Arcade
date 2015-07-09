@@ -15,6 +15,7 @@ import model.SongHandler;
 import control.GameStateManager;
 import control.GameStateManager.State;
 import control.button.ButtonEvent;
+import control.button.ButtonHandler;
 import control.joystick.JoystickEvent;
 import data.io.SQLConnector;
 
@@ -36,6 +37,7 @@ public class HelpState extends GameState {
 
 	@Override
 	public void init() {
+		ButtonHandler.getButton(2).setColor(GameModel.colors[2]);
 		sh.play();
 	}
 
