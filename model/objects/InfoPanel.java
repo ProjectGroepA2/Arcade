@@ -11,23 +11,19 @@ import java.awt.Transparency;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.VolatileImage;
 
+import model.gameState.PlayState;
 import control.SongHandler;
 import control.button.ButtonHandler;
-import main.Window;
-import model.gameState.PlayState;
 
 public class InfoPanel {
 	
 	private static String totalHighscore = "000000";
-	private int x, y;
 	private VolatileImage infoPanel;
 	private SongHandler sh;
 	private String time;
 	private int highscore = 0;
 	
-	public InfoPanel(int x, int y, SongHandler sh){
-		this.x = x;
-		this.y = y;
+	public InfoPanel(SongHandler sh){
 		this.sh = sh;
 		updateIPanel();
 		generateInfoPanel();
@@ -121,13 +117,6 @@ public class InfoPanel {
 			g2.setColor(ButtonHandler.getButton(6).getColor());
 			g2.fill(oval6);
 				
-//				g2.setColor(Color.BLACK);
-//				width = g2.getFontMetrics().stringWidth(""+i);
-//				g2.drawString(""+i, (int)oval.getCenterX()-width/2,(int)oval.getMaxY()+height);
-		
-		
-		
-		
 		g2.dispose();
 		infoPanel.createGraphics();
 	}
