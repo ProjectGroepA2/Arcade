@@ -37,6 +37,9 @@ public class EndState extends GameState {
 	private boolean uploaded;
 	private BufferedImage QRimage;
 	
+	boolean timeOut = false;
+	float timeOutCounter = 0;
+	
     int frame;
 
 	public EndState(GameStateManager gsm, SongHandler sh, SQLConnector sql) {
@@ -47,11 +50,15 @@ public class EndState extends GameState {
 	@Override
 	public void init() {
 		createBackground();
+		
 		ButtonHandler.getButton(1).setColor(GameModel.colors[0]);
 		ButtonHandler.getButton(2).setColor(GameModel.colors[2]);
+		
 		JoystickHandler.REPEAT = true;
 		uploaded = false;
-//		System.out.println("Endgame: "+PlayState.won());
+		timeOut = true;
+		timeOutCounter = 0;
+
 		if(PlayState.won()){
 			end = Images.getImage(Images.ImageType.youwon);
 		}else{
@@ -61,6 +68,17 @@ public class EndState extends GameState {
 
 	@Override
 	public void update(float factor) {
+		if(timeOut)
+		{
+			timeOutCounter += factor;
+			
+			if(timeOutCounter > 800)
+			{
+				timeOut = false;
+			}
+		}
+		
+		
 		image_x = ((frame / 5) % 5) * 40;
         frame++;
 	}
@@ -84,62 +102,65 @@ public class EndState extends GameState {
 	
 	@Override
 	public void buttonPressed(ButtonEvent e) {
-		//System.out.println("Name: "+hsn.getName());
-		switch(e.getButton().getButtonID()){
-		case 0:
-			gsm.setState(State.TITLE_STATE);
-			break;
-		case 1:
-			if(hsn.getName().trim().length() >= 3)
-			{
-				if(!uploaded){
-					int id = sql.addHighscore(sh.getCurrentSong(), sh.getCurrentSongInstance(), hsn.getName(), PlayState.currentScore);
-					try {
-						WebcamUploader.takePictureAndUpload(id);
-					} catch (IOException e2) {
-						e2.printStackTrace();
+		if(!timeOut)
+		{
+			switch(e.getButton().getButtonID()){
+			case 0:
+				gsm.setState(State.TITLE_STATE);
+				break;
+			case 1:
+				if(hsn.getName().trim().length() >= 3)
+				{
+					if(!uploaded){
+						int id = sql.addHighscore(sh.getCurrentSong(), sh.getCurrentSongInstance(), hsn.getName(), PlayState.currentScore);
+						try {
+							WebcamUploader.takePictureAndUpload(id);
+						} catch (IOException e2) {
+							e2.printStackTrace();
+						}
+						 		
+						try {
+							QRimage = WebcamUploader.createQRImage("http://portfolio.jancokock.me/colorstrike/message.php?id="+id, 400);
+						} catch (WriterException | IOException e1) {
+							e1.printStackTrace();
+						}
+						uploaded = true;
+	
+					}else{
+						gsm.setState(State.MENU_STATE);
 					}
-					 		
-					try {
-						QRimage = WebcamUploader.createQRImage("http://portfolio.jancokock.me/colorstrike/message.php?id="+id, 400);
-					} catch (WriterException | IOException e1) {
-						e1.printStackTrace();
-					}
-					uploaded = true;
-
-				}else{
-					gsm.setState(State.MENU_STATE);
 				}
+				break;			
+			case 2:
+				gsm.setState(State.MENU_STATE);
+				break;
 			}
-			break;			
-		case 2:
-			gsm.setState(State.MENU_STATE);
-			break;
 		}
-		
-		
 	}
+	
 	@Override
-	public void buttonReleased(ButtonEvent e) {
-		
-	}
+	public void buttonReleased(ButtonEvent e) {}
+	
 	@Override
 	public void onJoystickMoved(JoystickEvent e) {
-		switch(e.getJoystick().getPos()){		
-		case DOWN:
-			hsn.down();
-			break;			
-		case LEFT:
-			hsn.left();
-			break;
-		case RIGHT:
-			hsn.right();
-			break;
-		case UP:
-			hsn.up();
-			break;		
-		default:
-			break;	
+		if(!timeOut)
+		{
+			switch(e.getJoystick().getPos()){		
+			case DOWN:
+				hsn.down();
+				break;			
+			case LEFT:
+				hsn.left();
+				break;
+			case RIGHT:
+				hsn.right();
+				break;
+			case UP:
+				hsn.up();
+				break;		
+			default:
+				break;	
+			}
 		}
 	}
 	
