@@ -61,8 +61,7 @@ public class SQLConnector
 		Highscore hsc = null;
 		
     	try {
-    		result.next();
-    		if(result != null)
+    		if(result.next() && result != null)
     			hsc = new Highscore(si, result.getString("username"), result.getInt("score"), result.getDate("date").getTime());
     		
 		} catch (SQLException e) {
