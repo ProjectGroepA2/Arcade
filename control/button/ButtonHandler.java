@@ -7,15 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.Window;
-
-import com.pi4j.io.gpio.GpioController;
-import com.pi4j.io.gpio.GpioFactory;
-import com.pi4j.io.gpio.GpioPinDigitalInput;
-import com.pi4j.io.gpio.PinState;
-import com.pi4j.io.gpio.RaspiPin;
-import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
-import com.pi4j.io.gpio.event.GpioPinListenerDigital;
-
+import model.GameModel;
 import control.NetworkHandler;
 
 public class ButtonHandler implements KeyListener{
@@ -30,39 +22,7 @@ public class ButtonHandler implements KeyListener{
 		
 		listeners = new ArrayList<ButtonListener>();
 		buttons = new ArrayList<Button>();
-	
-//		if (Window.ON_RASP)
-//			addGpioListeners();
 		
-	}
-	
-	private void addGpioListeners(){
-		ArrayList<GpioPinDigitalInput> inputpins = new ArrayList<GpioPinDigitalInput>();
-        final GpioController gpio = GpioFactory.getInstance();
-        
-        inputpins.add(gpio.provisionDigitalInputPin(RaspiPin.GPIO_02, "1")); //button 1 to 6 + start button
-        inputpins.add(gpio.provisionDigitalInputPin(RaspiPin.GPIO_03, "2"));
-        inputpins.add(gpio.provisionDigitalInputPin(RaspiPin.GPIO_13, "3"));
-        inputpins.add(gpio.provisionDigitalInputPin(RaspiPin.GPIO_14, "4"));
-        inputpins.add(gpio.provisionDigitalInputPin(RaspiPin.GPIO_00, "5"));
-        inputpins.add(gpio.provisionDigitalInputPin(RaspiPin.GPIO_12, "6"));
-        inputpins.add(gpio.provisionDigitalInputPin(RaspiPin.GPIO_06, "0"));
-
-        
-        for(GpioPinDigitalInput p:inputpins){
-        	  p.addListener(new GpioPinListenerDigital() {
-                  @Override
-                  public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent e) {
-                	  if(e.getState() == PinState.HIGH){
-                		  buttonRelease(buttons.get(Integer.parseInt(e.getPin().getName())));
-                		  System.out.println(e.getPin().getName() + " Released");
-                	  }else{
-                		  buttonPress(buttons.get(Integer.parseInt(e.getPin().getName())));
-                		  System.out.println(e.getPin().getName() + " Pressed");
-                	  }
-                  }                  
-              });
-        }
 	}
 
 	public void addButtonListener(ButtonListener toAdd) {
@@ -70,7 +30,7 @@ public class ButtonHandler implements KeyListener{
 	}
 	
 	public void buttonPress(Button b) {
-		if(Window.ON_RASP)
+		if(Window.ON_ARCADE)
 		{
 			Color c = b.getColor().brighter().brighter();
 			ntw.setLed(b.getLedID(), c.getGreen(), c.getRed(), c.getBlue());
@@ -82,7 +42,7 @@ public class ButtonHandler implements KeyListener{
 	}
 	 
 	public void buttonRelease(Button b) {
-		if(Window.ON_RASP)
+		if(Window.ON_ARCADE)
 		{
 			ntw.setLed(b.getLedID(), b.getColor().getGreen(), b.getColor().getRed(), b.getColor().getBlue());
 			ntw.show();
@@ -119,7 +79,7 @@ public class ButtonHandler implements KeyListener{
 			buttonPress(buttons.get(6));
 			break;
 		case KeyEvent.VK_ESCAPE:
-			if(!Window.ON_RASP)
+			if(!Window.ON_ARCADE)
 				System.exit(0);
 			break;
 		}
@@ -180,5 +140,9 @@ public class ButtonHandler implements KeyListener{
 		buttons.add(new Button(4, -1, ntw));
 		buttons.add(new Button(5, 3, ntw));
 		buttons.add(new Button(6, 4, ntw));
+		
+		for (int i = 1; i < buttons.size(); i++) {
+			buttons.get(i).setColor(GameModel.colors[i - 1]);
+		}
 	}
 }
