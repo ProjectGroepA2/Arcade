@@ -177,8 +177,8 @@ public class ButtonHandler implements KeyListener{
 		buttons.add(new Button(1, 2, ntw));
 		buttons.add(new Button(2, 1, ntw));
 		buttons.add(new Button(3, 0, ntw));
-		buttons.add(new Button(4, 3, ntw));
-		buttons.add(new Button(5, 4, ntw));
-		buttons.add(new Button(6, 5, ntw));
+		buttons.add(new Button(4, -1, ntw));
+		buttons.add(new Button(5, 3, ntw));
+		buttons.add(new Button(6, 4, ntw));
 	}
 }
