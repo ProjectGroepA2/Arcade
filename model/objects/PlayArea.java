@@ -161,5 +161,5 @@ public class PlayArea {
 		this.pathColor = pathColor;
 	}
 
-	public void enemyDied(Point2D.Double p) { pointAnimation.enemyDied(p); }
+	public void enemyDied(Point2D.Double p) { pointAnimation.enemyDied(p, hitAreaColor); }
 }

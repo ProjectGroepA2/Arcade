@@ -222,7 +222,7 @@ public class PlayState extends GameState {
 					area.enemyDied((Point2D.Double) enemy.getEnemy().getP1());
 					area.hit();
 					enemies_hit++;
-					infoPanel.throwACoin(); // Coin Animatie starten bij hit
+					infoPanel.throwACoin(enemy.getColor()); // Coin Animatie starten bij hit
 					enemysInPath.remove();
 					notHit = false;
 					break;

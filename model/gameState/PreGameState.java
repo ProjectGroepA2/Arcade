@@ -50,12 +50,10 @@ public class PreGameState extends GameState {
 	@Override
 	public void draw(Graphics2D g2) {
 		g2.drawImage(screenshot,0,0,1280,1024,null);
-		Font textFont = new Font("OCR A Extended", Font.BOLD,grootte);		
-		g2.setFont(textFont);
+		g2.setFont(new Font("OCR A Extended", Font.BOLD,grootte));
 		g2.setStroke(s);
 		g2.setColor(Color.RED);
 		String text = "" + index;
-		int width = g2.getFontMetrics().stringWidth(text);		
 		g2.drawString(text,  325, 400);
 		if(index < 1){
 			text = "GO!!!";
@@ -66,7 +64,7 @@ public class PreGameState extends GameState {
 		else{
 			text = "READY";
 		}
-		width =  g2.getFontMetrics().stringWidth(text);
+		int width =  g2.getFontMetrics().stringWidth(text);
 		g2.drawString(text, (256+1024/2)-width/2, 600);
 	}
 	
