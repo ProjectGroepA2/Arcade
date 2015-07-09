@@ -103,7 +103,7 @@ public class PlayState extends GameState {
 		}
 		
 
-		if(progress > sh.getCurrentSongInstance().getEndTime() + Enemy.secondsToEnd*1000*2){
+		if(progress > sh.getCurrentSongInstance().getEndTime() + Enemy.secondsToEnd*1000*3){
 			won = true;
 			endGame();			
 		}
