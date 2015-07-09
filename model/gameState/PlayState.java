@@ -122,7 +122,7 @@ public class PlayState extends GameState {
 				Enemy e = enemyIterator.next();
 				if (e.getDistanceFromStart() > Enemy.distanceToOctagon + (sizeOfEnemy * 1.5)) {
 					enemyIterator.remove();
-					lifePoints -= 5;
+					lifePoints -= 6;
 					comboScore /= 2;
 					enemies_missed++;
 				}
@@ -136,7 +136,7 @@ public class PlayState extends GameState {
 			}
 		}
 
-		lifePoints -= 0.002 * factor;
+		lifePoints -= 0.003 * factor;
 		
 		infoPanel.updateIPanel();
 		
@@ -194,19 +194,6 @@ public class PlayState extends GameState {
 				player.draw(g2);
 		} catch (Exception e) {
 		}
-//		if(!Window.ON_RASP){
-//			int width,height;
-//			width = g2.getFontMetrics().stringWidth("");
-//			height = g2.getFontMetrics().getHeight();
-//			for (int i = 1; i < ButtonHandler.getButtons().size(); i++) {
-//				Ellipse2D oval = new Ellipse2D.Double(880+(50*i), 0, 50, 50);
-//				g2.setColor(ButtonHandler.getButton(i).getColor());
-//				g2.fill(oval);
-//				g2.setColor(Color.BLACK);
-//				width = g2.getFontMetrics().stringWidth(""+i);
-//				g2.drawString(""+i, (int)oval.getCenterX()-width/2,(int)oval.getMaxY()+height);
-//			}
-//		}
 	}
 
 	@Override
@@ -219,7 +206,7 @@ public class PlayState extends GameState {
 				if (e.getButton().getColor().equals(enemy.getColor())) {
 					currentScore += enemy.getDistanceFromStart() - Enemy.distanceToOctagon;
 					comboScore += 5;
-					lifePoints = Math.min(lifePoints+10, 100);
+					lifePoints = Math.min(lifePoints+8, 100);
 					area.setHitAreaColor(enemy.getColor());
 					area.hit();
 					enemies_hit++;
