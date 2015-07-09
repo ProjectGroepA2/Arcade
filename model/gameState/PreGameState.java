@@ -18,7 +18,6 @@ public class PreGameState extends GameState {
 
 	double index2 = 3;
 	double index = 3;
-	double timer;
 	int grootte = 150;
 	BasicStroke s = new BasicStroke(20);
 	
@@ -31,7 +30,9 @@ public class PreGameState extends GameState {
 
 	@Override
 	public void init() {
-		
+		grootte = 150;
+		index = 3;
+		index2 = 3;
 	}
 
 	@Override
