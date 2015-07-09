@@ -2,8 +2,6 @@ package main;
 
 
 import java.awt.Cursor;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
@@ -24,29 +22,22 @@ import data.io.SQLConnector;
 
 public class Window extends JFrame {	
 	private static final long serialVersionUID = -9222956702898533696L;
-	public static boolean ON_RASP;
+	public static boolean ON_ARCADE;
 	
 	public final static int WIDTH = 1280;
 	public final static int HEIGHT = 1024;
 	
-	public Window(boolean ON_RASP)
+	public Window(boolean ON_ARCADE)
 	{
 		//Create window
 		super("Arcade");
 		setSize(WIDTH, HEIGHT);
 		
 		//Create Events
-		Window.ON_RASP = ON_RASP;
-		if(ON_RASP){ //Only on the raspberry pi
-//			GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//			GraphicsDevice[] devices =  graphicsEnvironment.getScreenDevices();
-//
-//			if (!devices[0].isFullScreenSupported ()){
-//			     throw new UnsupportedOperationException ("Fullscreen mode is unsupported.");
-//			}else{
-//				devices[0].setFullScreenWindow(this);
-//			}			
-//			//Remove cursor
+		Window.ON_ARCADE = ON_ARCADE;
+		if(ON_ARCADE){ //Only on the arcade machine
+		
+			//Remove cursor
 			BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 			Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
 			this.setCursor(blankCursor);
