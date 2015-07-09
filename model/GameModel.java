@@ -9,7 +9,7 @@ import control.button.ButtonHandler;
 
 public class GameModel {
 
-	public static Color[] colors = { Color.GREEN, Color.YELLOW, Color.RED, Color.MAGENTA, Color.CYAN, Color.ORANGE };
+	public static Color[] colors = { Color.GREEN, Color.YELLOW, Color.RED, Color.MAGENTA, Color.CYAN, Color.BLUE };
 	private GameStateManager gsm;
 	private NetworkHandler ntw;
 	private int count = 0;
