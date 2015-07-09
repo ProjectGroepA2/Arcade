@@ -419,10 +419,10 @@ public class MenuState extends GameState {
 		boolean highscoresFound = true;
 		int HIGHSCORES_TO_DISPLAY = 7;
 		
-		List<Highscore> highscores = sql.getHighscoresToday(selectedToSong(selected), sh.getCurrentSong().getSongs().get(difSelect));
+		List<Highscore> highscores = sql.getHighscoresToday(selectedToSong(selected), sh.getCurrentSong().getSongs().get((sh.getCurrentSong().getSongs().size() - 1) - difSelect));
 		if(highscores.isEmpty())
 		{
-			highscores = sql.getHighscores(selectedToSong(selected), sh.getCurrentSong().getSongs().get(difSelect));
+			highscores = sql.getHighscores(selectedToSong(selected), sh.getCurrentSong().getSongs().get((sh.getCurrentSong().getSongs().size() - 1) - difSelect));
 			if(highscores.isEmpty())
 			{
 				highscoresFound = false;
