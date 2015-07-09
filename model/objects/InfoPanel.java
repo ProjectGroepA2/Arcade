@@ -11,9 +11,9 @@ import java.awt.Transparency;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.VolatileImage;
 
+import control.SongHandler;
 import control.button.ButtonHandler;
 import main.Window;
-import model.SongHandler;
 import model.gameState.PlayState;
 
 public class InfoPanel {

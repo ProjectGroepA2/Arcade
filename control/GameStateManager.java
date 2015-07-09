@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.SongHandler;
 import model.gameState.EndState;
 import model.gameState.GameState;
 import model.gameState.HelpState;

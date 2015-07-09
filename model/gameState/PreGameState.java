@@ -8,8 +8,8 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import model.SongHandler;
 import control.GameStateManager;
+import control.SongHandler;
 import control.button.ButtonEvent;
 import control.joystick.JoystickEvent;
 import data.io.SQLConnector;

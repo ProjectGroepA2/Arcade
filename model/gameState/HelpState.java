@@ -11,8 +11,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
 
 import model.GameModel;
-import model.SongHandler;
 import control.GameStateManager;
+import control.SongHandler;
 import control.GameStateManager.State;
 import control.button.ButtonEvent;
 import control.button.ButtonHandler;

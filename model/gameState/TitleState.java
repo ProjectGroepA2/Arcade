@@ -12,8 +12,8 @@ import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
 
-import model.SongHandler;
 import control.GameStateManager;
+import control.SongHandler;
 import control.GameStateManager.State;
 import control.button.ButtonEvent;
 import control.joystick.JoystickEvent;

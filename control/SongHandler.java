@@ -1,4 +1,4 @@
-package model;
+package control;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -46,9 +46,9 @@ public class SongHandler {
 		
 		songs = DirScanner.scanDirectories(dir);
 		
-		sql.update(songs);
+		//sql.update(songs);
 		
-		sort(new SortPLAYED());
+		//sort(new SortPLAYED());
 		
 		updatePlayer();
 	}

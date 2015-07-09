@@ -2,8 +2,8 @@ package model.gameState;
 
 import java.awt.Graphics2D;
 
-import model.SongHandler;
 import control.GameStateManager;
+import control.SongHandler;
 import control.button.ButtonEvent;
 import control.joystick.JoystickEvent;
 import data.io.SQLConnector;

@@ -7,7 +7,6 @@ import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
-import model.SongHandler;
 import model.drawObjects.Enemy;
 import model.drawObjects.Player;
 import model.objects.InfoPanel;
@@ -17,6 +16,7 @@ import model.objects.highscore.Highscore;
 import audio.ButtonInstance;
 import audio.ObjectInstance;
 import control.GameStateManager;
+import control.SongHandler;
 import control.GameStateManager.State;
 import control.button.Button;
 import control.button.ButtonEvent;

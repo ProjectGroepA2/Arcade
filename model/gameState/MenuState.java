@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.GameModel;
-import model.SongHandler;
 import model.objects.DifficultyButton;
 import model.objects.MenuButton;
 import model.objects.highscore.Highscore;
@@ -28,6 +27,7 @@ import audio.sorting.SortAUTHOR;
 import audio.sorting.SortPLAYED;
 import audio.sorting.SortSCORE;
 import control.GameStateManager;
+import control.SongHandler;
 import control.GameStateManager.State;
 import control.button.ButtonEvent;
 import control.button.ButtonHandler;

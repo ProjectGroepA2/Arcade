@@ -12,13 +12,13 @@ import java.awt.image.VolatileImage;
 import java.io.IOException;
 
 import model.GameModel;
-import model.SongHandler;
 import model.objects.InfoPanel;
 import model.objects.highscore.HighscoreName;
 
 import com.google.zxing.WriterException;
 
 import control.GameStateManager;
+import control.SongHandler;
 import control.GameStateManager.State;
 import control.button.ButtonEvent;
 import control.button.ButtonHandler;

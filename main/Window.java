@@ -11,11 +11,11 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 
 import model.GameModel;
-import model.SongHandler;
 import view.GameView;
 import control.GameControl;
 import control.GameStateManager;
 import control.NetworkHandler;
+import control.SongHandler;
 import control.button.ButtonHandler;
 import control.joystick.JoystickHandler;
 import data.io.SQLConnector;
